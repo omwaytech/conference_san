@@ -1,0 +1,18 @@
+{
+    "josefin sans": {
+        "normal": "josefin_sans_normal_7b9f5da58247bea37408719248afcbb1",
+        "100_italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_100_italic_35f9a7e0a01179dbbb0fbf59b9b7cf55",
+        "200_italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_200_italic_1e17356e9f022a4478305696589a3811",
+        "300_italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_300_italic_7db2fd333674155f67f042f82019a6e0",
+        "italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_italic_c89c9e165eb981003cc050528e9874c3",
+        "500_italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_500_italic_bd773b06171c1ef5e974a89aef4cac0c",
+        "600_italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_600_italic_e53ca3c2c7ddcdbadad845bafbfaaa0b",
+        "bold_italic": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_bold_italic_fb4f952763b9411096e230f5c6e3e6da",
+        "100": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_100_914caaf33f34c0e62ec2d1118486e232",
+        "200": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_200_b1e729856650d49ae3bc859ef65fd10d",
+        "300": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_300_f5aac7455869e5576c0156ebf717393b",
+        "500": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_500_320a4c9dabd477033e8b2eeb52b66eea",
+        "600": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_600_65fa52c19fa36fcffb8a116d7d119ec7",
+        "bold": "E:\\xampp\\htdocs\\omway\\conference_san\\storage\\fonts\/josefin_sans_bold_1cdeccc232cd0ffbfdebe8bd77df2079"
+    }
+}
