@@ -32,7 +32,7 @@
         @if ($user->role == 1 || !empty($checkRegistrationCommittee))
             @if ($user->role == 1)
                 <div class="breadcrumb">
-                    <h4>Total Registrations</h4>
+                    <h4>Total Registrationss</h4>
                 </div>
                 <div class="row">
                     @php
