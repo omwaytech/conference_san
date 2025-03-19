@@ -1215,7 +1215,7 @@ class ConferenceRegistrationController extends Controller
                 ->join('users', 'conference_registrations.user_id', '=', 'users.id')
                 ->orderBy('users.f_name', 'asc')
                 ->get();
-        } elseif ($type == 'guest-presenters') {
+        } elseif ($type == 'guest-presenters') { 
             $participants = ConferenceRegistration::where(['registrant_type' => 2, 'is_invited' => 1, 'verified_status' => 1, 'conference_registrations.status' => 1])
                 ->join('users', 'conference_registrations.user_id', '=', 'users.id')
                 ->orderBy('users.f_name', 'asc')
