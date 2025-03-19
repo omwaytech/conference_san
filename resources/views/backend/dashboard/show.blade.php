@@ -41,7 +41,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens" ></i>
-                                <div style="margin-left: 6%;">
+                                <div style="margin-left: 6%;">  
                                     <h5 class="text-muted mt-2 mb-0">Total Registrations</h5>
                                     <a href="#"><p class="lead text-primary text-24 mb-2">{{$totalRegistrants}}</p></a>
                                     <a href="{{route('home.viewParticipants', 'total-registrants')}}" class="btn btn-primary btn-sm">View All</a>
