@@ -153,9 +153,10 @@ class FrontController extends Controller
         //     ];
         // })->values();
         // dd($sessionDays);
+      
         $sessions = ScientificSession::where('status', 1)->orderBy('day', 'ASC')->orderByRaw("STR_TO_DATE(time, '%h:%i%p') ASC")->get();
 
-        $halls = Hall::whereStatus(1)->get();
+        $halls = Hall::orderBy('created_at')->whereStatus(1)->get();
         $latestConference = Conference::latestConference();
         $startDate = Carbon::parse($latestConference->start_date);
         $endDate = Carbon::parse($latestConference->end_date);
@@ -173,7 +174,7 @@ class FrontController extends Controller
     {
         $sessions = ScientificSession::where('status', 1)->orderBy('day', 'ASC')->orderByRaw("STR_TO_DATE(time, '%h:%i%p') ASC")->get();
 
-        $halls = Hall::orderBy('created_at')->whereStatus(1)->get();
+        $halls = Hall::whereStatus(1)->get();
         $latestConference = Conference::latestConference();
         $startDate = Carbon::parse($latestConference->start_date);
         $endDate = Carbon::parse($latestConference->end_date);
@@ -184,7 +185,7 @@ class FrontController extends Controller
             $dates[] = $startDate->toDateString();
             $startDate->addDay();
         }
-        return view('frontend.scientific-session-test', compact('halls', 'dates', 'sessions'));
+        return view('frontend.scientific-session-static', compact('halls', 'dates', 'sessions'));
     }
     public function exportPdf($hall_id, $date)
     {
