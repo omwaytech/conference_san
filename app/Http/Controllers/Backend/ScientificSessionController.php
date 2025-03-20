@@ -51,15 +51,16 @@ class ScientificSessionController extends Controller
         try {
             $rules = [
                 'category_id'=> 'required',
+                'topic' => 'required',
                 'type'=> 'required',
                 'hall_id'=> 'nullable',
+                'screen' => 'nullable',
                 'chairperson'=> 'nullable',
                 'co_chairperson'=> 'nullable',
                 'participants'=> 'nullable',
                 'day'=> 'required',
-                'time'=> 'required',
+                'time'=> 'nullable',
                 'duration'=> 'required',
-                'topic'=> 'nullable',
             ];
             // if ($request->type == 5) {
             //     $rules['topic'] = 'required';
@@ -142,26 +143,28 @@ class ScientificSessionController extends Controller
         try {
             $rules = [
                 'category_id'=> 'required',
+                'topic' => 'required',
                 'type'=> 'required',
                 'hall_id'=> 'nullable',
+                'screen' => 'nullable',
                 'chairperson'=> 'nullable',
                 'co_chairperson'=> 'nullable',
                 'participants'=> 'nullable',
                 'day'=> 'required',
-                'time'=> 'required',
+                'time'=> 'nullable',
                 'duration'=> 'required'
             ];
-            if ($request->type == 5) {
-                $rules['topic'] = 'required';
-            }
+            // if ($request->type == 5) {
+            //     $rules['topic'] = 'required';
+            // }
             $validated = $request->validate($rules);
 
             $checkAvailabilityOfTime = ScientificSession::where(['day' => $request->day, 'time' => $request->time, 'hall_id' => $request->hall_id, 'status' => 1])->whereNot('id', $scientific_session->id)->first();
 
             if (empty($checkAvailabilityOfTime)) {
-                if ($request->type != 5) {
-                    $validated['topic'] = null;
-                }
+                // if ($request->type != 5) {
+                //     $validated['topic'] = null;
+                // }
 
                 // if (!empty($request->hall_id)) {
                 //     $validated['hall_id'] = json_encode($request->hall_id);
@@ -169,17 +172,17 @@ class ScientificSessionController extends Controller
                 //     $validated['hall_id'] = null;
                 // }
                 if (!empty($request->chairperson)) {
-                    $validated['chairperson'] = json_encode($request->chairperson);
+                    $validated['chairperson'] = $request->chairperson;
                 } else {
                     $validated['chairperson'] = null;
                 }
                 if (!empty($request->co_chairperson)) {
-                    $validated['co_chairperson'] = json_encode($request->co_chairperson);
+                    $validated['co_chairperson'] = $request->co_chairperson;
                 } else {
                     $validated['co_chairperson'] = null;
                 }
                 if (!empty($request->participants)) {
-                    $validated['participants'] = json_encode($request->participants);
+                    $validated['participants'] = $request->participants;
                 } else {
                     $validated['participants'] = null;
                 }

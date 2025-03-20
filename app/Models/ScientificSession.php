@@ -21,7 +21,8 @@ class ScientificSession extends Model
         'day',
         'duration',
         'status',
-        'category_id'
+        'category_id',
+        'screen'
     ];
 
     // values of type:                      chairperson         participants

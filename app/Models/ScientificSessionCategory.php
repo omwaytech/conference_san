@@ -10,6 +10,7 @@ class ScientificSessionCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_name', 'slug', 'status'
+        'category_name', 'slug', 'status',
+        'sub_heading', 'duration', 'moderator', 'co_chairperson', 'chairperson',
     ];
 } 
