@@ -6,6 +6,7 @@ use App\Models\{Conference, User, UserDetail, MemberType, CommitteeMember, Confe
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB, Exception, Http, Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FrontController extends Controller
 {
@@ -168,7 +169,8 @@ class FrontController extends Controller
         return view('frontend.scientific-session', compact('halls', 'dates', 'sessions'));
     }
 
-    public function scientificSessionTest(){
+    public function scientificSessionTest()
+    {
         $sessions = ScientificSession::where('status', 1)->orderBy('day', 'ASC')->orderByRaw("STR_TO_DATE(time, '%h:%i%p') ASC")->get();
 
         $halls = Hall::whereStatus(1)->get();
@@ -183,6 +185,21 @@ class FrontController extends Controller
             $startDate->addDay();
         }
         return view('frontend.scientific-session-test', compact('halls', 'dates', 'sessions'));
+    }
+    public function exportPdf($hall_id, $date)
+    {
+        $hall = Hall::with(['scientificSession.category'])
+                    ->findOrFail($hall_id);
+
+        $sessions = $hall->scientificSession
+                        ->where('day', $date)
+                        ->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))
+                        ->groupBy('category_id');
+
+        $pdf = Pdf::loadView('frontend.scientificSessionPdf', compact('hall', 'sessions', 'date'))
+        ->setPaper('a4', 'portrait');
+
+        return $pdf->download("Scientific_Sessions_Hall_{$hall->id}_{$date}.pdf");
     }
 
     public function message()
