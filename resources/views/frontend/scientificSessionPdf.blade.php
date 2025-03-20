@@ -40,15 +40,16 @@
         $currentDate = \Carbon\Carbon::parse($date);
         $dayNumber = array_search($currentDate->toDateString(), $dates) + 1;
     @endphp
-    <div style="text-align: center; margin-bottom: 40px;">
-        <h2 style="color: black; font-weight: bold; font-size: 24px;">Scientific Session Day {{ $dayNumber }}</h2>
-        <h2 style="color: #CD5C5C; font-weight: bold; font-size: 32px; margin-bottom: 20px;">
-            {{ $hall->hall_name }} -
-            {{ \Carbon\Carbon::parse($date)->format('F j, Y') }}</h2>
-    </div>
+    <div class="category-section">
 
-    @foreach ($sessions as $category_id => $categorySessions)
-        <div class="category-section">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="color: black; font-weight: bold; font-size: 24px;">Scientific Session Day {{ $dayNumber }}</h2>
+            <h2 style="color: #CD5C5C; font-weight: bold; font-size: 32px; margin-bottom: 20px;">
+                {{ $hall->hall_name }} -
+                {{ \Carbon\Carbon::parse($date)->format('F j, Y') }}</h2>
+        </div>
+
+        @foreach ($sessions as $category_id => $categorySessions)
             <table
                 style="width: 100%; border: 2px solid #9d9d9d; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                 <thead>
@@ -116,8 +117,8 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    @endforeach
+        @endforeach
+    </div>
 </body>
 
 </html>
