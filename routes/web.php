@@ -63,6 +63,7 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
     Route::get('/accommodation/{slug}', 'accommodationInner')->name('accommodationInner');
     Route::get('/workshop-detail/{slug}', 'workshopDetail')->name('workshopDetail');
     Route::get('/scientific-session', 'scientificSession')->name('scientificSession');
+    Route::get('/scientific-session-test', 'scientificSessionTest')->name('scientificSessionTest');
     Route::get('/message', 'message')->name('message');
 });
 

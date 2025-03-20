@@ -30,7 +30,12 @@ class ScientificSessionCategoryController extends Controller
     {
         try {
             $validated = $request->validate([
-                'category_name'=> 'required'
+                'category_name' => 'required',
+                'sub_heading' => 'nullable',
+                'duration' => 'required',
+                'moderator' => 'nullable',
+                'co_chairperson' => 'nullable',
+                'chairperson' => 'nullable',
             ]);
 
             $validated['slug'] = Str::slug($validated['category_name']);
@@ -58,7 +63,12 @@ class ScientificSessionCategoryController extends Controller
     {
         try {
             $validated = $request->validate([
-                'category_name'=> 'required'
+                'category_name' => 'required',
+                'sub_heading' => 'nullable',
+                'duration' => 'required',
+                'moderator' => 'nullable',
+                'co_chairperson' => 'nullable',
+                'chairperson' => 'nullable',
             ]);
 
             $validated['slug'] = Str::slug($validated['category_name']);
