@@ -168,10 +168,11 @@ class FrontController extends Controller
         return view('frontend.scientific-session', compact('halls', 'dates', 'sessions'));
     }
 
-    public function scientificSessionTest(){
+    public function scientificSessionTest()
+    {
         $sessions = ScientificSession::where('status', 1)->orderBy('day', 'ASC')->orderByRaw("STR_TO_DATE(time, '%h:%i%p') ASC")->get();
 
-        $halls = Hall::whereStatus(1)->get();
+        $halls = Hall::orderBy('created_at')->whereStatus(1)->get();
         $latestConference = Conference::latestConference();
         $startDate = Carbon::parse($latestConference->start_date);
         $endDate = Carbon::parse($latestConference->end_date);
