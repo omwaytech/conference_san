@@ -11,6 +11,7 @@ use App\Models\{ConferenceRegistration, MemberTypePrice, UserDetail, Conference,
 use Illuminate\Http\Request;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Swap\Laravel\Facades\Swap;
 use Exception, Str, Storage, Mail, DB, Hash, Excel;
 use Illuminate\Support\Facades\Http;
@@ -236,7 +237,7 @@ class ConferenceRegistrationController extends Controller
 
         $checkSubmission = Submission::where(['user_id' => auth()->user()->id, 'conference_id' => $latestConference->id, 'status' => 1])->first();
 
-        if (empty($checkSubmission)) {
+        if (empty($checkSubmission)) { 
             $checkSubmissionValue = 'not-submitted';
         } else {
             $checkSubmissionValue = 'submitted';
@@ -247,6 +248,13 @@ class ConferenceRegistrationController extends Controller
     public function onlinePayment(Request $request)
     {
 
+        $latestConference = Conference::latestConference();
+
+        $deadline = Carbon::parse($latestConference->regular_registration_deadline);
+        if ($deadline->isPast()) {
+            return redirect()->back()->with('delete', 'Conference Regisration date has ended.');
+        }
+        
         session(['onlinePayment' => $request->all()]);
 
         // $form = '<form id="paymentForm" action="https://merchant.omwaytechnologies.com/payment_request.php" method="GET">
@@ -583,6 +591,13 @@ class ConferenceRegistrationController extends Controller
 
     public function fonePay(Request $request)
     {
+        $latestConference = Conference::latestConference();
+
+        $deadline = Carbon::parse($latestConference->regular_registration_deadline);
+        if ($deadline->isPast()) {
+            return redirect()->back()->with('delete', 'Conference Regisration date has ended.');
+        }
+
         session(['fonePay' => $request->all()]);
 
         $PID = '2107140644';
@@ -681,7 +696,7 @@ class ConferenceRegistrationController extends Controller
         $memberTypes = MemberType::where('status', 1)->get();
         return view('backend.conferences.registrations.participants', compact('registrants', 'type', 'memberTypes'));
     }
- 
+
     public function getDelegateType(Request $request)
     {
         $type = $request->selected;
@@ -1215,7 +1230,7 @@ class ConferenceRegistrationController extends Controller
                 ->join('users', 'conference_registrations.user_id', '=', 'users.id')
                 ->orderBy('users.f_name', 'asc')
                 ->get();
-        } elseif ($type == 'guest-presenters') { 
+        } elseif ($type == 'guest-presenters') {
             $participants = ConferenceRegistration::where(['registrant_type' => 2, 'is_invited' => 1, 'verified_status' => 1, 'conference_registrations.status' => 1])
                 ->join('users', 'conference_registrations.user_id', '=', 'users.id')
                 ->orderBy('users.f_name', 'asc')

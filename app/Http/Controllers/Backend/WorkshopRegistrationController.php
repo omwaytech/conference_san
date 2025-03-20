@@ -9,6 +9,7 @@ use App\Mail\Workshop\Registration\{RegistrationMail, AcceptMail, RejectMail, Us
 use App\Models\{WorkshopRegistration, Workshop, UserDetail, User, WorkshopAttendance};
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use DB, Exception, Storage, Mail, Str, Excel, Hash;
 
 class WorkshopRegistrationController extends Controller
@@ -140,6 +141,12 @@ class WorkshopRegistrationController extends Controller
 
     public function createInternational($id, $price)
     {
+        $workshop = Workshop::whereId($id)->first();
+
+        $deadline = Carbon::parse($workshop->registration_deadline);
+        if ($deadline->isPast()) {
+            return redirect()->back()->with('delete', 'Workshop Regisration date has ended.');
+        }
         $data = [
             'workshop_id' => $id,
             'amount' => $price
@@ -325,6 +332,13 @@ class WorkshopRegistrationController extends Controller
 
     public function fonePay($id, $price)
     {
+        $workshop = Workshop::whereId($id)->first();
+
+        $deadline = Carbon::parse($workshop->registration_deadline);
+        if ($deadline->isPast()) {
+            return redirect()->back()->with('delete', 'Workshop Regisration date has ended.');
+        }
+
         $data = [
             'id' => $id,
             'price' => $price
