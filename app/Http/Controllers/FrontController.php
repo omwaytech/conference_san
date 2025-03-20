@@ -6,6 +6,7 @@ use App\Models\{Conference, User, UserDetail, MemberType, CommitteeMember, Confe
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB, Exception, Http, Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FrontController extends Controller
 {
@@ -184,6 +185,21 @@ class FrontController extends Controller
             $startDate->addDay();
         }
         return view('frontend.scientific-session-test', compact('halls', 'dates', 'sessions'));
+    }
+    public function exportPdf($hall_id, $date)
+    {
+        $hall = Hall::with(['scientificSession.category'])
+                    ->findOrFail($hall_id);
+
+        $sessions = $hall->scientificSession
+                        ->where('day', $date)
+                        ->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))
+                        ->groupBy('category_id');
+
+        $pdf = Pdf::loadView('frontend.scientificSessionPdf', compact('hall', 'sessions', 'date'))
+        ->setPaper('a4', 'portrait');
+
+        return $pdf->download("Scientific_Sessions_Hall_{$hall->id}_{$date}.pdf");
     }
 
     public function message()

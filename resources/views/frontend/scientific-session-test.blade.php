@@ -26,56 +26,57 @@
             </div>
         </div>
     </div>
-<!-- Search Button -->
-<button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#searchModal">
-    Search Scientific Sessions
-</button>
+    <!-- Search Button -->
+    <button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#searchModal">
+        Search Scientific Sessions
+    </button>
 
-<!-- Search Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="searchModalLabel">Search Scientific Sessions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Search Input -->
-                <input type="text" id="searchInput" class="form-control" placeholder="Enter topic to search..." onkeyup="searchSessions()">
-                
-                <!-- Search Results -->
-                <div id="searchResults" class="mt-3"></div>
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Search Scientific Sessions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Search Input -->
+                    <input type="text" id="searchInput" class="form-control" placeholder="Enter topic to search..."
+                        onkeyup="searchSessions()">
+
+                    <!-- Search Results -->
+                    <div id="searchResults" class="mt-3"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    function searchSessions() {
-        let query = document.getElementById('searchInput').value.toLowerCase();
-        let resultsContainer = document.getElementById('searchResults');
-        resultsContainer.innerHTML = ''; // Clear previous results
+    <script>
+        function searchSessions() {
+            let query = document.getElementById('searchInput').value.toLowerCase();
+            let resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = ''; // Clear previous results
 
-        let allHalls = @json($halls); // Convert PHP data to JavaScript
+            let allHalls = @json($halls); // Convert PHP data to JavaScript
 
-        let foundSessions = [];
+            let foundSessions = [];
 
-        allHalls.forEach(hall => {
-            // Ensure scientific_session exists before iterating
-            if (hall.scientific_session && Array.isArray(hall.scientific_session)) {
-                hall.scientific_session.forEach(session => {
-                    if (session.topic && session.topic.toLowerCase().includes(query)) {
-                        foundSessions.push(session);
-                    }
-                });
-            }
-        });
+            allHalls.forEach(hall => {
+                // Ensure scientific_session exists before iterating
+                if (hall.scientific_session && Array.isArray(hall.scientific_session)) {
+                    hall.scientific_session.forEach(session => {
+                        if (session.topic && session.topic.toLowerCase().includes(query)) {
+                            foundSessions.push(session);
+                        }
+                    });
+                }
+            });
 
-        if (foundSessions.length === 0) {
-            resultsContainer.innerHTML = '<p class="text-muted">No sessions found.</p>';
-        } else {
-            foundSessions.forEach(session => {
-                let sessionHTML = `
+            if (foundSessions.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-muted">No sessions found.</p>';
+            } else {
+                foundSessions.forEach(session => {
+                    let sessionHTML = `
                     <div class="card mb-2">
                         <div class="card-body">
                             <h5 class="card-title">${session.topic}</h5>
@@ -84,11 +85,11 @@
                         </div>
                     </div>
                 `;
-                resultsContainer.innerHTML += sessionHTML;
-            });
+                    resultsContainer.innerHTML += sessionHTML;
+                });
+            }
         }
-    }
-</script>
+    </script>
 
 
     <div class="rts-section-gapBottom rts-blog-area-one">
@@ -143,6 +144,12 @@
                                                                 id="content-{{ $dateIndex }}-{{ $hallIndex }}"
                                                                 role="tabpanel"
                                                                 aria-labelledby="tab-{{ $dateIndex }}-{{ $hallIndex }}">
+                                                                <div class="text-start">
+                                                                    <a href="{{ route('front.export.pdf', ['hall_id' => $hall->id, 'date' => $date]) }}"
+                                                                        class="btn btn-lg btn-success" target="_blank">
+                                                                        Export PDF for {{ $hall->hall_name }}
+                                                                    </a>
+                                                                </div>
                                                                 @foreach ($hall->scientificSession->where('day', $date)->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))->groupBy('category_id') as $category_id => $sessions)
                                                                     {{-- @dd($sessions) --}}
                                                                     <div class="accordion mt-3"
@@ -241,10 +248,6 @@
                                                             </div>
                                                         @endforeach
                                                     </div>
-                                                    <!-- Button to Export All Tabs as PDFs -->
-                                                    <button class="btn btn-success mt-4" onclick="exportAllTabs()">Export
-                                                        All Tabs as PDF
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

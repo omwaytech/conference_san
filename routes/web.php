@@ -64,6 +64,7 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
     Route::get('/workshop-detail/{slug}', 'workshopDetail')->name('workshopDetail');
     Route::get('/scientific-session', 'scientificSession')->name('scientificSession');
     Route::get('/scientific-session-test', 'scientificSessionTest')->name('scientificSessionTest');
+    Route::get('/export-pdf/{hall_id}/{date}', 'exportPdf')->name('export.pdf');
     Route::get('/message', 'message')->name('message');
 });
 
@@ -292,7 +293,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/sponsor/add-participant', [SponsorController::class, 'addParticipant'])->name('sponsor.addParticipant');
     Route::post('/sponsor/add-participant-submit', [SponsorController::class, 'addParticipantSubmit'])->name('sponsor.addParticipantSubmit');
 
-    // certificate routes 
+    // certificate routes
     Route::resource('/cms/background', BackgroundController::class)->except('show');
     Route::resource('/cms/signature', SignatureController::class)->except('show');
     Route::get('/cms/certificate', [CertificateController::class, 'index'])->name('certificate.index');
@@ -312,7 +313,7 @@ Route::middleware('auth')->group(function () {
     // downloads route
     Route::resource('/cms/content', ContentController::class)->except('show');
 
-    // scientific session route 
+    // scientific session route
     Route::resource('/cms/scientific-session-category', ScientificSessionCategoryController::class)->except('show');
     Route::resource('/cms/scientific-session', ScientificSessionController::class)->except('show');
     Route::post('/scientific-session/view-data', [ScientificSessionController::class, 'show'])->name('scientific-session.show');
