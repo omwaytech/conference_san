@@ -97,6 +97,7 @@ Route::middleware('auth')->group(function () {
         // conference registration routes for admin
         Route::controller(ConferenceRegistrationController::class)->name('conferenceRegistration.')->prefix('/conference/registration')->group(function () {
             Route::get('/participants/{type}', 'participants')->name('participants');
+            Route::get('update-regisration-id', 'updatRegistrationId')->name('updatRegistrationId');
             Route::post('/verify-registrant', 'verifyForm')->name('verifyForm');
             Route::post('/verify-registrant-submit', 'verifyRegistrant')->name('verifyRegistrant');
             Route::get('/registration-or-invitation', 'registrationByAdmin')->name('byAdmin');

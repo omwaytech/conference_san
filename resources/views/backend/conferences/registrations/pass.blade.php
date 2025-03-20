@@ -51,8 +51,8 @@
                     </div>
                     <div style="width:510px; padding:10px 20px 20px; text-align:center; float:left;">
                         <span style="padding:0px"><span style="height:120px;  width:120px;">
-                            {{-- {!! QrCode::size(120)->generate(config('app.url') . '/participant/profile/' . $participant->token) !!} --}}
-                            <img src="data:image/png;base64, {!! base64_encode(QrCode::size(200)->generate(config('app.url').'/participant/profile/'.$participant->token)) !!} ">
+                            {!! QrCode::size(120)->generate(config('app.url') . '/participant/profile/' . $participant->token) !!}
+                            {{-- <img src="data:image/png;base64, {!! base64_encode(QrCode::size(200)->generate(config('app.url').'/participant/profile/'.$participant->token)) !!} "> --}}
                         </span>
                     </div>
                     <div style="background-color:#cc0000; height:auto; float:left; width:100%; overflow:hidden;">

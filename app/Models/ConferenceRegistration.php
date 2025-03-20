@@ -12,7 +12,7 @@ class ConferenceRegistration extends Model
 
     protected $fillable = [
         'user_id', 'conference_id', 'registrant_type', 'attend_type', 'payment_voucher', 'transaction_id', 'verified_status', 'token',
-        'total_attendee', 'is_invited', 'is_featured', 'remarks', 'description', 'status', 'amount', 'meal_type'
+        'total_attendee', 'is_invited', 'is_featured', 'remarks', 'description', 'status', 'amount', 'meal_type','registration_id'
     ];
 
     // registrant_type => // 1 for attendee, 2 for speaker
