@@ -27,67 +27,37 @@
         </div>
     </div>
     <!-- Search Button -->
-    {{-- <button class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#searchModal">
-        Search Scientific Sessions
-    </button> --}}
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-outline-success rounded-pill shadow-sm w-auto px-5 py-3 fs-5 d-flex align-items-center gap-2"
+            data-bs-toggle="modal" data-bs-target="#searchModal" style="width: fit-content;">
+            <i class="fas fa-search"></i> Search Scientific Sessions
+        </button>
+    </div>
 
     <!-- Search Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchModalLabel">Search Scientific Sessions</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header d-flex justify-content-center position-relative">
+                    <h6 class="modal-title text-center w-100 fw-bold" id="searchModalLabel">Search Scientific Sessions</h6>
+                    <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="searchInput" class="form-control" placeholder="Enter topic to search..."
-                        onkeyup="searchSessions()">
+                    <div class="form-group">
+                        <!-- Search Input -->
+                        <input type="text" id="searchInput" class="form-control border border-black rounded-6 shadow-sm"
+                            placeholder="Enter topic to search...">
+                    </div>
 
+                    <!-- Search Results -->
                     <div id="searchResults" class="mt-3"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function searchSessions() {
-            let query = document.getElementById('searchInput').value.toLowerCase();
-            let resultsContainer = document.getElementById('searchResults');
-            resultsContainer.innerHTML = ''; // Clear previous results
 
-            let allHalls = @json($halls); // Convert PHP data to JavaScript
-
-            let foundSessions = [];
-
-            allHalls.forEach(hall => {
-                // Ensure scientific_session exists before iterating
-                if (hall.scientific_session && Array.isArray(hall.scientific_session)) {
-                    hall.scientific_session.forEach(session => {
-                        if (session.topic && session.topic.toLowerCase().includes(query)) {
-                            foundSessions.push(session);
-                        }
-                    });
-                }
-            });
-
-            if (foundSessions.length === 0) {
-                resultsContainer.innerHTML = '<p class="text-muted">No sessions found.</p>';
-            } else {
-                foundSessions.forEach(session => {
-                    let sessionHTML = `
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <h5 class="card-title">${session.topic}</h5>
-                            <p class="card-text"><strong>Duration:</strong> ${session.duration}</p>
-                            ${session.category ? `<p class="card-text"><strong>Category:</strong> ${session.category.category_name}</p>` : ''}
-                        </div>
-                    </div>
-                `;
-                    resultsContainer.innerHTML += sessionHTML;
-                });
-            }
-        }
-    </script>
 
 
     <div class="rts-section-gapBottom rts-blog-area-one">
@@ -393,91 +363,77 @@
     <!-- Bootstrap JS -->
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
 
+    
+@endsection
+@section('scripts')
     <script>
-        function exportAllTabs() {
-            const {
-                jsPDF
-            } = window.jspdf;
-            const tabs = document.querySelectorAll(".tab-pane");
+        $('#searchInput').on('keyup', function() {
+            let query = $(this).val().trim();
 
-            tabs.forEach((tab) => {
-                const tabId = tab.id;
-                const tabName = document.querySelector(`a[href="#${tabId}"]`).innerText.trim();
+            if (query.length > 0) {
+                $.ajax({
+                    url: '{{ route('front.scientificSession.search') }}',
+                    method: 'GET',
+                    data: {
+                        q: query
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        displayResults(data);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching search results:', error);
+                    }
+                });
+            } else {
+                $('#searchResults').html('<p class="text-muted text-center">No results found found.</p>');
+            }
+        });
 
-                // Extract Hall Name from the tab (assuming it has a class "hall-name")
-                const hallElement = tab.querySelector(".hall-name");
-                const hallName = hallElement ? hallElement.innerText : null; // If no hall name, set to null
+        function displayResults(results) {
+            let resultsContainer = $('#searchResults');
+            resultsContainer.empty();
 
-                // Temporarily show tab content
-                tab.classList.add("show", "active");
+            if (results.length === 0) {
+                resultsContainer.html('<p class="text-muted text-center">No results found.</p>');
+                return;
+            }
 
-                // Expand collapsed sections
-                const collapses = tab.querySelectorAll(".collapse");
-                collapses.forEach(collapse => collapse.classList.add("show"));
+            let limitedResults = results.slice(0, 4);
+            $.each(limitedResults, function(index, result) {
+                let sessionDate = result.day;
+                let dayNumber = getDayNumber(sessionDate);
 
-                // Wait for UI changes, then generate PDF
-                setTimeout(() => {
-                    html2canvas(tab, {
-                        scale: 2
-                    }).then(canvas => {
-                        const imgData = canvas.toDataURL("image/png");
-
-                        // Create PDF with multiple pages support
-                        const pdf = new jsPDF({
-                            orientation: "p",
-                            unit: "mm",
-                            format: "a4"
-                        });
-
-                        let imgWidth = 190;
-                        let imgHeight = (canvas.height * imgWidth) / canvas.width;
-                        const pageHeight = 297; // A4 height in mm
-                        let position = 10;
-
-                        // Add Hall Name at the top of the PDF if it exists
-                        if (hallName) {
-                            pdf.setFontSize(12);
-                            pdf.text(`Hall: ${hallName}`, 10,
-                                position); // Hall name at the top of the page
-                            position += 10; // Adjust position for the next content
-                        }
-
-                        // Add Tab Name below the Hall Name
-                        pdf.setFontSize(14);
-                        pdf.text(tabName, 10, position); // Tab name below Hall name
-                        position += 10; // Adjust position for the next content
-
-                        // Calculate if content will fit on one page or needs to be split across multiple pages
-                        if (imgHeight > pageHeight - position) {
-                            let heightLeft = imgHeight;
-                            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-                            heightLeft -= (pageHeight -
-                                position); // Subtract the space left on the first page
-                            position = pageHeight;
-
-                            // Add more pages for remaining content
-                            while (heightLeft > 0) {
-                                pdf.addPage();
-                                position = 10; // Reset position for the new page
-                                pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-                                heightLeft -=
-                                    pageHeight; // Subtract the full page height after adding content
-                            }
-                        } else {
-                            // If content fits on a single page, add the image directly
-                            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-                        }
-
-                        // Save the PDF with the Hall Name or Tab Name
-                        pdf.save(`${hallName || tabName}.pdf`);
-                    });
-
-                    // Restore original collapsed state
-                    collapses.forEach(collapse => collapse.classList.remove("show"));
-                    tab.classList.remove("show", "active");
-
-                }, 500); // Allow time for rendering before capture
+                let item = `
+                    <div class="border-bottom py-2">
+                        <strong><i class="fas fa-book-open"></i> ${result.topic}</strong> <br>
+                        <span class="text-muted me-5"><i class="far fa-calendar-alt"></i> ${dayNumber}</span>
+                        <span class="text-muted me-5"><i class="fas fa-map-marker-alt"></i> ${result.hall ? result.hall.hall_name : ''}</span>
+                        <span class="text-muted me-5"><i class="far fa-clock"></i> ${result.duration ? result.duration : ''}</span>
+                        ${result.participants && result.participants ? `<span class="text-muted"><i class="fas fa-user"></i> <b>${result.participants ? result.participants.replace(/^"|"$/g, '') : ''}</b></span></br>` : ''}</br>
+                        <span class="text-muted"><i class="fas fa-tag"></i> <b>Theme</b>: ${result.category ? result.category.category_name : ''}</span> </br>
+                        ${result.category && result.category.chairperson ? `<span class="text-muted"><i class="fas fa-user-tie"></i> <b>Chairperson</b>: ${result.category.chairperson}</span><br>` : ''}
+                        ${result.category && result.category.co_chairperson ? `<span class="text-muted"><i class="fas fa-user-friends"></i> <b>Co-Chairperson</b>: ${result.category.co_chairperson}</span><br>` : ''}
+                        ${result.category && result.category.moderator ? `<span class="text-muted"><i class="fas fa-user-check"></i> <b>Moderator</b>: ${result.category.moderator}</span><br>` : ''}</br>
+                    </div>
+                `;
+                resultsContainer.append(item);
             });
+        }
+        let dates = @json($dates);
+
+        function getDayNumber(sessionDate) {
+            // Loop through the array of dates and check if the session date matches any in the list
+            let dayNumber = 'N/A'; // Default if no match is found
+
+            dates.forEach(function(date, index) {
+                if (sessionDate === date) {
+                    // Return "Day 1", "Day 2", etc. based on the index of the date
+                    dayNumber = `Day ${index + 1}`; // Index starts from 0, so add 1 for Day numbering
+                }
+            });
+
+            return dayNumber;
         }
     </script>
 @endsection
