@@ -203,6 +203,22 @@ class FrontController extends Controller
         return $pdf->download("Scientific_Sessions_Hall_{$hall->id}_{$date}.pdf");
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        if (!$query) {
+            return response()->json([]);
+        }
+
+        $sessions = ScientificSession::with( 'hall', 'category')
+            ->where('topic', 'LIKE', "%{$query}%")
+            ->orWhere('participants','LIKE', "%{$query}%")
+            ->get();
+
+        return response()->json($sessions);
+    }
+
     public function message()
     {
         return view('frontend.message');
