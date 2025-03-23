@@ -93,7 +93,7 @@ class HomeController extends Controller
         $registrations = WorkshopRegistration::where(['workshop_id' => $workshop->id, 'status' => 1])->get();
         return view('backend.dashboard.workshop-registrants', compact('registrations', 'workshop'));
     }
- 
+
     public function submission($type)
 {
         $latestConference = Conference::latestConference();
