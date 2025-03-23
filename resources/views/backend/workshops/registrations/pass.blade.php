@@ -94,7 +94,7 @@
     </style>
 </head>
 
-<body>
+<body> 
     @foreach ($participants as $participant)
         <div style="width:1280px; height:auto;">
 
