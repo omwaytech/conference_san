@@ -167,6 +167,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/cms/excel-export-for-signed-up-users', [AdminController::class, 'excelExport'])->name('admin.excelExport');
     Route::post('/cms/invite-user-for-conference', [AdminController::class, 'inviteUserForConference'])->name('admin.inviteUserForConference');
     Route::post('/cms/invite-user-for-conference-submit', [AdminController::class, 'inviteUserForConferenceSubmit'])->name('admin.inviteUserForConferenceSubmit');
+    Route::post('/cms/passDesgination', [AdminController::class, 'passDesgination'])->name('admin.passDesgination');
+    Route::post('/cms/passDesgination-submit', [AdminController::class, 'passDesginationSubmit'])->name('admin.passDesginationSubmit');
 
     // submissions route
     Route::resource('/cms/submission', SubmissionController::class)->except('show');

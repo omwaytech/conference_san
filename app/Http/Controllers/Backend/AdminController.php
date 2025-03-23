@@ -84,7 +84,7 @@ class AdminController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required',
-                'email' => 'required|email|unique:users,email,'.$admin->id,
+                'email' => 'required|email|unique:users,email,' . $admin->id,
             ]);
 
             $admin->update($validated);
@@ -122,7 +122,7 @@ class AdminController extends Controller
         return response(['type' => $type, 'message' => $message]);
     }
 
-    public function signedUpUsersList() 
+    public function signedUpUsersList()
     {
         $latestConference = Conference::latestConference();
         $users = User::where(['role' => 2, 'status' => 1])->orderBy('id', 'DESC')->get();
@@ -174,7 +174,13 @@ class AdminController extends Controller
 
     public function excelExport()
     {
-        return Excel::download(new SignedUpUsersExport(), 'signed-up-users.xlsx'); 
+        return Excel::download(new SignedUpUsersExport(), 'signed-up-users.xlsx');
+    }
+
+    public function passDesgination(Request $request)
+    {
+        $user = UserDetail::whereId($request->id)->first();
+        return view('backend.admins.pass-designation', compact('user'));
     }
 
     public function inviteUserForConference(Request $request)

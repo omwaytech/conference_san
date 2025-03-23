@@ -14,7 +14,7 @@
             </div>
             <hr>
         @endif
-        <div class="breadcrumb">
+        <div class="breadcrumb"> 
             <h4>Workshops</h4>
         </div>
         <div class="row">
