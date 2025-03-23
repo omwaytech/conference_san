@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <!-- Search Input -->
                         <input type="text" id="searchInput" class="form-control border border-black rounded-6 shadow-sm"
-                            placeholder="Enter topic to search...">
+                            placeholder="Enter topic or speaker name to search...">
                     </div>
 
                     <!-- Search Results -->
@@ -118,7 +118,7 @@
                                                                         Export PDF for {{ $hall->hall_name }}
                                                                     </a>
                                                                 </div>
-                                                                @foreach ($hall->scientificSession->where('day', $date)->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))->groupBy('category_id') as $category_id => $sessions)
+                                                                @foreach ($hall->scientificSession->where('day', $date)->where('status',1)->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))->groupBy('category_id') as $category_id => $sessions)
                                                                     {{-- @dd($sessions) --}}
                                                                     <div class="accordion mt-3"
                                                                         id="innerAccordion-{{ $dateIndex }}-{{ $hallIndex }}">
@@ -172,7 +172,7 @@
                                                                                 data-bs-parent="#innerAccordion-{{ $dateIndex }}-{{ $hallIndex }}">
                                                                                 <div class="accordion-body">
                                                                                     @if ($hall->id == 6)
-                                                                                        @foreach ($sessions->groupBy('screen') as $screen => $screenSessions)
+                                                                                        @foreach ($sessions->where('status',1)->groupBy('screen') as $screen => $screenSessions)
                                                                                             <div class="screen-info">
                                                                                                 <p>{{ $screen }}
                                                                                                 </p>
@@ -194,7 +194,7 @@
                                                                                         @endforeach
                                                                                     @else
                                                                                         <ul>
-                                                                                            @foreach ($sessions as $session)
+                                                                                            @foreach ($sessions->where('status',1) as $session)
                                                                                                 <li>
                                                                                                     <b>{{ $session->duration }}</b>
                                                                                                     -
