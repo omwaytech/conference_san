@@ -20,7 +20,7 @@ class WorkshopController extends Controller
         if ($authUser->role == 1) {
             $workshops = Workshop::where(['conference_id' => $conference->id, 'status' => 1])->latest()->get();
         } elseif ($authUser->role == 2) {
-            $workshops = Workshop::where(['user_id' => $authUser->id,'conference_id' => $latestConference->id, 'status' => 1])->latest()->get();
+            $workshops = Workshop::where(['user_id' => $authUser->id, 'conference_id' => $latestConference->id, 'status' => 1])->latest()->get();
         }
 
         return view('backend.workshops.show', compact('workshops', 'authUser'));
@@ -136,14 +136,14 @@ class WorkshopController extends Controller
             ]);
 
             if (!empty($validated['chair_person_cv'])) {
-                Storage::delete("public/workshop/chairperson/cv/".$workshop->chair_person_cv);
+                Storage::delete("public/workshop/chairperson/cv/" . $workshop->chair_person_cv);
                 $cvName = time() . rand(0, 99) . '.' . $validated['chair_person_cv']->getClientOriginalExtension();
                 Storage::putFileAs("public/workshop/chairperson/cv", $validated['chair_person_cv'], $cvName);
                 $validated['chair_person_cv'] = $cvName;
             }
 
             if (!empty($validated['chair_person_image'])) {
-                Storage::delete("public/workshop/chairperson/image/".$workshop->chair_person_image);
+                Storage::delete("public/workshop/chairperson/image/" . $workshop->chair_person_image);
                 $imageName = time() . rand(0, 99) . '.' . $validated['chair_person_image']->getClientOriginalExtension();
                 Storage::putFileAs("public/workshop/chairperson/image", $validated['chair_person_image'], $imageName);
                 $validated['chair_person_image'] = $imageName;
@@ -168,6 +168,12 @@ class WorkshopController extends Controller
         $workshop->update(['status' => 0]);
 
         return redirect()->back()->with('delete', 'Workshop Deleted Successfully');
+    }
+
+    public function coordinatorPass()
+    {
+        $workshops = Workshop::where('status', 1)->get();
+        return view('backend.workshops.coordinator_pass', compact('workshops'));
     }
 
     // =================================================== Workshop CRUD operation end ===================================================
@@ -290,7 +296,7 @@ class WorkshopController extends Controller
                 if ($validated['approved_status'] == 1 || $validated['approved_status'] == 3) {
                     if ($request->approved_status == '1') {
                         Mail::to($workshop->organizer->email)->send(new AcceptMail($mailData));
-                    } elseif($request->approved_status == '3') {
+                    } elseif ($request->approved_status == '3') {
                         $mailData['remarks'] = $validated['remarks'];
                         Mail::to($workshop->organizer->email)->send(new RejectMail($mailData));
                     }

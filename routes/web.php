@@ -211,6 +211,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/make-decision-form', [WorkshopController::class, 'makeDecisionForm'])->name('makeDecisionForm');
         Route::post('/decide-workshop-request', [WorkshopController::class, 'decideRequest'])->name('decideRequest');
         Route::get('/discussions/{slug}', [WorkshopController::class, 'discussions'])->name('discussions');
+        Route::get('/workshop-coordinator-pass', [WorkshopController::class, 'coordinatorPass'])->name('coordinatorPass');
     });
 
     // workshop trainers routes
@@ -222,6 +223,7 @@ Route::middleware('auth')->group(function () {
         Route::any('update/{trainer}', 'update')->name('update');
         Route::get('destroy/{trainer}', 'destroy')->name('destroy');
         Route::get('applied/{slug}', 'applied')->name('applied');
+        Route::get('generate-pass/{id}', 'generatePass')->name('generatePass');
     });
 
     // workshop registration routes

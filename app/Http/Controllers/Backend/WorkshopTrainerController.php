@@ -57,7 +57,6 @@ class WorkshopTrainerController extends Controller
             WorkshopTrainer::create($validated);
 
             return redirect()->route('workshop-trainer.index', $workshop->slug)->with('status', 'Trainer Added Successfully');
-
         } catch (Exception $e) {
             throw $e;
         }
@@ -72,6 +71,11 @@ class WorkshopTrainerController extends Controller
         return view('backend.workshops.trainers.create', compact('workshop', 'trainer'));
     }
 
+    public function generatePass($id)
+    {
+        $trainers = WorkshopTrainer::where('workshop_id', $id)->where('status', 1)->get();
+        return view('backend.workshops.trainers.generate-pass', compact('trainers'));
+    }
     /**
      * Update the specified resource in storage.
      */

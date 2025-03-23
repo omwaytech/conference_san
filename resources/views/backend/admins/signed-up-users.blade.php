@@ -69,7 +69,7 @@
                                                 @if (empty($user->conferenceRegistration))
                                                     <button class="btn btn-primary btn-sm inviteUserForConference mb-1" data-id="{{$user->id}}" data-toggle="modal" data-target="#openModal" type="button">Invite User For Conference</button>
                                                     @endif
-                                                    {{-- <button class="btn btn-primary btn-sm passDesgination mb-1" data-id="{{$user->id}}" data-toggle="modal" data-target="#openModal" type="button">Pass Desgination</button> --}}
+                                                    <button class="btn btn-primary btn-sm passDesgination mb-1" data-id="{{$user->id}}" data-toggle="modal" data-target="#openModal" type="button">Pass Desgination</button>
                                             </td>
                                         @endif
                                     </tr>

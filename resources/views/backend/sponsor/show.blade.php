@@ -13,7 +13,7 @@
                         <h4 class="card-title">Sponsors</h4>
                         <div class="ml-auto">
                             <a href="{{ route('sponsor.create') }}" class="btn btn-primary"> Add</a>
-                            {{-- <a href="{{ route('sponsor.generatePass') }}" target="_blank" class="btn btn-primary ml-2"><i class="nav-icon i-File"></i> Generate Pass</a> --}}
+                            <a href="{{ route('sponsor.generatePass') }}" target="_blank" class="btn btn-primary ml-2"><i class="nav-icon i-File"></i> Generate Pass</a>
                         </div>
                     </div>
                     <div class="table-responsive">

@@ -668,6 +668,7 @@ class WorkshopRegistrationController extends Controller
     {
         $participant = $workshopRegistration;
 
+        return view('backend.workshops.registrations.individual-pass', compact('participant'));
         $customPaper = array(0, 0, 1400, 1600);
         $pdf = PDF::loadView('backend.workshops.registrations.individual-pass', compact('participant'))->setPaper($customPaper);
         return $pdf->stream();
@@ -679,6 +680,8 @@ class WorkshopRegistrationController extends Controller
             ->join('users', 'workshop_registrations.user_id', '=', 'users.id')
             ->orderBy('users.f_name', 'asc')
             ->get();
+
+        return view('backend.workshops.registrations.pass', compact('participants'));
         $customPaper = array(0, 0, 1400, 1600);
         $pdf = PDF::loadView('backend.workshops.registrations.pass', compact('participants'))->setPaper($customPaper);
         return $pdf->stream();
