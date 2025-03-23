@@ -22,7 +22,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Category</th>
-                                    <th scope="col">Session Type</th>
+                                    <th scope="col">Topic</th>
                                     <th scope="col">Hall</th>
                                     <th scope="col">Schedule Date</th>
                                     <th scope="col">Time</th>
@@ -36,19 +36,8 @@
                                         <th scope="row">{{$loop->iteration}}</th>
                                         <td>{{!empty($session->category->category_name) ? $session->category->category_name : ''}}</td>
                                         <td>
-                                            @if ($session->type == 1)
-                                                Oral Presentation
-                                            @elseif ($session->type == 2)
-                                                Poster Presentation
-                                            @elseif ($session->type == 3)
-                                                Panel Discussion
-                                            @elseif ($session->type == 4)
-                                                Debate
-                                            @elseif ($session->type == 5)
-                                                General Activity
-                                            @elseif ($session->type == 6)
-                                                None
-                                            @endif
+                                            {{$session->topic}}
+                                        
                                         </td>
                                         <td>
                                             @if (!empty($session->hall_id))
