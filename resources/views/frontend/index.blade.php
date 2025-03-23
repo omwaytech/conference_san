@@ -102,7 +102,6 @@
         </div>
     </div>
 
-
     <div class="rts-counterup-area rts-section-gap">
         <div class="container">
             <div class="row pb--80">
@@ -136,7 +135,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="container">
         <div class="row">
@@ -581,11 +579,253 @@
         </div>
 
     </div>
+    {{-- css to display speaker --}}
+    {{-- <style>
+        .thumbnail {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .thumbnail img {
+            height: auto;
+            background: #e8b7ba;
+            border-radius: 100%;
+            border: #fff 5px solid;
+            box-shadow: 0px 1px 0px 1px rgba(0, 0, 0, 0.3);
+            max-width: 200px !important;
+            min-width: 200px !important;
+            height: 100% !important;
+
+        }
+
+        .thumbnail .card-body {
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .thumbnail .card-body h5 {
+            font-size: 14px;
+        }
+
+        .workshop-img-text .card-body small {
+            line-height: 5px !important;
+            text-align: italic !important;
+        }
+
+        .post-content p {
+            margin: 5px 0px;
+        }
+    </style> --}}
     <div class="container">
-        <div class="row">
+        {{-- <div class="row">
             <img src="{{ asset('frontend') }}/assets/images/sancon-price_new.jpg">
+        </div> --}}
+        {{-- < class="expart-team-area-7 rts-section-gapTop rts-section-gap2Bottom inner">
+            < class="container"> --}}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="title-style-one-center">
+                    <span class="pre skew-up text-center">
+                        <h3>Speakers</h3>
+                    </span>
+                    <h2 class="title skew-up text-center">Meet the brilliant minds behind our <br> successful
+                        Conference</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row g-48 mt--10">
+            @php
+                use Illuminate\Support\Str;
+            @endphp
+
+            @php
+                $internationalFaculty = $speakers
+                    ->filter(function ($speaker) {
+                        return in_array($speaker->user->userDetail->member_type_id, [5, 6, 9, 10]);
+                    })
+                    ->sortByDesc(function ($speaker) {
+                        return !empty($speaker->user->userDetail->image);
+                    })
+                    ->values();
+                $nationalFaculty = $speakers
+                    ->filter(function ($speaker) {
+                        return in_array($speaker->user->userDetail->member_type_id, [1, 3]);
+                    })
+                    ->sortByDesc(function ($speaker) {
+                        return !empty($speaker->user->userDetail->image);
+                    })
+                    ->values();
+                $internationalPgStudent = $speakers
+                    ->filter(function ($speaker) {
+                        return in_array($speaker->user->userDetail->member_type_id, [7, 8]);
+                    })
+                    ->sortByDesc(function ($speaker) {
+                        return !empty($speaker->user->userDetail->image);
+                    })
+                    ->values();
+                $nationalPgStudent = $speakers
+                    ->filter(function ($speaker) {
+                        return in_array($speaker->user->userDetail->member_type_id, [2, 4]);
+                    })
+                    ->sortByDesc(function ($speaker) {
+                        return !empty($speaker->user->userDetail->image);
+                    })
+                    ->values();
+            @endphp
+            @if ($internationalFaculty->isNotEmpty())
+                <div class="faculty-section">
+                    <h3 class="text-center">International Faculty</h3>
+                    <div class="row">
+                        @foreach ($internationalFaculty as $index => $speaker)
+                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                                <div class="single-team-area-7">
+                                    <div class="thumbnail">
+                                        @if (!empty($speaker->user->userDetail->image))
+                                            <img src="{{ asset('storage/users/' . $speaker->user->userDetail->image) }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <img src="{{ asset('frontend/assets/images/about/Blank.png') }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @endif
+                                    </div>
+                                    <h6 class="title">{{ $speaker->user->fullName($speaker, 'user') }}</h6>
+                                    <span class="designation">{{ $speaker->user->userDetail->affiliation }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    @if ($internationalFaculty->count() > 6)
+                        <div class="d-flex justify-content-center align-items-center mt-3">
+                            <button class="btn btn-lg showMoreButton"
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                <span class="button-text">View More</span>
+                                <i class="fas fa-chevron-down ms-2"></i>
+                            </button>
+                        </div>
+                    @endif
+                </div>
+            @endif
+        </div>
+        <div class="row g-48 mt--10">
+            @if ($nationalFaculty->isNotEmpty())
+                <div class="faculty-section">
+                    <h3 class="text-center">National Faculty</h3>
+                    <div class="row">
+                        @foreach ($nationalFaculty as $index => $speaker)
+                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                                <div class="single-team-area-7">
+                                    <div class="thumbnail">
+                                        @if (!empty($speaker->user->userDetail->image))
+                                            <img src="{{ asset('storage/users/' . $speaker->user->userDetail->image) }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <img src="{{ asset('frontend/assets/images/about/Blank.png') }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @endif
+                                    </div>
+                                    <h6 class="title">{{ $speaker->user->fullName($speaker, 'user') }}</h6>
+                                    <span class="designation">{{ $speaker->user->userDetail->affiliation }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if ($nationalFaculty->count() > 6)
+                        <div class="d-flex justify-content-center align-items-center mt-3">
+                            <button class="btn btn-lg showMoreButton"
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                <span class="button-text">View More</span>
+                                <i class="fas fa-chevron-down ms-2"></i>
+                            </button>
+                        </div>
+                    @endif
+                </div>
+            @endif
+        </div>
+        <div class="row g-48 mt--10">
+            @if ($internationalPgStudent->isNotEmpty())
+                <div class="faculty-section">
+                    <h3 class="text-center">International PG Students</h3>
+                    <div class="row">
+                        @foreach ($internationalPgStudent as $index => $speaker)
+                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                                <div class="single-team-area-7">
+                                    <div class="thumbnail">
+                                        @if (!empty($speaker->user->userDetail->image))
+                                            <img src="{{ asset('storage/users/' . $speaker->user->userDetail->image) }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <img src="{{ asset('frontend/assets/images/about/Blank.png') }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @endif
+                                    </div>
+                                    <h6 class="title">{{ $speaker->user->fullName($speaker, 'user') }}</h6>
+                                    <span class="designation">{{ $speaker->user->userDetail->affiliation }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if ($internationalPgStudent->count() > 6)
+                        <div class="d-flex justify-content-center align-items-center mt-3">
+                            <button class="btn btn-lg showMoreButton"
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                <span class="button-text">View More</span>
+                                <i class="fas fa-chevron-down ms-2"></i>
+                            </button>
+                        </div>
+                    @endif
+                </div>
+            @endif
+        </div>
+        <div class="row g-48 mt--10">
+            @if ($nationalPgStudent->isNotEmpty())
+                <div class="faculty-section">
+                    <h3 class="text-center">National PG Students</h3>
+                    <div class="row">
+                        @foreach ($nationalPgStudent as $index => $speaker)
+                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                                <div class="single-team-area-7">
+                                    <div class="thumbnail">
+                                        @if (!empty($speaker->user->userDetail->image))
+                                            <img src="{{ asset('storage/users/' . $speaker->user->userDetail->image) }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <img src="{{ asset('frontend/assets/images/about/Blank.png') }}"
+                                                alt="team"
+                                                style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                                        @endif
+                                    </div>
+                                    <h6 class="title">{{ $speaker->user->fullName($speaker, 'user') }}</h6>
+                                    <span class="designation">{{ $speaker->user->userDetail->affiliation }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if ($nationalPgStudent->count() > 6)
+                        <div class="d-flex justify-content-center align-items-center mt-3">
+                            <button class="btn btn-lg showMoreButton"
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                <span class="button-text">View More</span>
+                                <i class="fas fa-chevron-down ms-2"></i>
+                            </button>
+                        </div>
+                    @endif
+                </div>
+            @endif
         </div>
     </div>
+
     <div class="rts-section-gap2 rts-blog-area-one home-five">
         <div class="container">
             <div class="row">
@@ -652,7 +892,8 @@
                             <div class="col-lg-6 col-md-10">
                                 <!-- appoinment satylke two left -->
                                 <div class="appoinment-wrapper-one-left">
-                                    <h2 class="title split-collab">Sign up Now <br /><small>SANCON - ASPA 2025</small></h2>
+                                    <h2 class="title split-collab">Sign up Now <br /><small>SANCON - ASPA 2025</small>
+                                    </h2>
 
                                     <h3>Payment Method <br />We Accept</h3>
 
@@ -821,8 +1062,8 @@
                 @endforelse
 
                 <div class="col-lg-12  text-center">
-                    <a href="{{ route('front.notice') }}" class="rts-btn btn-primary-4-border arrow-rotate">View More +<i
-                            class="fa-light fa-arrow-right"></i></a>
+                    <a href="{{ route('front.notice') }}" class="rts-btn btn-primary-4-border arrow-rotate">View More
+                        +<i class="fa-light fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -920,10 +1161,13 @@
                                                 <p class="disc">
                                                     Main theme of the conference is "Scaling new heights in Pediatric
                                                     Anesthesia and beyond".
-                                                    SANCON-ASPA 2025 will focus on pediatric anesthesia, with discussions
+                                                    SANCON-ASPA 2025 will focus on pediatric anesthesia, with
+                                                    discussions
                                                     and
-                                                    workshops covering advancements and best practices in this specialized
-                                                    field. Additionally, sessions will explore other super specialties of
+                                                    workshops covering advancements and best practices in this
+                                                    specialized
+                                                    field. Additionally, sessions will explore other super specialties
+                                                    of
                                                     anesthesiology.
                                                 </p>
                                             </div>
@@ -941,7 +1185,8 @@
                                             aria-labelledby="faq_three" data-bs-parent="#accordionExamples">
                                             <div class="accordion-body">
                                                 <p class="disc">
-                                                    SANCON - ASPA 2025 is open to anesthesiologists, specialists in critical
+                                                    SANCON - ASPA 2025 is open to anesthesiologists, specialists in
+                                                    critical
                                                     care
                                                     and pain medicine, residents, fellows, nurses, and other healthcare
                                                     professionals interested in the field of anesthesia.
@@ -961,8 +1206,10 @@
                                             aria-labelledby="faq_four" data-bs-parent="#accordionExamples">
                                             <div class="accordion-body">
                                                 <p class="disc">
-                                                    Registration details will be available closer to the conference dates on
-                                                    the official SAN website and through conference communications. Early
+                                                    Registration details will be available closer to the conference
+                                                    dates on
+                                                    the official SAN website and through conference communications.
+                                                    Early
                                                     registration is recommended due to limited seating.
                                                 </p>
 
@@ -983,7 +1230,8 @@
                                                 <p class="disc">
                                                     Key highlights include keynote speeches from renowned experts, panel
                                                     discussions on current issues in anesthesia, specialized workshops
-                                                    focusing on pediatric and other specialties, and participation from over
+                                                    focusing on pediatric and other specialties, and participation from
+                                                    over
                                                     50 international speakers.
                                                 </p>
                                             </div>
@@ -994,7 +1242,8 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#faq__collapse-six"
                                                 aria-expanded="false" aria-controls="faq__collapse-six">
-                                                Are there opportunities for networking and collaboration at SANCON - ASPA
+                                                Are there opportunities for networking and collaboration at SANCON -
+                                                ASPA
                                                 2025?
                                             </button>
                                         </h2>
@@ -1002,7 +1251,8 @@
                                             aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
                                             <div class="accordion-body">
                                                 <p class="disc">
-                                                    Yes, SANCON - ASPA 2025 provides ample opportunities for networking with
+                                                    Yes, SANCON - ASPA 2025 provides ample opportunities for networking
+                                                    with
                                                     peers,
                                                     experts, and industry leaders. Attendees can engage in discussions,
                                                     share research findings, and explore collaborations in the field of
@@ -1023,7 +1273,8 @@
                                             aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
                                             <div class="accordion-body">
                                                 <p class="disc">
-                                                    The official language of SANCON - ASPA 2025 is English. All sessions,
+                                                    The official language of SANCON - ASPA 2025 is English. All
+                                                    sessions,
                                                     including
                                                     presentations and discussions, will be conducted in English.
                                                 </p>
@@ -1042,7 +1293,8 @@
                                             aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
                                             <div class="accordion-body">
                                                 <p class="disc">
-                                                    Yes, details about abstract submission and presentation guidelines will
+                                                    Yes, details about abstract submission and presentation guidelines
+                                                    will
                                                     be announced closer to the conference date. It's an excellent
                                                     opportunity to showcase your research and contribute to the field.
                                                 </p>
@@ -1063,13 +1315,15 @@
                                                 <p class="disc">
                                                     Yes. There are 3 options:
                                                 <ol>
-                                                    <li>Hyatt Regency, the conference venue for SANCON - ASPA 2025, offers
+                                                    <li>Hyatt Regency, the conference venue for SANCON - ASPA 2025,
+                                                        offers
                                                         accommodation options as well.</li>
                                                     <li>⁠Hotel Shambala</li>
                                                     <li>Hotel Ambassador</li>
                                                 </ol>
                                                 Information on booking accommodation is provided along with registration
-                                                details. Please note that the rate provided to us are at special rate after
+                                                details. Please note that the rate provided to us are at special rate
+                                                after
                                                 the use of promo code available on our website.
                                                 </p>
                                             </div>
@@ -1127,6 +1381,42 @@
                 $('#password_confirmation').prop('type', 'password');
                 $('#viewPassword2').attr('hidden', false);
                 $(this).attr('hidden', true)
+            });
+        });
+    </script>
+    <script>
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     let itemsPerPage = 6; // 2 rows (3 per row)
+        //     let totalItems = $(".faculty-item").length;
+        //     let visibleItems = itemsPerPage;
+
+        //     $("#showMoreButton").on("click", function() {
+        //         visibleItems += itemsPerPage;
+        //         $(".faculty-item").slice(0, visibleItems).fadeIn(); // Show next 6 items
+
+        //         if (visibleItems >= totalItems) {
+        //             $("#showMoreButton").hide(); // Hide button if all items are displayed
+        //         }
+        //     });
+        // });
+        $(document).ready(function() {
+            $(".faculty-section").each(function() {
+                let section = $(this);
+                let items = section.find(".faculty-item");
+                let showMoreBtn = section.find(".showMoreButton");
+                let itemsPerClick = 6;
+                let hiddenItems = items.filter(function() {
+                    return $(this).css("display") === "none";
+                });
+
+                showMoreBtn.on("click", function() {
+                    hiddenItems.slice(0, itemsPerClick).fadeIn().css("display", "block");
+                    hiddenItems = hiddenItems.slice(itemsPerClick); // Update hidden items list
+
+                    if (hiddenItems.length === 0) {
+                        showMoreBtn.hide(); // Hide button when all items are shown
+                    }
+                });
             });
         });
     </script>
