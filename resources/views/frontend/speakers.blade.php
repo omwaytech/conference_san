@@ -46,18 +46,34 @@
                     // $generalMembers = $speakers->reject(function ($speaker) {
                     //     return Str::contains(strtolower($speaker->user->userDetail->affiliation), 'resident');
                     // });
-                    $internationalFaculty = $speakers->filter(function ($speaker) {
-                        return in_array($speaker->user->userDetail->member_type_id, [5, 6, 9, 10]);
-                    });
-                    $nationalFaculty = $speakers->filter(function ($speaker) {
-                        return in_array($speaker->user->userDetail->member_type_id, [1, 3]);
-                    });
-                    $internationalPgStudent = $speakers->filter(function ($speaker) {
-                        return in_array($speaker->user->userDetail->member_type_id, [7, 8]);
-                    });
-                    $nationalPgStudent = $speakers->filter(function ($speaker) {
-                        return in_array($speaker->user->userDetail->member_type_id, [2, 4]);
-                    });
+                    $internationalFaculty = $speakers
+                        ->filter(function ($speaker) {
+                            return in_array($speaker->user->userDetail->member_type_id, [5, 6, 9, 10]);
+                        })
+                        ->sortByDesc(function ($speaker) {
+                            return !empty($speaker->user->userDetail->image);
+                        });
+                    $nationalFaculty = $speakers
+                        ->filter(function ($speaker) {
+                            return in_array($speaker->user->userDetail->member_type_id, [1, 3]);
+                        })
+                        ->sortByDesc(function ($speaker) {
+                            return !empty($speaker->user->userDetail->image);
+                        });
+                    $internationalPgStudent = $speakers
+                        ->filter(function ($speaker) {
+                            return in_array($speaker->user->userDetail->member_type_id, [7, 8]);
+                        })
+                        ->sortByDesc(function ($speaker) {
+                            return !empty($speaker->user->userDetail->image);
+                        });
+                    $nationalPgStudent = $speakers
+                        ->filter(function ($speaker) {
+                            return in_array($speaker->user->userDetail->member_type_id, [2, 4]);
+                        })
+                        ->sortByDesc(function ($speaker) {
+                            return !empty($speaker->user->userDetail->image);
+                        });
                     // dd($internationalFaculty);
                 @endphp
                 @if ($internationalFaculty->isNotEmpty())
@@ -170,6 +186,7 @@
 
         </div>
     </div>
+
     <style>
         .thumbnail {
             text-align: center;

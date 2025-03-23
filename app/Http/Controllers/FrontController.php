@@ -16,6 +16,11 @@ class FrontController extends Controller
         session(['isIndex' => true]);
 
         $latestConference = Conference::latestConference();
+        $latestConference = Conference::latestConference();
+        $speakers = [];
+        if (!empty($latestConference)) {
+            $speakers = ConferenceRegistration::where(['conference_id' => $latestConference->id, 'registrant_type' => 2, 'verified_status' => 1, 'status' => 1])->latest()->get();
+        }
         $countries = DB::table('countries')->get();
         $featuedMembers = [];
         $notices = [];
@@ -30,6 +35,7 @@ class FrontController extends Controller
         // $sponsors = Sponsor::where(['visible_status' => 1, 'status' => 1])->orderBy('sponsor_category_id', 'ASC')->get();
         // dd($sponsors);
         $data = [
+            'speakers' => $speakers,
             'countries' => $countries,
             'featuedMembers' => $featuedMembers,
             'notices' => $notices,
