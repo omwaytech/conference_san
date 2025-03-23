@@ -68,7 +68,8 @@
                                                 <button class="btn btn-danger btn-sm resetPassword mb-1" data-id="{{$user->id}}" type="button">Reset Password</button>
                                                 @if (empty($user->conferenceRegistration))
                                                     <button class="btn btn-primary btn-sm inviteUserForConference mb-1" data-id="{{$user->id}}" data-toggle="modal" data-target="#openModal" type="button">Invite User For Conference</button>
-                                                @endif
+                                                    @endif
+                                                    {{-- <button class="btn btn-primary btn-sm passDesgination mb-1" data-id="{{$user->id}}" data-toggle="modal" data-target="#openModal" type="button">Pass Desgination</button> --}}
                                             </td>
                                         @endif
                                     </tr>
@@ -157,6 +158,16 @@
         $(document).on("click", ".inviteUserForConference", function (e) {
             e.preventDefault();
             var url = '{{route('admin.inviteUserForConference')}}';
+            var _token = '{{csrf_token()}}';
+            var id = $(this).data('id');
+            var data = {_token:_token, id:id};
+            $.post(url, data, function(response){
+                $('#modalContent').html(response);
+            });
+        });
+        $(document).on("click", ".passDesgination", function (e) {
+            e.preventDefault();
+            var url = '{{route('admin.passDesgination')}}';
             var _token = '{{csrf_token()}}';
             var id = $(this).data('id');
             var data = {_token:_token, id:id};

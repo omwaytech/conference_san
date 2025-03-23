@@ -7,14 +7,18 @@ use App\Exports\ConferenceRegistrationExport;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendReceiptJob;
 use App\Mail\Conference\{RegistrantAcceptMail, RegistrantRejectMail, RegistrationMail, RegistrantCorrectionMail, RegistrationByUserMail, RegistrationInExceptionalCaseMail};
+use App\Mail\PassMail;
 use App\Models\{ConferenceRegistration, MemberTypePrice, UserDetail, Conference, User, Submission, Signature, AccompanyPerson, Attendance, Meal, MemberType};
 use Illuminate\Http\Request;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Swap\Laravel\Facades\Swap;
 use Exception, Str, Storage, Mail, DB, Hash, Excel;
 use Illuminate\Support\Facades\Http;
 use DomPDF;
+use Intervention\Image\Facades\Image;
+
 
 class ConferenceRegistrationController extends Controller
 {
@@ -34,6 +38,23 @@ class ConferenceRegistrationController extends Controller
     public function exportIndian()
     {
         return Excel::download(new ConferenceRegisrationIndian(), 'conference_registration_indian.xlsx');
+    }
+
+    public function updatRegistrationId()
+    {
+        $latestConference = Conference::latestConference();
+        $registrations = ConferenceRegistration::where([
+            'conference_id' => $latestConference->id,
+            'status' => 1
+        ])->get();
+        foreach ($registrations as $registration) {
+            if ($registration->user->userDetail) {
+            }
+            $registration->update([
+                'registration_id' => $latestConference->registration_id . '-' . $registration->id
+            ]);
+        }
+        dd($registrations);
     }
     public function create()
     {
@@ -246,6 +267,13 @@ class ConferenceRegistrationController extends Controller
 
     public function onlinePayment(Request $request)
     {
+
+        $latestConference = Conference::latestConference();
+
+        $deadline = Carbon::parse($latestConference->regular_registration_deadline);
+        if ($deadline->isPast()) {
+            return redirect()->back()->with('delete', 'Conference Regisration date has ended.');
+        }
 
         session(['onlinePayment' => $request->all()]);
 
@@ -583,6 +611,13 @@ class ConferenceRegistrationController extends Controller
 
     public function fonePay(Request $request)
     {
+        $latestConference = Conference::latestConference();
+
+        $deadline = Carbon::parse($latestConference->regular_registration_deadline);
+        if ($deadline->isPast()) {
+            return redirect()->back()->with('delete', 'Conference Regisration date has ended.');
+        }
+
         session(['fonePay' => $request->all()]);
 
         $PID = '2107140644';
@@ -681,7 +716,7 @@ class ConferenceRegistrationController extends Controller
         $memberTypes = MemberType::where('status', 1)->get();
         return view('backend.conferences.registrations.participants', compact('registrants', 'type', 'memberTypes'));
     }
- 
+
     public function getDelegateType(Request $request)
     {
         $type = $request->selected;
@@ -1200,32 +1235,106 @@ class ConferenceRegistrationController extends Controller
 
     public function generatePass($type)
     {
-        if ($type == 'attendees') {
-            $participants = ConferenceRegistration::where(['registrant_type' => 1, 'is_invited' => 0, 'verified_status' => 1, 'conference_registrations.status' => 1])
-                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                ->orderBy('users.f_name', 'asc')
-                ->get();
-        } elseif ($type == 'presenters') {
-            $participants = ConferenceRegistration::where(['registrant_type' => 2, 'is_invited' => 0, 'verified_status' => 1, 'conference_registrations.status' => 1])
-                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                ->orderBy('users.f_name', 'asc')
-                ->get();
-        } elseif ($type == 'guest-attendees') {
-            $participants = ConferenceRegistration::where(['registrant_type' => 1, 'is_invited' => 1, 'verified_status' => 1, 'conference_registrations.status' => 1])
-                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                ->orderBy('users.f_name', 'asc')
-                ->get();
-        } elseif ($type == 'guest-presenters') { 
-            $participants = ConferenceRegistration::where(['registrant_type' => 2, 'is_invited' => 1, 'verified_status' => 1, 'conference_registrations.status' => 1])
-                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                ->orderBy('users.f_name', 'asc')
-                ->get();
+        // Fetch participants based on type
+        $query = ConferenceRegistration::where([
+            'verified_status' => 1,
+            'conference_registrations.status' => 1
+        ])
+            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+            ->orderBy('users.f_name', 'asc');
+
+        switch ($type) {
+            case 'attendees':
+                $query->where(['registrant_type' => 1, 'is_invited' => 0]);
+                break;
+            case 'presenters':
+                $query->where(['registrant_type' => 2, 'is_invited' => 0]);
+                break;
+            case 'guest-attendees':
+                $query->where(['registrant_type' => 1, 'is_invited' => 1]);
+                break;
+            case 'guest-presenters':
+                $query->where(['registrant_type' => 2, 'is_invited' => 1]);
+                break;
         }
+
+        $participants = $query->take(2)->get();
+        // dd($participants);
         return view('backend.conferences.registrations.pass', compact('participants'));
-        $customPaper = array(0, 0, 1400, 1600);
-        $pdf = PDF::loadView('backend.conferences.registrations.pass', compact('participants'))->setPaper($customPaper);
-        return $pdf->stream();
+        // Custom PDF Page Size
+        $customPaper = [0, 0, 500, 2000];
+
+        // Generate PDF
+        $pdf = PDF::loadView('backend.conferences.registrations.pass', compact('participants'))
+            ->setPaper($customPaper, 'portrait')
+            ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true]);
+
+        return $pdf->stream('Conference_Pass.pdf');
     }
+
+
+
+    public function generateAndSendPasses()
+    {
+        $participants = Participant::all();
+
+        foreach ($participants as $participant) {
+            // Create an image instance for each pass
+            $image = Image::make(public_path('default-images/new-pass-bg.png'));
+
+            // Add the logo
+            $logo = public_path('frontend/assets/images/logo/SAN.png');
+            $image->insert($logo, 'top', 50, 50); // Adjust position
+
+            // Add participant information (text, QR code, etc.)
+            $fontPath = storage_path('fonts/Josefin_Sans/static/JosefinSans-Regular.ttf');
+            $image->text("SANCON 2025", 400, 110, function ($font) use ($fontPath) {
+                $font->file($fontPath);
+                $font->size(36);
+                $font->color([255, 255, 255]);
+                $font->align('center');
+            });
+
+            $image->text("Advances in Anesthesia", 400, 180, function ($font) use ($fontPath) {
+                $font->file($fontPath);
+                $font->size(22);
+                $font->color([255, 255, 255]);
+                $font->align('center');
+            });
+
+            // QR Code
+            $qrCodeData = config('app.url') . '/participant/profile/' . $participant->token;
+            $qrCode = \QrCode::size(120)->generate($qrCodeData);
+            $qrImage = Image::make($qrCode);
+            $image->insert($qrImage, 'center', 0, 300); // Insert QR code at a specific location
+
+            // Add participant name
+            $image->text($participant->user->fullName($participant, 'user'), 400, 500, function ($font) use ($fontPath) {
+                $font->file($fontPath);
+                $font->size(40);
+                $font->color([255, 255, 255]);
+                $font->align('center');
+            });
+
+            // Add country name
+            $image->text($participant->userDetail->country->country_name, 400, 600, function ($font) use ($fontPath) {
+                $font->file($fontPath);
+                $font->size(30);
+                $font->color([255, 255, 255]);
+                $font->align('center');
+            });
+
+            // Save the image temporarily
+            $imagePath = storage_path('app/public/participants/' . $participant->id . '_pass.png');
+            $image->save($imagePath);
+
+            // Send email with the generated pass
+            Mail::to($participant->user->email)->send(new PassEmail($imagePath));
+        }
+
+        return response()->json(['message' => 'Passes generated and sent via email.']);
+    }
+
 
     public function participantProfile($token)
     {
@@ -1410,5 +1519,28 @@ class ConferenceRegistrationController extends Controller
             $message = $e->getMessage();
         }
         return response()->json(['type' => $type, 'message' => $message]);
+    }
+
+
+    public function sendPassEmail(Request $request)
+    {
+          $request->validate([
+            'images.*' => 'required|file|mimes:png,jpg,jpeg',
+        ]);
+
+        $paths = [];
+        foreach ($request->file('images') as $index => $image) {
+            $path = $image->store('public/passes');
+            $paths[] = [
+                'filePath' => storage_path("app/$path"),
+                'email' => $request->emails[$index],
+            ];
+        }
+
+        foreach ($paths as $data) {
+            Mail::to($data['email'])->send(new PassMail($data['filePath']));
+        }
+
+        return response()->json(['message' => 'All passes sent successfully!']);
     }
 }

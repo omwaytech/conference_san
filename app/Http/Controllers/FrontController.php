@@ -159,9 +159,10 @@ class FrontController extends Controller
         //     ];
         // })->values();
         // dd($sessionDays);
+
         $sessions = ScientificSession::where('status', 1)->orderBy('day', 'ASC')->orderByRaw("STR_TO_DATE(time, '%h:%i%p') ASC")->get();
 
-        $halls = Hall::whereStatus(1)->get();
+        $halls = Hall::orderBy('created_at')->whereStatus(1)->get();
         $latestConference = Conference::latestConference();
         $startDate = Carbon::parse($latestConference->start_date);
         $endDate = Carbon::parse($latestConference->end_date);
@@ -190,22 +191,40 @@ class FrontController extends Controller
             $dates[] = $startDate->toDateString();
             $startDate->addDay();
         }
-        return view('frontend.scientific-session-test', compact('halls', 'dates', 'sessions'));
+        return view('frontend.scientific-session-static', compact('halls', 'dates', 'sessions'));
     }
     public function exportPdf($hall_id, $date)
     {
         $hall = Hall::with(['scientificSession.category'])
-                    ->findOrFail($hall_id);
+            ->findOrFail($hall_id);
 
         $sessions = $hall->scientificSession
-                        ->where('day', $date)
-                        ->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))
-                        ->groupBy('category_id');
+            ->where('day', $date)
+            ->where('status', 1)
+            ->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))
+            ->groupBy('category_id');
 
         $pdf = Pdf::loadView('frontend.scientificSessionPdf', compact('hall', 'sessions', 'date'))
-        ->setPaper('a4', 'portrait');
+            ->setPaper('a4', 'portrait');
 
         return $pdf->download("Scientific_Sessions_Hall_{$hall->id}_{$date}.pdf");
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        if (!$query) {
+            return response()->json([]);
+        }
+
+        $sessions = ScientificSession::with('hall', 'category')
+            ->where('topic', 'LIKE', "%{$query}%")
+            ->where('status', 1)
+            ->orWhere('participants', 'LIKE', "%{$query}%")
+            ->get();
+
+        return response()->json($sessions);
     }
 
     public function message()

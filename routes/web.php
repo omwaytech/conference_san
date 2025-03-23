@@ -63,6 +63,7 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
     Route::get('/accommodation/{slug}', 'accommodationInner')->name('accommodationInner');
     Route::get('/workshop-detail/{slug}', 'workshopDetail')->name('workshopDetail');
     Route::get('/scientific-session', 'scientificSession')->name('scientificSession');
+    Route::get('/search-scientific-sessions', 'search')->name('scientificSession.search');
     Route::get('/scientific-session-test', 'scientificSessionTest')->name('scientificSessionTest');
     Route::get('/export-pdf/{hall_id}/{date}', 'exportPdf')->name('export.pdf');
     Route::get('/message', 'message')->name('message');
@@ -97,6 +98,7 @@ Route::middleware('auth')->group(function () {
         // conference registration routes for admin
         Route::controller(ConferenceRegistrationController::class)->name('conferenceRegistration.')->prefix('/conference/registration')->group(function () {
             Route::get('/participants/{type}', 'participants')->name('participants');
+            Route::get('update-regisration-id', 'updatRegistrationId')->name('updatRegistrationId');
             Route::post('/verify-registrant', 'verifyForm')->name('verifyForm');
             Route::post('/verify-registrant-submit', 'verifyRegistrant')->name('verifyRegistrant');
             Route::get('/registration-or-invitation', 'registrationByAdmin')->name('byAdmin');
@@ -165,6 +167,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/cms/excel-export-for-signed-up-users', [AdminController::class, 'excelExport'])->name('admin.excelExport');
     Route::post('/cms/invite-user-for-conference', [AdminController::class, 'inviteUserForConference'])->name('admin.inviteUserForConference');
     Route::post('/cms/invite-user-for-conference-submit', [AdminController::class, 'inviteUserForConferenceSubmit'])->name('admin.inviteUserForConferenceSubmit');
+    Route::post('/cms/passDesgination', [AdminController::class, 'passDesgination'])->name('admin.passDesgination');
+    Route::post('/cms/passDesgination-submit', [AdminController::class, 'passDesginationSubmit'])->name('admin.passDesginationSubmit');
 
     // submissions route
     Route::resource('/cms/submission', SubmissionController::class)->except('show');

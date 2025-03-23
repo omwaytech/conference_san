@@ -431,6 +431,7 @@
                     var totalPrice = registrationPrice;
                 }
                 var memberType = '{{ @$memberTypePrice->memberType->type }}';
+                console.log(registrationPrice)
                 if (registrationPrice == '' || guestPrice == '') {
                     toastr.error("Price has not been updated by admin.");
                 } else {

@@ -59,7 +59,7 @@ class ScientificSessionController extends Controller
                 'co_chairperson'=> 'nullable',
                 'participants'=> 'nullable',
                 'day'=> 'required',
-                'time'=> 'nullable',
+                'time'=> 'required',
                 'duration'=> 'required',
             ];
             // if ($request->type == 5) {
@@ -151,7 +151,7 @@ class ScientificSessionController extends Controller
                 'co_chairperson'=> 'nullable',
                 'participants'=> 'nullable',
                 'day'=> 'required',
-                'time'=> 'nullable',
+                'time'=> 'required',
                 'duration'=> 'required'
             ];
             // if ($request->type == 5) {
