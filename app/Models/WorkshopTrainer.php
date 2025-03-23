@@ -15,6 +15,6 @@ class WorkshopTrainer extends Model
 
     public function workshop()
     {
-        $this->belongsTo(Workshop::class);
+        return $this->belongsTo(Workshop::class);
     }
 }

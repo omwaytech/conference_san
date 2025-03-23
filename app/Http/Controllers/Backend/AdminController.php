@@ -179,8 +179,24 @@ class AdminController extends Controller
 
     public function passDesgination(Request $request)
     {
-        $user = UserDetail::whereId($request->id)->first();
+        $user = UserDetail::whereUserId($request->id)->first();
         return view('backend.admins.pass-designation', compact('user'));
+    }
+    public function passDesginationSubmit(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'pass_designation' => 'required'
+            ]);
+            $user = UserDetail::whereUserId($request->user_id)->first();
+            $user->update(['pass_designation' => $request->pass_designation]);
+            $message = 'Designation Passed Successfully Added';
+            $type = 'success';
+        } catch (\Exception $e) {
+            $type = 'error';
+            $message = $e->getMessage();
+        }
+        return response()->json(['type' => $type, 'message' => $message]);
     }
 
     public function inviteUserForConference(Request $request)

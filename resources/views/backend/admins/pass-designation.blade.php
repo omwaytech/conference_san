@@ -6,12 +6,13 @@
 <div class="modal-body">
     <form id="verifyForm">
         @csrf
+        {{-- @dd($user->pass_desingation) --}}
         <div class="row">
-            <input type="hidden" id="userId" name="user_id" value="{{ $user->id }}">
-            <div class="col-md-4 form-group mb-3">
+            <input type="hidden" id="userId" name="user_id" value="{{ $user->user_id }}">
+            <div class="col-md-6 form-group mb-3">
                 <label for="pass_designation">Pass Designation <code>*</code></label>
                 <input type="text" class="form-control @error('pass_designation') is-invalid @enderror"
-                    name="pass_designation" id="pass_designation" value="{{ $user->pass_desingation ?? null }}"
+                    name="pass_designation" id="pass_designation" value="{{ $user->pass_designation}}"
                     placeholder="Enter pass designation" />
                 @error('pass_designation')
                     <p class="text-danger">{{ $message }}</p>

@@ -36,7 +36,7 @@
                 </div>
                 <div class="row">
                     @php
-                        $totalRegistrants = count($registrants->where('verified_status', 1));
+                        $totalRegistrants = count($registrants->unique('user_id')->where('verified_status', 1));
                     @endphp
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">

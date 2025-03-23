@@ -1235,32 +1235,37 @@ class ConferenceRegistrationController extends Controller
 
     public function generatePass($type)
     {
-        // Fetch participants based on type
-        $query = ConferenceRegistration::where([
-            'verified_status' => 1,
-            'conference_registrations.status' => 1
-        ])
-            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-            ->orderBy('users.f_name', 'asc');
-
-        switch ($type) {
-            case 'attendees':
-                $query->where(['registrant_type' => 1, 'is_invited' => 0]);
-                break;
-            case 'presenters':
-                $query->where(['registrant_type' => 2, 'is_invited' => 0]);
-                break;
-            case 'guest-attendees':
-                $query->where(['registrant_type' => 1, 'is_invited' => 1]);
-                break;
-            case 'guest-presenters':
-                $query->where(['registrant_type' => 2, 'is_invited' => 1]);
-                break;
+        if ($type == 'attendees') {
+            $participants = ConferenceRegistration::where(['registrant_type' => 1, 'is_invited' => 0, 'verified_status' => 1, 'conference_registrations.status' => 1])
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.f_name', 'asc')
+                ->get()
+                ->unique('user_id');
+        } elseif ($type == 'presenters') {
+            $participants = ConferenceRegistration::where(['registrant_type' => 2, 'is_invited' => 0, 'verified_status' => 1, 'conference_registrations.status' => 1])
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.f_name', 'asc')
+                ->distinct('user_id')
+                ->get()
+                ->unique('user_id');
+        } elseif ($type == 'guest-attendees') {
+            $participants = ConferenceRegistration::where(['registrant_type' => 1, 'is_invited' => 1, 'verified_status' => 1, 'conference_registrations.status' => 1])
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.f_name', 'asc')
+                ->distinct('user_id')
+                ->get()
+                ->unique('user_id');
+        } elseif ($type == 'guest-presenters') {
+            $participants = ConferenceRegistration::where(['registrant_type' => 2, 'is_invited' => 1, 'verified_status' => 1, 'conference_registrations.status' => 1])
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.f_name', 'asc')
+                ->distinct('user_id')
+                ->get()
+                ->unique('user_id');
         }
-
-        $participants = $query->take(2)->get();
         // dd($participants);
-        return view('backend.conferences.registrations.pass', compact('participants'));
+
+        return view('backend.conferences.registrations.pass', compact('participants', 'type'));
         // Custom PDF Page Size
         $customPaper = [0, 0, 500, 2000];
 
@@ -1524,7 +1529,7 @@ class ConferenceRegistrationController extends Controller
 
     public function sendPassEmail(Request $request)
     {
-          $request->validate([
+        $request->validate([
             'images.*' => 'required|file|mimes:png,jpg,jpeg',
         ]);
 

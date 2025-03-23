@@ -10,12 +10,16 @@
             <div class="card text-left">
                 <div class="card-body">
                     <div class="row mb-2">
-                        <h4 class="card-title">Trainers of {{$workshop->title}}</h4>
+                        <h4 class="card-title">Trainers of {{ $workshop->title }}</h4>
                         <div class="ml-auto">
                             <a href="{{ route('workshop.index') }}" class="btn btn-danger"> Go Back</a>
                             @if ($workshop->user_id == $authUser->id)
-                                <a href="{{ route('workshop-trainer.create', $workshop->slug) }}" class="btn btn-primary"> Add</a>
+                                <a href="{{ route('workshop-trainer.create', $workshop->slug) }}" class="btn btn-primary">
+                                    Add</a>
                             @endif
+                            <a href="{{ route('workshop-trainer.generatePass', $workshop->id) }}"
+                                class="btn btn-primary ml-2" target="_blank"><i class="nav-icon i-File"></i> Generate
+                                Pass</a>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -35,23 +39,31 @@
                             <tbody>
                                 @foreach ($trainers as $trainer)
                                     <tr>
-                                        <th scope="row">{{$loop->iteration}}</th>
-                                        <td>{{$trainer->name}}</td>
-                                        <td>{{$trainer->affiliation}}</td>
-                                        <td><a href="{{asset('storage/workshop/trainers/image/'.$trainer->image)}}" target="_blank"><img src="{{asset('storage/workshop/trainers/image/'.$trainer->image)}}" height="30" width="25" alt="cv"></a></td>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ $trainer->name }}</td>
+                                        <td>{{ $trainer->affiliation }}</td>
+                                        <td><a href="{{ asset('storage/workshop/trainers/image/' . $trainer->image) }}"
+                                                target="_blank"><img
+                                                    src="{{ asset('storage/workshop/trainers/image/' . $trainer->image) }}"
+                                                    height="30" width="25" alt="cv"></a></td>
                                         <td>
                                             @if (!empty($trainer->cv))
-                                                <a href="{{asset('storage/workshop/trainers/cv/'.$trainer->cv)}}" target="_blank"><img src="{{asset('default-images/pdf.png')}}" height="30" width="25" alt="cv"></a>
+                                                <a href="{{ asset('storage/workshop/trainers/cv/' . $trainer->cv) }}"
+                                                    target="_blank"><img src="{{ asset('default-images/pdf.png') }}"
+                                                        height="30" width="25" alt="cv"></a>
                                             @else
                                                 -
                                             @endif
                                         </td>
                                         @if ($workshop->user_id == $authUser->id)
                                             <td>
-                                                <form action="{{route('workshop-trainer.destroy', $trainer->id)}}">
+                                                <form action="{{ route('workshop-trainer.destroy', $trainer->id) }}">
                                                     @csrf
-                                                    <a href="{{route('workshop-trainer.edit', [$workshop->slug, $trainer->id])}}" class="btn btn-success btn-sm" title="Edit Data"><i class="nav-icon i-Pen-2"></i></a>
-                                                    <button title="Delete Data" class="btn btn-danger btn-sm delete" type="submit"><i class="nav-icon i-Close-Window"></i></button>
+                                                    <a href="{{ route('workshop-trainer.edit', [$workshop->slug, $trainer->id]) }}"
+                                                        class="btn btn-success btn-sm" title="Edit Data"><i
+                                                            class="nav-icon i-Pen-2"></i></a>
+                                                    <button title="Delete Data" class="btn btn-danger btn-sm delete"
+                                                        type="submit"><i class="nav-icon i-Close-Window"></i></button>
                                                 </form>
                                             </td>
                                         @endif

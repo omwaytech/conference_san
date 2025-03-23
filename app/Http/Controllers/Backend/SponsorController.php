@@ -181,7 +181,7 @@ class SponsorController extends Controller
         return view('backend.sponsor.pass', compact('sponsors'));
     }
 
-    public function sponsorProfile($token)
+    public function sponsorProfile($token) 
     {
         $sponsor = Sponsor::where('token', $token)->first();
         $conference = Conference::latestConference();

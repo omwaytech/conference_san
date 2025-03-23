@@ -11,8 +11,23 @@ class ConferenceRegistration extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'conference_id', 'registrant_type', 'attend_type', 'payment_voucher', 'transaction_id', 'verified_status', 'token',
-        'total_attendee', 'is_invited', 'is_featured', 'remarks', 'description', 'status', 'amount', 'meal_type','registration_id'
+        'user_id',
+        'conference_id',
+        'registrant_type',
+        'attend_type',
+        'payment_voucher',
+        'transaction_id',
+        'verified_status',
+        'token',
+        'total_attendee',
+        'is_invited',
+        'is_featured',
+        'remarks',
+        'description',
+        'status',
+        'amount',
+        'meal_type',
+        'registration_id'
     ];
 
     // registrant_type => // 1 for attendee, 2 for speaker
@@ -28,6 +43,11 @@ class ConferenceRegistration extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function committeMember()
+    {
+        return $this->belongsTo(CommitteeMember::class, 'user_id', 'user_id');
     }
 
     public static function totalRegistrants($delegate, $conference)
