@@ -580,13 +580,20 @@
 
     </div>
     {{-- css to display speaker --}}
-    {{-- <style>
-        .thumbnail {
+   <style>
+   .faculty-section{
+       padding: 30px 0px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    margin-bottom: 30px;
+   }
+   .single-team-area-7 .thumbnail {
             text-align: center;
             padding: 15px;
         }
 
-        .thumbnail img {
+   .single-team-area-7 .thumbnail img {
             height: auto;
             background: #e8b7ba;
             border-radius: 100%;
@@ -598,12 +605,12 @@
 
         }
 
-        .thumbnail .card-body {
+   .single-team-area-7 .thumbnail .card-body {
             text-align: center;
             font-size: 16px;
         }
 
-        .thumbnail .card-body h5 {
+    .single-team-area-7 .thumbnail .card-body h5 {
             font-size: 14px;
         }
 
@@ -615,24 +622,14 @@
         .post-content p {
             margin: 5px 0px;
         }
-    </style> --}}
+    </style> 
     <div class="container">
         {{-- <div class="row">
             <img src="{{ asset('frontend') }}/assets/images/sancon-price_new.jpg">
         </div> --}}
         {{-- < class="expart-team-area-7 rts-section-gapTop rts-section-gap2Bottom inner">
             < class="container"> --}}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="title-style-one-center">
-                    <span class="pre skew-up text-center">
-                        <h3>Speakers</h3>
-                    </span>
-                    <h2 class="title skew-up text-center">Meet the brilliant minds behind our <br> successful
-                        Conference</h2>
-                </div>
-            </div>
-        </div>
+
         <div class="row g-48 mt--10">
             @php
                 use Illuminate\Support\Str;
@@ -677,8 +674,8 @@
                     <h3 class="text-center">International Faculty</h3>
                     <div class="row">
                         @foreach ($internationalFaculty as $index => $speaker)
-                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
-                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                            <div class="col-lg-3 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 8 ? 'block' : 'none' }};">
                                 <div class="single-team-area-7">
                                     <div class="thumbnail">
                                         @if (!empty($speaker->user->userDetail->image))
@@ -698,10 +695,10 @@
                         @endforeach
                     </div>
 
-                    @if ($internationalFaculty->count() > 6)
+                    @if ($internationalFaculty->count() > 8)
                         <div class="d-flex justify-content-center align-items-center mt-3">
                             <button class="btn btn-lg showMoreButton"
-                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background:#FF6354; border: none; color: white;">
                                 <span class="button-text">View More</span>
                                 <i class="fas fa-chevron-down ms-2"></i>
                             </button>
@@ -716,8 +713,8 @@
                     <h3 class="text-center">National Faculty</h3>
                     <div class="row">
                         @foreach ($nationalFaculty as $index => $speaker)
-                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
-                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                            <div class="col-lg-3 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 8 ? 'block' : 'none' }};">
                                 <div class="single-team-area-7">
                                     <div class="thumbnail">
                                         @if (!empty($speaker->user->userDetail->image))
@@ -736,10 +733,10 @@
                             </div>
                         @endforeach
                     </div>
-                    @if ($nationalFaculty->count() > 6)
+                    @if ($nationalFaculty->count() > 8)
                         <div class="d-flex justify-content-center align-items-center mt-3">
                             <button class="btn btn-lg showMoreButton"
-                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background:#FF6354; border: none; color: white;">
                                 <span class="button-text">View More</span>
                                 <i class="fas fa-chevron-down ms-2"></i>
                             </button>
@@ -754,8 +751,8 @@
                     <h3 class="text-center">International PG Students</h3>
                     <div class="row">
                         @foreach ($internationalPgStudent as $index => $speaker)
-                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
-                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                            <div class="col-lg-3 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 8 ? 'block' : 'none' }};">
                                 <div class="single-team-area-7">
                                     <div class="thumbnail">
                                         @if (!empty($speaker->user->userDetail->image))
@@ -774,10 +771,10 @@
                             </div>
                         @endforeach
                     </div>
-                    @if ($internationalPgStudent->count() > 6)
+                    @if ($internationalPgStudent->count() > 8)
                         <div class="d-flex justify-content-center align-items-center mt-3">
                             <button class="btn btn-lg showMoreButton"
-                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background:#FF6354; border: none; color: white;">
                                 <span class="button-text">View More</span>
                                 <i class="fas fa-chevron-down ms-2"></i>
                             </button>
@@ -792,8 +789,8 @@
                     <h3 class="text-center">National PG Students</h3>
                     <div class="row">
                         @foreach ($nationalPgStudent as $index => $speaker)
-                            <div class="col-lg-4 col-md-6 col-sm-6 faculty-item"
-                                style="display: {{ $index < 6 ? 'block' : 'none' }};">
+                            <div class="col-lg-3 col-md-6 col-sm-6 faculty-item"
+                                style="display: {{ $index < 8 ? 'block' : 'none' }};">
                                 <div class="single-team-area-7">
                                     <div class="thumbnail">
                                         @if (!empty($speaker->user->userDetail->image))
@@ -812,10 +809,10 @@
                             </div>
                         @endforeach
                     </div>
-                    @if ($nationalPgStudent->count() > 6)
+                    @if ($nationalPgStudent->count() > 8)
                         <div class="d-flex justify-content-center align-items-center mt-3">
                             <button class="btn btn-lg showMoreButton"
-                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background: linear-gradient(45deg, #007bff, #00bfff); border: none; color: white;">
+                                style="padding: 8px 20px; font-size: 14px; width: auto; border-radius: 25px; background:#FF6354; border: none; color: white;">
                                 <span class="button-text">View More</span>
                                 <i class="fas fa-chevron-down ms-2"></i>
                             </button>
@@ -826,7 +823,7 @@
         </div>
     </div>
 
-    <div class="rts-section-gap2 rts-blog-area-one home-five">
+    <div class="rts-blog-area-one home-five">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -838,11 +835,14 @@
             <div class="row g-0 mt-4 justify-content-sm-center justify-content-md-start">
                 @foreach ($sponsorCategories as $sponsorCategory)
                     @if ($sponsorCategory->sponsors->isNotEmpty())
-                        <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="row">
+                    <div style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08); padding:30px 0px; height:auto; border-radius: 20px; margin-bottom: 30px;">
+                        <div class="row">
                             <div class="title-style-one-center">
                                 <h3 class="">{{ $sponsorCategory->category_name }}</h5>
                             </div>
-                        </div>
+                       
                         @foreach ($sponsorCategory->sponsors as $sponsor)
                             @if ($sponsor->visible_status == 1 && $sponsor->status == 1)
                                 <div class="col-lg-3 col-md-6 col-sm-10">
@@ -875,12 +875,16 @@
                                 </div>
                             @endif
                         @endforeach
+                    </div>
+                    </div>
+                  </div>
+                    </div>
                     @endif
                 @endforeach
-
-            </div>
-        </div>
+      
     </div>
+</div>
+</dv>
 
     <!-- rts appoinment area start -->
     <div class="rts-appoinment-area rts-section-gap pb--0" id="signUpSection">
