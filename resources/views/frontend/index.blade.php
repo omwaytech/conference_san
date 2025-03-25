@@ -14,6 +14,19 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="popUpConferenceModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="popUpModalLabel">Conference</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="{{ asset('default-images/conference.jpeg') }}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- rts banner two area start -->
     <div class="main-wrapper-banner-uner-over-flew">
@@ -580,20 +593,21 @@
 
     </div>
     {{-- css to display speaker --}}
-   <style>
-   .faculty-section{
-       padding: 30px 0px;
-    background: #FFFFFF;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-    margin-bottom: 30px;
-   }
-   .single-team-area-7 .thumbnail {
+    <style>
+        .faculty-section {
+            padding: 30px 0px;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .single-team-area-7 .thumbnail {
             text-align: center;
             padding: 15px;
         }
 
-   .single-team-area-7 .thumbnail img {
+        .single-team-area-7 .thumbnail img {
             height: auto;
             background: #e8b7ba;
             border-radius: 100%;
@@ -605,12 +619,12 @@
 
         }
 
-   .single-team-area-7 .thumbnail .card-body {
+        .single-team-area-7 .thumbnail .card-body {
             text-align: center;
             font-size: 16px;
         }
 
-    .single-team-area-7 .thumbnail .card-body h5 {
+        .single-team-area-7 .thumbnail .card-body h5 {
             font-size: 14px;
         }
 
@@ -622,7 +636,7 @@
         .post-content p {
             margin: 5px 0px;
         }
-    </style> 
+    </style>
     <div class="container">
         {{-- <div class="row">
             <img src="{{ asset('frontend') }}/assets/images/sancon-price_new.jpg">
@@ -835,593 +849,604 @@
             <div class="row g-0 mt-4 justify-content-sm-center justify-content-md-start">
                 @foreach ($sponsorCategories as $sponsorCategory)
                     @if ($sponsorCategory->sponsors->isNotEmpty())
-                <div class="col-lg-12">
-                    <div class="row">
-                    <div style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08); padding:30px 0px; height:auto; border-radius: 20px; margin-bottom: 30px;">
-                        <div class="row">
-                            <div class="title-style-one-center">
-                                <h3 class="">{{ $sponsorCategory->category_name }}</h5>
-                            </div>
-                       
-                        @foreach ($sponsorCategory->sponsors as $sponsor)
-                            @if ($sponsor->visible_status == 1 && $sponsor->status == 1)
-                                <div class="col-lg-3 col-md-6 col-sm-10">
-                                    <!-- single blog area start -->
-                                    <div class="single-blog-area-style-one" style="">
-                                        <div class="" style="display: flex; justify-content: center;">
-
-                                            <a href="" class="thumbnail" style=" width: 120px;">
-                                                @if (!empty($sponsor->logo))
-                                                    <img style="width: 120px; height: 120px;"
-                                                        src="{{ asset('storage/sponsors/' . $sponsor->logo) }}"
-                                                        alt="sponsor-image" />
-                                                @else
-                                                    <img style="width: 120px; height: 120px;"
-                                                        src="{{ asset('frontend') }}/assets/images/blog/02.png"
-                                                        alt="sponsor-image">
-                                                @endif
-                                            </a>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div
+                                    style="box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08); padding:30px 0px; height:auto; border-radius: 20px; margin-bottom: 30px;">
+                                    <div class="row">
+                                        <div class="title-style-one-center">
+                                            <h3 class="">{{ $sponsorCategory->category_name }}</h5>
                                         </div>
-                                        <div class="inner-content-wrapper">
-                                            <a href="">
-                                                <h6 class="title">
-                                                    {{ $sponsor->name }}
-                                                </h6>
-                                            </a>
 
-                                        </div>
+                                        @foreach ($sponsorCategory->sponsors as $sponsor)
+                                            @if ($sponsor->visible_status == 1 && $sponsor->status == 1)
+                                                <div class="col-lg-3 col-md-6 col-sm-10">
+                                                    <!-- single blog area start -->
+                                                    <div class="single-blog-area-style-one" style="">
+                                                        <div class=""
+                                                            style="display: flex; justify-content: center;">
+
+                                                            <a href="" class="thumbnail" style=" width: 120px;">
+                                                                @if (!empty($sponsor->logo))
+                                                                    <img style="width: 120px; height: 120px;"
+                                                                        src="{{ asset('storage/sponsors/' . $sponsor->logo) }}"
+                                                                        alt="sponsor-image" />
+                                                                @else
+                                                                    <img style="width: 120px; height: 120px;"
+                                                                        src="{{ asset('frontend') }}/assets/images/blog/02.png"
+                                                                        alt="sponsor-image">
+                                                                @endif
+                                                            </a>
+                                                        </div>
+                                                        <div class="inner-content-wrapper">
+                                                            <a href="">
+                                                                <h6 class="title">
+                                                                    {{ $sponsor->name }}
+                                                                </h6>
+                                                            </a>
+
+                                                        </div>
+                                                    </div>
+                                                    <!-- single blog area end -->
+                                                </div>
+                                            @endif
+                                        @endforeach
                                     </div>
-                                    <!-- single blog area end -->
                                 </div>
-                            @endif
-                        @endforeach
-                    </div>
-                    </div>
-                  </div>
-                    </div>
+                            </div>
+                        </div>
                     @endif
                 @endforeach
-      
-    </div>
-</div>
-</dv>
 
-    <!-- rts appoinment area start -->
-    <div class="rts-appoinment-area rts-section-gap pb--0" id="signUpSection">
-        <div class="container">
-            <div class="row align-items-center justify-content-md-center">
-                <div class="col-lg-12">
-                    <div class="bg-blue-radius">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-10">
-                                <!-- appoinment satylke two left -->
-                                <div class="appoinment-wrapper-one-left">
-                                    <h2 class="title split-collab">Sign up Now <br /><small>SANCON - ASPA 2025</small>
-                                    </h2>
+            </div>
+        </div>
+        </dv>
 
-                                    <h3>Payment Method <br />We Accept</h3>
+        <!-- rts appoinment area start -->
+        <div class="rts-appoinment-area rts-section-gap pb--0" id="signUpSection">
+            <div class="container">
+                <div class="row align-items-center justify-content-md-center">
+                    <div class="col-lg-12">
+                        <div class="bg-blue-radius">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-10">
+                                    <!-- appoinment satylke two left -->
+                                    <div class="appoinment-wrapper-one-left">
+                                        <h2 class="title split-collab">Sign up Now <br /><small>SANCON - ASPA 2025</small>
+                                        </h2>
 
-
-                                    <img src="{{ asset('frontend') }}/assets/images/pricing/card.png" alt=""
-                                        width="220" /><br />
-                                    <img src="{{ asset('frontend') }}/assets/images/pricing/Payment-nepal.jpg"
-                                        style="float:left; clear:both; margin-top:20px;" width="325" alt="" />
+                                        <h3>Payment Method <br />We Accept</h3>
 
 
+                                        <img src="{{ asset('frontend') }}/assets/images/pricing/card.png" alt=""
+                                            width="220" /><br />
+                                        <img src="{{ asset('frontend') }}/assets/images/pricing/Payment-nepal.jpg"
+                                            style="float:left; clear:both; margin-top:20px;" width="325"
+                                            alt="" />
+
+
+                                    </div>
+                                    <!-- appoinment satylke two left end -->
                                 </div>
-                                <!-- appoinment satylke two left end -->
-                            </div>
-                            <div class="col-lg-6 col-md-10">
-                                <form method="POST" action="{{ route('front.registerSubmit') }}"
-                                    enctype="multipart/form-data" class="appoinment_form-1">
-                                    @csrf
-                                    <div class="signle-input">
-                                        <select class="form-select" type="select" id="name_prefix_id"
-                                            name="name_prefix_id" required>
-                                            <option value="" hidden>-- Select Title * --</option>
-                                            @foreach ($prefixesAll as $prefix)
-                                                <option value="{{ $prefix->id }}"
-                                                    @if (!empty(old('name_prefix_id'))) @selected(old('name_prefix_id') == $prefix->id) @endif>
-                                                    {{ $prefix->prefix }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('name_prefix_id')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="signle-input">
-                                                <input type="text" name="f_name" id="f_name"
-                                                    placeholder="First Name* " value="{{ old('f_name') }}" required>
-                                                @error('f_name')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
-                                            </div>
+                                <div class="col-lg-6 col-md-10">
+                                    <form method="POST" action="{{ route('front.registerSubmit') }}"
+                                        enctype="multipart/form-data" class="appoinment_form-1">
+                                        @csrf
+                                        <div class="signle-input">
+                                            <select class="form-select" type="select" id="name_prefix_id"
+                                                name="name_prefix_id" required>
+                                                <option value="" hidden>-- Select Title * --</option>
+                                                @foreach ($prefixesAll as $prefix)
+                                                    <option value="{{ $prefix->id }}"
+                                                        @if (!empty(old('name_prefix_id'))) @selected(old('name_prefix_id') == $prefix->id) @endif>
+                                                        {{ $prefix->prefix }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('name_prefix_id')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="signle-input">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="signle-input">
+                                                    <input type="text" name="f_name" id="f_name"
+                                                        placeholder="First Name* " value="{{ old('f_name') }}" required>
+                                                    @error('f_name')
+                                                        <p class="text-danger">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="signle-input">
 
-                                                <input type="text" name="l_name" id="l_name"
-                                                    placeholder="Last Name *" value="{{ old('l_name') }}" required>
-                                                @error('l_name')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
+                                                    <input type="text" name="l_name" id="l_name"
+                                                        placeholder="Last Name *" value="{{ old('l_name') }}" required>
+                                                    @error('l_name')
+                                                        <p class="text-danger">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-6">
 
-                                            <div class="signle-input">
-                                                <input type="email" name="email" id="email"
-                                                    placeholder="Your email *" value="{{ old('email') }}" required>
-                                                @error('email')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
+                                                <div class="signle-input">
+                                                    <input type="email" name="email" id="email"
+                                                        placeholder="Your email *" value="{{ old('email') }}" required>
+                                                    @error('email')
+                                                        <p class="text-danger">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="signle-input">
+                                                    <input type="text" name="phone" id="phone"
+                                                        placeholder="Your Phone *" value="{{ old('phone') }}" required>
+                                                    @error('phone')
+                                                        <p class="text-danger">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="signle-input">
-                                                <input type="text" name="phone" id="phone"
-                                                    placeholder="Your Phone *" value="{{ old('phone') }}" required>
-                                                @error('phone')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
+                                        <div class="signle-input">
+                                            <select class="form-select" id="country_id" name="country_id" required>
+                                                <option value="" hidden>-- Select Country * --</option>
+                                                @foreach ($countries as $country)
+                                                    <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
+                                                        {{ $country->country_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('country_id')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="text-danger">Password must be atleast 8 characters</p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="signle-input">
+                                                    <input type="password" name="password" id="password"
+                                                        placeholder="Create Password *" required>
+                                                    <a href="#" id="viewPassword" class="btn mt-5"><i
+                                                            class="fa-solid fa-eye fa-2x"></i></a>
+                                                    <a href="#" id="hidePassword" class="btn mt-5" hidden><i
+                                                            class="fa-solid fa-eye-slash fa-2x"></i></a>
+                                                    @error('password')
+                                                        <p class="text-danger">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="signle-input">
+                                                    <input type="password" name="password_confirmation"
+                                                        id="password_confirmation" placeholder="Confirm Password *"
+                                                        required>
+                                                    <a href="#" id="viewPassword2" class="btn mt-5"><i
+                                                            class="fa-solid fa-eye fa-2x"></i></a>
+                                                    <a href="#" id="hidePassword2" class="btn mt-5" hidden><i
+                                                            class="fa-solid fa-eye-slash fa-2x"></i></a>
+                                                    @error('password_confirmation')
+                                                        <p class="text-danger">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="signle-input">
-                                        <select class="form-select" id="country_id" name="country_id" required>
-                                            <option value="" hidden>-- Select Country * --</option>
-                                            @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}" @selected(old('country_id') == $country->id)>
-                                                    {{ $country->country_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('country_id')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p class="text-danger">Password must be atleast 8 characters</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="signle-input">
-                                                <input type="password" name="password" id="password"
-                                                    placeholder="Create Password *" required>
-                                                <a href="#" id="viewPassword" class="btn mt-5"><i
-                                                        class="fa-solid fa-eye fa-2x"></i></a>
-                                                <a href="#" id="hidePassword" class="btn mt-5" hidden><i
-                                                        class="fa-solid fa-eye-slash fa-2x"></i></a>
-                                                @error('password')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="signle-input">
-                                                <input type="password" name="password_confirmation"
-                                                    id="password_confirmation" placeholder="Confirm Password *" required>
-                                                <a href="#" id="viewPassword2" class="btn mt-5"><i
-                                                        class="fa-solid fa-eye fa-2x"></i></a>
-                                                <a href="#" id="hidePassword2" class="btn mt-5" hidden><i
-                                                        class="fa-solid fa-eye-slash fa-2x"></i></a>
-                                                @error('password_confirmation')
-                                                    <p class="text-danger">{{ $message }}</p>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="rts-btn btn-primary-2" type="submit">Sign Up</button>
-                                </form>
+                                        <button class="rts-btn btn-primary-2" type="submit">Sign Up</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    <div class="rts-section-gap2 rts-blog-area-one home-five">
+        </div>
+        <div class="rts-section-gap2 rts-blog-area-one home-five">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="title-style-one-center">
+                            <span class="pre">News & Notices</span>
+                            <h2 class="title">Latest Update of Conference</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-48 mt--0 justify-content-sm-center justify-content-md-start">
+                    @forelse ($notices as $notice)
+                        <div class="col-lg-4 col-md-6 col-sm-10">
+                            <!-- single blog area start -->
+                            <div class="single-blog-area-style-one">
+                                <a href="{{ route('front.noticeDetail', $notice->slug) }}" class="thumbnail">
+                                    @if (!empty($notice->image))
+                                        <img src="{{ asset('storage/notice/' . $notice->image) }}" alt="blog-image" />
+                                    @else
+                                        <img src="{{ asset('frontend') }}/assets/images/blog/02.png" alt="blog-image">
+                                    @endif
+                                </a>
+                                <div class="inner-content-wrapper">
+                                    <a href="{{ route('front.noticeDetail', $notice->slug) }}">
+                                        <h6 class="title">
+                                            {{ $notice->title }}
+                                        </h6>
+                                    </a>
+                                    <div class="bottom-area">
+                                        <span class="admin">SANCON - ASPA 2025</span>
+                                        <span
+                                            class="date">{{ Carbon\Carbon::parse($notice->date)->format('d F, Y') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- single blog area end -->
+                        </div>
+                    @empty
+                        <p class="text-danger text-center">Notices Not Added Yet.</p>
+                    @endforelse
+
+                    <div class="col-lg-12  text-center">
+                        <a href="{{ route('front.notice') }}" class="rts-btn btn-primary-4-border arrow-rotate">View More
+                            +<i class="fa-light fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- blog area end -->
+
+        {{-- video start --}}
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="title-style-one-center">
-                        <span class="pre">News & Notices</span>
-                        <h2 class="title">Latest Update of Conference</h2>
+                        <h2 class="title">Reflection and New Theme</h2>
                     </div>
                 </div>
             </div>
-            <div class="row g-48 mt--0 justify-content-sm-center justify-content-md-start">
-                @forelse ($notices as $notice)
-                    <div class="col-lg-4 col-md-6 col-sm-10">
-                        <!-- single blog area start -->
-                        <div class="single-blog-area-style-one">
-                            <a href="{{ route('front.noticeDetail', $notice->slug) }}" class="thumbnail">
-                                @if (!empty($notice->image))
-                                    <img src="{{ asset('storage/notice/' . $notice->image) }}" alt="blog-image" />
-                                @else
-                                    <img src="{{ asset('frontend') }}/assets/images/blog/02.png" alt="blog-image">
-                                @endif
-                            </a>
-                            <div class="inner-content-wrapper">
-                                <a href="{{ route('front.noticeDetail', $notice->slug) }}">
-                                    <h6 class="title">
-                                        {{ $notice->title }}
-                                    </h6>
-                                </a>
-                                <div class="bottom-area">
-                                    <span class="admin">SANCON - ASPA 2025</span>
-                                    <span
-                                        class="date">{{ Carbon\Carbon::parse($notice->date)->format('d F, Y') }}</span>
+            <iframe width="300" height="500" src="https://www.youtube.com/embed/03gP2avZCNU?si=6vUsh2r12I5LZq2b"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        {{-- video end --}}
+
+        <!-- faq call to action area start -->
+        <div class="faq-cta-main-wrapper-bg rts-section-gap2" style="padding-bottom:0px;">
+            <!-- rts faq section area start -->
+            <div class="rts-faq-area-full-container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="faq-area-start area-4">
+                                <div class="title-style-one-center">
+                                    <span class="pre skew-up">Our FAQ</span>
+                                    <h2 class="title skew-up">Conference related FAQ's</h2>
                                 </div>
                             </div>
                         </div>
-                        <!-- single blog area end -->
                     </div>
-                @empty
-                    <p class="text-danger text-center">Notices Not Added Yet.</p>
-                @endforelse
+                    <div class="row mt--60">
+                        <div class="col-lg-12">
+                            <div class="accordion-faq-area-border-bottom-style  style-four">
+                                <div class="accordion" id="accordionExamples">
+                                    @forelse ($faqs as $faq)
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_{{ $faq->id }}">
+                                                <button
+                                                    class="accordion-button {{ $loop->iteration != 1 ? 'collapsed' : '' }}"
+                                                    type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#faq__collapse-{{ $faq->id }}"
+                                                    aria-expanded="true"
+                                                    aria-controls="faq__collapse-{{ $faq->id }}">
+                                                    {{ $faq->question }}
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-{{ $faq->id }}"
+                                                class="accordion-collapse collapse {{ $loop->iteration == 1 ? 'show' : '' }}"
+                                                aria-labelledby="faq_{{ $faq->id }}"
+                                                data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        {!! $faq->answer !!}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_one">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#faq__collapse-one" aria-expanded="true"
+                                                    aria-controls="faq__collapse-one">
+                                                    When and where is SANCON - ASPA 2025 taking place?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-one" class="accordion-collapse collapse show"
+                                                aria-labelledby="faq_one" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        SANCON - ASPA 2025, the 24th annual conference of the Society of
+                                                        Anesthesiologists of Nepal, will be held on April 4<sup>th</sup> –
+                                                        5<sup>th</sup>, 2025, at Hyatt Regency in Kathmandu, Nepal.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_two">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-two"
+                                                    aria-expanded="false" aria-controls="faq__collapse-two">
+                                                    What is the theme of SANCON - ASPA 2025?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-two" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_two" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        Main theme of the conference is "Scaling new heights in Pediatric
+                                                        Anesthesia and beyond".
+                                                        SANCON-ASPA 2025 will focus on pediatric anesthesia, with
+                                                        discussions
+                                                        and
+                                                        workshops covering advancements and best practices in this
+                                                        specialized
+                                                        field. Additionally, sessions will explore other super specialties
+                                                        of
+                                                        anesthesiology.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_three">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-three"
+                                                    aria-expanded="false" aria-controls="faq__collapse-three">
+                                                    Who can attend SANCON - ASPA 2025?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-three" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_three" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        SANCON - ASPA 2025 is open to anesthesiologists, specialists in
+                                                        critical
+                                                        care
+                                                        and pain medicine, residents, fellows, nurses, and other healthcare
+                                                        professionals interested in the field of anesthesia.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_four">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-four"
+                                                    aria-expanded="false" aria-controls="faq__collapse-four">
+                                                    How can I register for SANCON - ASPA 2025?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-four" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_four" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        Registration details will be available closer to the conference
+                                                        dates on
+                                                        the official SAN website and through conference communications.
+                                                        Early
+                                                        registration is recommended due to limited seating.
+                                                    </p>
 
-                <div class="col-lg-12  text-center">
-                    <a href="{{ route('front.notice') }}" class="rts-btn btn-primary-4-border arrow-rotate">View More
-                        +<i class="fa-light fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- blog area end -->
-
-    {{-- video start --}}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="title-style-one-center">
-                    <h2 class="title">Reflection and New Theme</h2>
-                </div>
-            </div>
-        </div>
-        <iframe width="300" height="500" src="https://www.youtube.com/embed/03gP2avZCNU?si=6vUsh2r12I5LZq2b"
-            title="YouTube video player" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-    {{-- video end --}}
-
-    <!-- faq call to action area start -->
-    <div class="faq-cta-main-wrapper-bg rts-section-gap2" style="padding-bottom:0px;">
-        <!-- rts faq section area start -->
-        <div class="rts-faq-area-full-container">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="faq-area-start area-4">
-                            <div class="title-style-one-center">
-                                <span class="pre skew-up">Our FAQ</span>
-                                <h2 class="title skew-up">Conference related FAQ's</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_five">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-five"
+                                                    aria-expanded="false" aria-controls="faq__collapse-five">
+                                                    What are the key highlights of SANCON - ASPA 2025?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-five" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_five" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        Key highlights include keynote speeches from renowned experts, panel
+                                                        discussions on current issues in anesthesia, specialized workshops
+                                                        focusing on pediatric and other specialties, and participation from
+                                                        over
+                                                        50 international speakers.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_six">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-six"
+                                                    aria-expanded="false" aria-controls="faq__collapse-six">
+                                                    Are there opportunities for networking and collaboration at SANCON -
+                                                    ASPA
+                                                    2025?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-six" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        Yes, SANCON - ASPA 2025 provides ample opportunities for networking
+                                                        with
+                                                        peers,
+                                                        experts, and industry leaders. Attendees can engage in discussions,
+                                                        share research findings, and explore collaborations in the field of
+                                                        anesthesia.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_seven">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-seven"
+                                                    aria-expanded="false" aria-controls="faq__collapse-seven">
+                                                    What is the language of the conference sessions?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-seven" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        The official language of SANCON - ASPA 2025 is English. All
+                                                        sessions,
+                                                        including
+                                                        presentations and discussions, will be conducted in English.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_eight">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-eight"
+                                                    aria-expanded="false" aria-controls="faq__collapse-eight">
+                                                    Can I submit an abstract or present my research at SANCON - ASPA 2025?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-eight" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        Yes, details about abstract submission and presentation guidelines
+                                                        will
+                                                        be announced closer to the conference date. It's an excellent
+                                                        opportunity to showcase your research and contribute to the field.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faq_nine">
+                                                <button class="accordion-button collapsed" type="button"
+                                                    data-bs-toggle="collapse" data-bs-target="#faq__collapse-nine"
+                                                    aria-expanded="false" aria-controls="faq__collapse-nine">
+                                                    Is there accommodation available near the conference venue?
+                                                </button>
+                                            </h2>
+                                            <div id="faq__collapse-nine" class="accordion-collapse collapse"
+                                                aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
+                                                <div class="accordion-body">
+                                                    <p class="disc">
+                                                        Yes. There are 3 options:
+                                                    <ol>
+                                                        <li>Hyatt Regency, the conference venue for SANCON - ASPA 2025,
+                                                            offers
+                                                            accommodation options as well.</li>
+                                                        <li>⁠Hotel Shambala</li>
+                                                        <li>Hotel Ambassador</li>
+                                                    </ol>
+                                                    Information on booking accommodation is provided along with registration
+                                                    details. Please note that the rate provided to us are at special rate
+                                                    after
+                                                    the use of promo code available on our website.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforelse
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row mt--60">
-                    <div class="col-lg-12">
-                        <div class="accordion-faq-area-border-bottom-style  style-four">
-                            <div class="accordion" id="accordionExamples">
-                                @forelse ($faqs as $faq)
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_{{ $faq->id }}">
-                                            <button
-                                                class="accordion-button {{ $loop->iteration != 1 ? 'collapsed' : '' }}"
-                                                type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#faq__collapse-{{ $faq->id }}" aria-expanded="true"
-                                                aria-controls="faq__collapse-{{ $faq->id }}">
-                                                {{ $faq->question }}
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-{{ $faq->id }}"
-                                            class="accordion-collapse collapse {{ $loop->iteration == 1 ? 'show' : '' }}"
-                                            aria-labelledby="faq_{{ $faq->id }}"
-                                            data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    {!! $faq->answer !!}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_one">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#faq__collapse-one" aria-expanded="true"
-                                                aria-controls="faq__collapse-one">
-                                                When and where is SANCON - ASPA 2025 taking place?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-one" class="accordion-collapse collapse show"
-                                            aria-labelledby="faq_one" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    SANCON - ASPA 2025, the 24th annual conference of the Society of
-                                                    Anesthesiologists of Nepal, will be held on April 4<sup>th</sup> –
-                                                    5<sup>th</sup>, 2025, at Hyatt Regency in Kathmandu, Nepal.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_two">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-two"
-                                                aria-expanded="false" aria-controls="faq__collapse-two">
-                                                What is the theme of SANCON - ASPA 2025?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-two" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_two" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    Main theme of the conference is "Scaling new heights in Pediatric
-                                                    Anesthesia and beyond".
-                                                    SANCON-ASPA 2025 will focus on pediatric anesthesia, with
-                                                    discussions
-                                                    and
-                                                    workshops covering advancements and best practices in this
-                                                    specialized
-                                                    field. Additionally, sessions will explore other super specialties
-                                                    of
-                                                    anesthesiology.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_three">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-three"
-                                                aria-expanded="false" aria-controls="faq__collapse-three">
-                                                Who can attend SANCON - ASPA 2025?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-three" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_three" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    SANCON - ASPA 2025 is open to anesthesiologists, specialists in
-                                                    critical
-                                                    care
-                                                    and pain medicine, residents, fellows, nurses, and other healthcare
-                                                    professionals interested in the field of anesthesia.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_four">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-four"
-                                                aria-expanded="false" aria-controls="faq__collapse-four">
-                                                How can I register for SANCON - ASPA 2025?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-four" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_four" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    Registration details will be available closer to the conference
-                                                    dates on
-                                                    the official SAN website and through conference communications.
-                                                    Early
-                                                    registration is recommended due to limited seating.
-                                                </p>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_five">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-five"
-                                                aria-expanded="false" aria-controls="faq__collapse-five">
-                                                What are the key highlights of SANCON - ASPA 2025?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-five" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_five" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    Key highlights include keynote speeches from renowned experts, panel
-                                                    discussions on current issues in anesthesia, specialized workshops
-                                                    focusing on pediatric and other specialties, and participation from
-                                                    over
-                                                    50 international speakers.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_six">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-six"
-                                                aria-expanded="false" aria-controls="faq__collapse-six">
-                                                Are there opportunities for networking and collaboration at SANCON -
-                                                ASPA
-                                                2025?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-six" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    Yes, SANCON - ASPA 2025 provides ample opportunities for networking
-                                                    with
-                                                    peers,
-                                                    experts, and industry leaders. Attendees can engage in discussions,
-                                                    share research findings, and explore collaborations in the field of
-                                                    anesthesia.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_seven">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-seven"
-                                                aria-expanded="false" aria-controls="faq__collapse-seven">
-                                                What is the language of the conference sessions?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-seven" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    The official language of SANCON - ASPA 2025 is English. All
-                                                    sessions,
-                                                    including
-                                                    presentations and discussions, will be conducted in English.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_eight">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-eight"
-                                                aria-expanded="false" aria-controls="faq__collapse-eight">
-                                                Can I submit an abstract or present my research at SANCON - ASPA 2025?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-eight" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    Yes, details about abstract submission and presentation guidelines
-                                                    will
-                                                    be announced closer to the conference date. It's an excellent
-                                                    opportunity to showcase your research and contribute to the field.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="faq_nine">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#faq__collapse-nine"
-                                                aria-expanded="false" aria-controls="faq__collapse-nine">
-                                                Is there accommodation available near the conference venue?
-                                            </button>
-                                        </h2>
-                                        <div id="faq__collapse-nine" class="accordion-collapse collapse"
-                                            aria-labelledby="faq_six" data-bs-parent="#accordionExamples">
-                                            <div class="accordion-body">
-                                                <p class="disc">
-                                                    Yes. There are 3 options:
-                                                <ol>
-                                                    <li>Hyatt Regency, the conference venue for SANCON - ASPA 2025,
-                                                        offers
-                                                        accommodation options as well.</li>
-                                                    <li>⁠Hotel Shambala</li>
-                                                    <li>Hotel Ambassador</li>
-                                                </ol>
-                                                Information on booking accommodation is provided along with registration
-                                                details. Please note that the rate provided to us are at special rate
-                                                after
-                                                the use of promo code available on our website.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
+                <div class="shape-area">
+                    <img src="{{ asset('frontend') }}/assets/images/faq/shape/01.png" alt="" class="one">
+                    <img src="{{ asset('frontend') }}/assets/images/faq/shape/02.png" alt="" class="two">
+                    <img src="{{ asset('frontend') }}/assets/images/faq/shape/03.png" alt="" class="three">
                 </div>
-            </div>
 
-            <div class="shape-area">
-                <img src="{{ asset('frontend') }}/assets/images/faq/shape/01.png" alt="" class="one">
-                <img src="{{ asset('frontend') }}/assets/images/faq/shape/02.png" alt="" class="two">
-                <img src="{{ asset('frontend') }}/assets/images/faq/shape/03.png" alt="" class="three">
             </div>
 
         </div>
+    @endsection
 
-    </div>
-@endsection
+    @section('scripts')
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var workshopModal = new bootstrap.Modal(document.getElementById('popUpModal'));
+                var conferenceModal = new bootstrap.Modal(document.getElementById('popUpConferenceModal'));
 
-@section('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var myModal = new bootstrap.Modal(document.getElementById('popUpModal'));
-            myModal.show();
-        });
+                workshopModal.show();
 
-        $(document).ready(function() {
-            $('#viewPassword').click(function(e) {
-                e.preventDefault();
-                $('#password').prop('type', 'text');
-                $('#hidePassword').attr('hidden', false);
-                $(this).attr('hidden', true)
-            });
-
-            $('#hidePassword').click(function(e) {
-                e.preventDefault();
-                $('#password').prop('type', 'password');
-                $('#viewPassword').attr('hidden', false);
-                $(this).attr('hidden', true)
-            });
-
-            $('#viewPassword2').click(function(e) {
-                e.preventDefault();
-                $('#password_confirmation').prop('type', 'text');
-                $('#hidePassword2').attr('hidden', false);
-                $(this).attr('hidden', true)
-            });
-
-            $('#hidePassword2').click(function(e) {
-                e.preventDefault();
-                $('#password_confirmation').prop('type', 'password');
-                $('#viewPassword2').attr('hidden', false);
-                $(this).attr('hidden', true)
-            });
-        });
-    </script>
-    <script>
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     let itemsPerPage = 6; // 2 rows (3 per row)
-        //     let totalItems = $(".faculty-item").length;
-        //     let visibleItems = itemsPerPage;
-
-        //     $("#showMoreButton").on("click", function() {
-        //         visibleItems += itemsPerPage;
-        //         $(".faculty-item").slice(0, visibleItems).fadeIn(); // Show next 6 items
-
-        //         if (visibleItems >= totalItems) {
-        //             $("#showMoreButton").hide(); // Hide button if all items are displayed
-        //         }
-        //     });
-        // });
-        $(document).ready(function() {
-            $(".faculty-section").each(function() {
-                let section = $(this);
-                let items = section.find(".faculty-item");
-                let showMoreBtn = section.find(".showMoreButton");
-                let itemsPerClick = 6;
-                let hiddenItems = items.filter(function() {
-                    return $(this).css("display") === "none";
-                });
-
-                showMoreBtn.on("click", function() {
-                    hiddenItems.slice(0, itemsPerClick).fadeIn().css("display", "block");
-                    hiddenItems = hiddenItems.slice(itemsPerClick); // Update hidden items list
-
-                    if (hiddenItems.length === 0) {
-                        showMoreBtn.hide(); // Hide button when all items are shown
-                    }
+                document.getElementById('popUpModal').addEventListener('hidden.bs.modal', function() {
+                    conferenceModal.show();
                 });
             });
-        });
-    </script>
-@endsection
+
+            $(document).ready(function() {
+                $('#viewPassword').click(function(e) {
+                    e.preventDefault();
+                    $('#password').prop('type', 'text');
+                    $('#hidePassword').attr('hidden', false);
+                    $(this).attr('hidden', true)
+                });
+
+                $('#hidePassword').click(function(e) {
+                    e.preventDefault();
+                    $('#password').prop('type', 'password');
+                    $('#viewPassword').attr('hidden', false);
+                    $(this).attr('hidden', true)
+                });
+
+                $('#viewPassword2').click(function(e) {
+                    e.preventDefault();
+                    $('#password_confirmation').prop('type', 'text');
+                    $('#hidePassword2').attr('hidden', false);
+                    $(this).attr('hidden', true)
+                });
+
+                $('#hidePassword2').click(function(e) {
+                    e.preventDefault();
+                    $('#password_confirmation').prop('type', 'password');
+                    $('#viewPassword2').attr('hidden', false);
+                    $(this).attr('hidden', true)
+                });
+            });
+        </script>
+        <script>
+            // document.addEventListener("DOMContentLoaded", function() {
+            //     let itemsPerPage = 6; // 2 rows (3 per row)
+            //     let totalItems = $(".faculty-item").length;
+            //     let visibleItems = itemsPerPage;
+
+            //     $("#showMoreButton").on("click", function() {
+            //         visibleItems += itemsPerPage;
+            //         $(".faculty-item").slice(0, visibleItems).fadeIn(); // Show next 6 items
+
+            //         if (visibleItems >= totalItems) {
+            //             $("#showMoreButton").hide(); // Hide button if all items are displayed
+            //         }
+            //     });
+            // });
+            $(document).ready(function() {
+                $(".faculty-section").each(function() {
+                    let section = $(this);
+                    let items = section.find(".faculty-item");
+                    let showMoreBtn = section.find(".showMoreButton");
+                    let itemsPerClick = 6;
+                    let hiddenItems = items.filter(function() {
+                        return $(this).css("display") === "none";
+                    });
+
+                    showMoreBtn.on("click", function() {
+                        hiddenItems.slice(0, itemsPerClick).fadeIn().css("display", "block");
+                        hiddenItems = hiddenItems.slice(itemsPerClick); // Update hidden items list
+
+                        if (hiddenItems.length === 0) {
+                            showMoreBtn.hide(); // Hide button when all items are shown
+                        }
+                    });
+                });
+            });
+        </script>
+    @endsection

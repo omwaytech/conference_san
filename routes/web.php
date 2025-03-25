@@ -51,7 +51,7 @@ use App\Http\Controllers\Backend\{
 Auth::routes(['register' => false]);
 
 Route::controller(FrontController::class)->name('front.')->group(function () {
-    Route::get('/', 'index')->name('index');
+    Route::get('/', 'index')->name('index'); 
     Route::get('/speakers', 'speakers')->name('speakers');
     Route::get('/news-notice', 'notice')->name('notice');
     Route::get('/news-notice-detail/{slug}', 'noticeDetail')->name('noticeDetail');
