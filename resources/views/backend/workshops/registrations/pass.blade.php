@@ -94,7 +94,7 @@
     </style>
 </head>
 
-<body> 
+<body>
     @foreach ($participants as $participant)
         <div style="width:1280px; height:auto;">
 
@@ -157,12 +157,13 @@
 
                         <h1
                             style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
-                           {{$participant->user->namePrefix->prefix}} {{ $participant->user->fullName($participant, 'user') }}
+                            {{ $participant->user->namePrefix->prefix }}
+                            {{ $participant->user->fullName($participant, 'user') }}
                         </h1>
                     </div>
 
 
-                    <div style="background-color:skyblue; height:auto; float:left; width:100%; overflow:hidden;">
+                    <div style="background-color:#099ffC; height:auto; float:left; width:100%; overflow:hidden;">
                         <h1
                             style="color:#fff; font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
                             Participant</h1>
