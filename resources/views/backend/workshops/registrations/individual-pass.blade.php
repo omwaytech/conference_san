@@ -225,13 +225,13 @@
                         $wordCount = str_word_count($participant->workshop->title);
                     @endphp
 
-                    @if ($wordCount > 5)
+                    {{-- @if ($wordCount > 5)
                         <h3 style="padding:0px 20px; height:80px; line-height:36px;">
                             {{ $participant->workshop->title }}</h3>
-                    @else
+                    @else --}}
                         <h2 style="padding:0px 20px; height:80px; line-height:36px;">
                             {{ $participant->workshop->title }}</h2>
-                    @endif
+                    {{-- @endif --}}
 
                     <h1
                         style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
@@ -241,7 +241,7 @@
                 </div>
 
 
-                <div style="background-color:099ffC; height:auto; float:left; width:100%; overflow:hidden;">
+                <div style="background-color: #099ffC; height:auto; float:left; width:100%; overflow:hidden;">
                     <h1
                         style="color:#fff; font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
                         Participant</h1>
