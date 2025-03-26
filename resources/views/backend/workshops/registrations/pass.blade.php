@@ -130,17 +130,24 @@
 
 
                         <small
-                            style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">"Scaling
-                            new heights in Pediatric Anesthesia and beyond"</small>
+                            style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">Venue:
+                        </small>
                         <p
                             style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
-                            4th - 5th April, 2025, Kathmandu, Nepal<br /> </p>
+                            <br />held on @if ($participant->workshop->start_date == $participant->workshop->end_date)
+                                {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS') }}
+                                -
+                                {{ \Carbon\Carbon::parse($participant->workshop->end_date)->format('jS F, Y') }}
+                            @endif, Kathmandu, Nepal<br />
+                        </p>
 
                         <h6
                             style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
                         </h6>
                         <h1
-                            style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:red;  margin:25px auto 0px; width:270px; color:#fff; border-radius:10px; height:30px; padding:10px 0px;">
+                            style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
                             Pre-congress
                         </h1>
                         @php

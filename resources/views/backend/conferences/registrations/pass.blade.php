@@ -132,7 +132,7 @@
 
                         <small
                             style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">"Scaling
-                            new heights in Pediatric Anesthesia and beyond"</small>
+                            new heights in Pediatric Anesthesia and beyond"</small> 
                         <p
                             style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
                             4th - 5th April, 2025, Kathmandu, Nepal<br /> </p>
