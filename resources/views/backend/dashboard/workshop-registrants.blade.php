@@ -33,7 +33,7 @@
                                     <tr>
                                         <th scope="row">{{$loop->iteration}}</th>
                                         <td>{{$registration->user->fullName($registration, 'user')}}</td>
-                                        <td>{{$registration->user->userDetail->memberType->type}}</td>
+                                        <td>{{$registration->user->userDetail->memberType->type ?? null}}</td>
                                         <td>{{$registration->transaction_id}}</td>
                                         <td>
                                             @if ($registration->payment_voucher == 'Fone-Pay')
