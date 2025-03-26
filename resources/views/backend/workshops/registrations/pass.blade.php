@@ -128,13 +128,13 @@
                     <div
                         style="padding:30px 0px 0px;  font-size:20px; font-size:20px; text-align:center; font-weight:normal; line-height:22px;">
 
-
                         <small
                             style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">Venue:
+                            {{ $participant->workshop->venue }}
                         </small>
                         <p
                             style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
-                            <br />held on @if ($participant->workshop->start_date == $participant->workshop->end_date)
+                            @if ($participant->workshop->start_date == $participant->workshop->end_date)
                                 {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }}
                             @else
                                 {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS') }}
@@ -146,6 +146,7 @@
                         <h6
                             style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
                         </h6>
+
                         <h1
                             style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
                             Pre-congress
@@ -154,13 +155,13 @@
                             $wordCount = str_word_count($participant->workshop->title);
                         @endphp
 
-                        @if ($wordCount > 5)
-                            <h3 style="padding:0px 20px; height:80px; line-height:36px;">
-                                {{ $participant->workshop->title }}</h3>
-                        @else
+                        {{-- @if ($wordCount > 5)
                             <h2 style="padding:0px 20px; height:80px; line-height:36px;">
                                 {{ $participant->workshop->title }}</h2>
-                        @endif
+                        @else --}}
+                        <h2 style="padding:0px 20px; height:80px; font-size:36px; line-height:36px;">
+                            {{ $participant->workshop->title }}</h2>
+                        {{-- @endif --}}
 
                         <h1
                             style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
