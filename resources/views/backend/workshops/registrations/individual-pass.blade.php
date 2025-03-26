@@ -165,94 +165,103 @@
 </head>
 
 <body>
-        <div style="width:1280px; height:auto;">
+    <div style="width:1280px; height:auto;">
 
-            <div style="width:550px; float:left !important; margin:20px;">
+        <div style="width:550px; float:left !important; margin:20px;">
+            <div
+                style="font-size:18px; background:url({{ asset('pass/image-07.png') }}) no-repeat center top #66b7ef;  background-size:100%; height:auto; overflow:hidden; padding:20px 0px 0px;">
+
+                <ul style="width:100%; margin:0px; float:left; padding:0px; padding-top:0px; padding-bottom:20px;">
+
+
+                    <li
+                        style="float:left; padding:30px 0px 0px; width:100%; letter-spacing:-0.3px; text-align:center; display:inline; font-size:50px; line-height:40px; color:#fff; font-weight:700;text-shadow:-1px -1px 0 #000;">
+                        SANCON-ASPA 2025
+                    </li>
+
+
+                </ul>
+
+                <ul style="width:100%; margin:0px; float:left; padding:0px; padding-bottom:20px;">
+
+                    <li style="float:left; padding-left:60px; text-align:center; display:inline;">
+                        <img src="{{ asset('pass/SAN.png') }}" width="80" alt="" />
+                    </li>
+
+                    <li style="float:right; padding-right:60px;  text-align:center; display:inline;">
+                        <img src="{{ asset('pass/ASPA.png') }}" width="80" alt="" />
+                    </li>
+
+                </ul>
+
                 <div
-                    style="font-size:18px; background:url({{ asset('pass/image-07.png') }}) no-repeat center top #66b7ef;  background-size:100%; height:auto; overflow:hidden; padding:20px 0px 0px;">
-
-                    <ul style="width:100%; margin:0px; float:left; padding:0px; padding-top:0px; padding-bottom:20px;">
+                    style="padding:30px 0px 0px;  font-size:20px; font-size:20px; text-align:center; font-weight:normal; line-height:22px;">
 
 
-                        <li
-                            style="float:left; padding:30px 0px 0px; width:100%; letter-spacing:-0.3px; text-align:center; display:inline; font-size:50px; line-height:40px; color:#fff; font-weight:700;text-shadow:-1px -1px 0 #000;">
-                            SANCON-ASPA 2025
-                        </li>
-
-
-                    </ul>
-
-                    <ul style="width:100%; margin:0px; float:left; padding:0px; padding-bottom:20px;">
-
-                        <li style="float:left; padding-left:60px; text-align:center; display:inline;">
-                            <img src="{{ asset('pass/SAN.png') }}" width="80" alt="" />
-                        </li>
-
-                        <li style="float:right; padding-right:60px;  text-align:center; display:inline;">
-                            <img src="{{ asset('pass/ASPA.png') }}" width="80" alt="" />
-                        </li>
-
-                    </ul>
-
-                    <div
-                        style="padding:30px 0px 0px;  font-size:20px; font-size:20px; text-align:center; font-weight:normal; line-height:22px;">
-
-
-                        <small
-                            style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">"Scaling
-                            new heights in Pediatric Anesthesia and beyond"</small>
-                        <p
-                            style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
-                            4th - 5th April, 2025, Kathmandu, Nepal<br /> </p>
-
-                        <h6
-                            style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
-                        </h6>
-                        <h1
-                            style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:red;  margin:25px auto 0px; width:270px; color:#fff; border-radius:10px; height:30px; padding:10px 0px;">
-                            Pre-congress
-                        </h1>
-                        @php
-                            $wordCount = str_word_count($participant->workshop->title);
-                        @endphp
-
-                        @if ($wordCount > 5)
-                            <h3 style="padding:0px 20px; height:80px; line-height:36px;">
-                                {{ $participant->workshop->title }}</h3>
+                   
+                    <small
+                    style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">Venue:
+                </small>
+                    <p
+                        style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
+                        <br />held on @if ($participant->workshop->start_date == $participant->workshop->end_date)
+                            {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }}
                         @else
-                            <h2 style="padding:0px 20px; height:80px; line-height:36px;">
-                                {{ $participant->workshop->title }}</h2>
-                        @endif
-
-                        <h1
-                            style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
-                            {{ $participant->user->namePrefix->prefix }}
-                            {{ $participant->user->fullName($participant, 'user') }}
-                        </h1>
-                    </div>
+                            {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS') }}
+                            -
+                            {{ \Carbon\Carbon::parse($participant->workshop->end_date)->format('jS F, Y') }}
+                        @endif, Kathmandu, Nepal<br />
+                    </p>
 
 
-                    <div style="background-color:skyblue; height:auto; float:left; width:100%; overflow:hidden;">
-                        <h1
-                            style="color:#fff; font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
-                            Participant</h1>
-                    </div>
-                    <div style="width:92%; font-size:15px; padding:105px 25px 48px; color:#fff; float:left;">
+                    <h6
+                        style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
+                    </h6>
+                    <h1
+                        style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:red;  margin:25px auto 0px; width:270px; color:#fff; border-radius:10px; height:30px; padding:10px 0px;">
+                        Pre-congress
+                    </h1>
+                    @php
+                        $wordCount = str_word_count($participant->workshop->title);
+                    @endphp
 
-                    </div>
+                    @if ($wordCount > 5)
+                        <h3 style="padding:0px 20px; height:80px; line-height:36px;">
+                            {{ $participant->workshop->title }}</h3>
+                    @else
+                        <h2 style="padding:0px 20px; height:80px; line-height:36px;">
+                            {{ $participant->workshop->title }}</h2>
+                    @endif
+
+                    <h1
+                        style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
+                        {{ $participant->user->namePrefix->prefix }}
+                        {{ $participant->user->fullName($participant, 'user') }}
+                    </h1>
+                </div>
 
 
-
-
-
+                <div style="background-color:skyblue; height:auto; float:left; width:100%; overflow:hidden;">
+                    <h1
+                        style="color:#fff; font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                        Participant</h1>
+                </div>
+                <div style="width:92%; font-size:15px; padding:105px 25px 48px; color:#fff; float:left;">
 
                 </div>
+
+
+
+
+
+
             </div>
-
-
-
-
         </div>
+
+
+
+
+    </div>
 
 </body>
 
