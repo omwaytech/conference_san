@@ -165,7 +165,7 @@
 
                         <h1
                             style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
-                            {{ $participant->user->namePrefix->prefix }}
+                            {{ $participant->user->namePrefix->prefix ?? null }}
                             {{ $participant->user->fullName($participant, 'user') }}
                         </h1>
                     </div>

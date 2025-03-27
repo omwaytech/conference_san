@@ -51,7 +51,7 @@ use App\Http\Controllers\Backend\{
 Auth::routes(['register' => false]);
 
 Route::controller(FrontController::class)->name('front.')->group(function () {
-    Route::get('/', 'index')->name('index'); 
+    Route::get('/', 'index')->name('index');
     Route::get('/speakers', 'speakers')->name('speakers');
     Route::get('/news-notice', 'notice')->name('notice');
     Route::get('/news-notice-detail/{slug}', 'noticeDetail')->name('noticeDetail');
@@ -224,12 +224,14 @@ Route::middleware('auth')->group(function () {
         Route::get('destroy/{trainer}', 'destroy')->name('destroy');
         Route::get('applied/{slug}', 'applied')->name('applied');
         Route::get('generate-pass/{id}', 'generatePass')->name('generatePass');
+        Route::post('generate-dummy-passs', 'dummyPass')->name('dummyPass');
     });
 
     // workshop registration routes
     Route::resource('/cms/workshop-registration', WorkshopRegistrationController::class)->except('show', 'create');
     Route::controller(WorkshopRegistrationController::class)->name('workshop-registration.')->prefix('/dash/workshop-registration')->group(function () {
         Route::get('/create/{slug}', 'create')->name('create');
+        Route::post('generate-dummy-passs', 'dummyPass')->name('dummyPass');
         Route::get('/registrants/{slug}', 'registrants')->name('registrants');
         Route::post('/verify-form', 'verifyForm')->name('verifyForm');
         Route::post('/verify', 'verify')->name('verify');

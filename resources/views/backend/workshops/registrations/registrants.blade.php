@@ -17,6 +17,21 @@
                             <a href="{{ route('workshop.index') }}" class="btn btn-danger"> Back</a>
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <form action="{{ route('workshop-registration.dummyPass') }}" method="POST">
+                            @csrf
+                            <div class="row mb-4">
+                                <input type="hidden" name="workshop_id" value="{{ $workshop->id }}">
+                                <div class="col-md-6">
+                                    <label for="registrant_type">Enter Number<code>*</code></label>
+                                    <input class="form-control" type="number" name="number">
+                                </div>
+                                <div class="col-md-3 form-group mt-4">
+                                    <button id="calculatePrice" class="btn btn-primary">Generate Dummy Data</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered" id="zero_configuration_table" style="width: 100%;">
                             <thead>
@@ -38,7 +53,7 @@
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $registration->user->fullName($registration, 'user') }}</td>
-                                        <td>{{ $registration->user->userDetail->memberType->type ?? null}}</td>
+                                        <td>{{ $registration->user->userDetail->memberType->type ?? null }}</td>
                                         {{-- <td><img src="{{asset('storage/users/'.$registration->user->userDetail->image)}}" alt="image" height="50"></td> --}}
                                         <td>{{ $registration->transaction_id }}</td>
                                         <td>

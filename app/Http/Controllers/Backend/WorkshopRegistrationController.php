@@ -28,6 +28,43 @@ class WorkshopRegistrationController extends Controller
         }
     }
 
+    public function dummyPass(Request $request)
+    {
+        try {
+            if ($request->number == null) {
+                return redirect()->back()->with('delete', 'Number field is required');
+            }
+
+            $numberOfRegistrants = (int) $request->number;
+
+            for ($i = 0; $i < $numberOfRegistrants; $i++) {
+                $user = User::create([
+                    'role' => 2,
+                    'password' => Hash::make('password'),
+                    'status' => 1
+                ]);
+
+                UserDetail::create([
+                    'user_id' => $user->id,
+                    'country_id' => 125,
+                    'status' => 1,
+                ]);
+
+                WorkshopRegistration::create([
+                    'user_id' => $user->id,
+                    'workshop_id' => $request->workshop_id,
+                    'token' => Str::random(60),
+                    'verified_status' => 1,
+                    'status' => 1,
+                ]);
+            }
+
+            return redirect()->back()->with('success', "$numberOfRegistrants dummy registrants created successfully");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $th->getMessage());
+        }
+    }
+
     public function create($slug)
     {
         $workshop = Workshop::whereSlug($slug)->first();

@@ -17,6 +17,28 @@ class WorkshopTrainerController extends Controller
         return view('backend.workshops.trainers.show', compact('trainers', 'workshop', 'authUser'));
     }
 
+    public function dummyPass(Request $request)
+    {
+        try {
+            if ($request->number == null) {
+                return redirect()->back()->with('delete', 'Number field is required');
+            }
+
+            $numberOfRegistrants = (int) $request->number;
+
+            for ($i = 0; $i < $numberOfRegistrants; $i++) {
+                WorkshopTrainer::create([
+                    'workshop_id' => $request->workshop_id,
+                    'status' => 1
+                ]);
+            }
+
+            return redirect()->back()->with('success', "$numberOfRegistrants dummy trainer created successfully");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $th->getMessage());
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

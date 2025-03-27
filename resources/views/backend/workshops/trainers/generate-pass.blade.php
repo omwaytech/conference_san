@@ -130,30 +130,39 @@
 
 
                         <small
-                            style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">"Scaling
-                            new heights in Pediatric Anesthesia and beyond"</small>
+                            style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">Venue:
+                            {{ $trainer->workshop->venue }}
+                        </small>
                         <p
                             style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
-                            4th - 5th April, 2025, Kathmandu, Nepal<br /> </p>
+                            @if ($trainer->workshop->start_date == $trainer->workshop->end_date)
+                                {{ \Carbon\Carbon::parse($trainer->workshop->start_date)->format('jS F, Y') }}
+                            @else
+                                {{ \Carbon\Carbon::parse($trainer->workshop->start_date)->format('jS') }}
+                                -
+                                {{ \Carbon\Carbon::parse($trainer->workshop->end_date)->format('jS F, Y') }}
+                            @endif, Kathmandu, Nepal<br />
+                        </p>
 
                         <h6
                             style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
                         </h6>
+
                         <h1
-                            style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:red;  margin:25px auto 0px; width:270px; color:#fff; border-radius:10px; height:30px; padding:10px 0px;">
+                            style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
                             Pre-congress
                         </h1>
                         @php
                             $wordCount = str_word_count($trainer->workshop->title);
                         @endphp
 
-                        @if ($wordCount > 5)
+                        {{-- @if ($wordCount > 5)
                             <h3 style="padding:0px 20px; height:80px; line-height:36px;">
                                 {{ $trainer->workshop->title }}</h3>
-                        @else
-                            <h2 style="padding:0px 20px; height:80px; line-height:36px;">
+                        @else --}}
+                            <h2 style="padding:0px 20px; height:80px; font-size:36px; line-height:36px;">
                                 {{ $trainer->workshop->title }}</h2>
-                        @endif
+                        {{-- @endif --}}
 
                         <h1
                             style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
