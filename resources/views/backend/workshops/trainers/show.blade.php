@@ -22,6 +22,21 @@
                                 Pass</a>
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <form action="{{ route('workshop-trainer.dummyPass') }}" method="POST">
+                            @csrf
+                            <div class="row mb-4">
+                                <input type="hidden" name="workshop_id" value="{{ $workshop->id }}">
+                                <div class="col-md-6">
+                                    <label for="registrant_type">Enter Number<code>*</code></label>
+                                    <input class="form-control" type="number" name="number">
+                                </div>
+                                <div class="col-md-3 form-group mt-4">
+                                    <button id="calculatePrice" class="btn btn-primary">Generate Dummy Data</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-bordered" id="zero_configuration_table" style="width: 100%;">
                             <thead>
