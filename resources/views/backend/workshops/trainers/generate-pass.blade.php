@@ -98,7 +98,7 @@
     @foreach ($trainers as $trainer)
         <div style="width:1280px; height:auto;">
 
-            <div style="width:550px; float:left !important; margin:20px;">
+            <div style="width:550px; float:left !important; margin:1px;">
                 <div
                     style="font-size:18px; background:url({{ asset('pass/image-07.png') }}) no-repeat center top #66b7ef;  background-size:100%; height:auto; overflow:hidden; padding:20px 0px 0px;">
 
@@ -160,8 +160,8 @@
                             <h3 style="padding:0px 20px; height:80px; line-height:36px;">
                                 {{ $trainer->workshop->title }}</h3>
                         @else --}}
-                            <h2 style="padding:0px 20px; height:80px; font-size:36px; line-height:36px;">
-                                {{ $trainer->workshop->title }}</h2>
+                        <h2 style="padding:0px 20px; height:80px; font-size:36px; line-height:36px;">
+                            {{ $trainer->workshop->title }}</h2>
                         {{-- @endif --}}
 
                         <h1
