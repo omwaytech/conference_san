@@ -17,7 +17,7 @@ class ScientificSessionController extends Controller
 
         $latestConference = Conference::latestConference();
         $startDate = Carbon::parse($latestConference->start_date);
-        $endDate = Carbon::parse($latestConference->end_date); 
+        $endDate = Carbon::parse($latestConference->end_date);
 
         $dates = [];
 
@@ -50,17 +50,18 @@ class ScientificSessionController extends Controller
     {
         try {
             $rules = [
-                'category_id'=> 'required',
+                'category_id' => 'required',
                 'topic' => 'required',
-                'type'=> 'required',
-                'hall_id'=> 'nullable',
+                'type' => 'required',
+                'hall_id' => 'nullable',
                 'screen' => 'nullable',
-                'chairperson'=> 'nullable',
-                'co_chairperson'=> 'nullable',
-                'participants'=> 'nullable',
-                'day'=> 'required',
-                'time'=> 'required',
-                'duration'=> 'required',
+                'chairperson' => 'nullable',
+                'co_chairperson' => 'nullable',
+                'participants' => 'nullable',
+                'day' => 'required',
+                'time' => 'required',
+                'duration' => 'required',
+                'moderator' => 'nullable'
             ];
             // if ($request->type == 5) {
             //     $rules['topic'] = 'required';
@@ -142,17 +143,18 @@ class ScientificSessionController extends Controller
     {
         try {
             $rules = [
-                'category_id'=> 'required',
+                'category_id' => 'required',
                 'topic' => 'required',
-                'type'=> 'required',
-                'hall_id'=> 'nullable',
+                'type' => 'required',
+                'hall_id' => 'nullable',
                 'screen' => 'nullable',
-                'chairperson'=> 'nullable',
-                'co_chairperson'=> 'nullable',
-                'participants'=> 'nullable',
-                'day'=> 'required',
-                'time'=> 'required',
-                'duration'=> 'required'
+                'chairperson' => 'nullable',
+                'co_chairperson' => 'nullable',
+                'participants' => 'nullable',
+                'day' => 'required',
+                'time' => 'required',
+                'duration' => 'required',
+                'moderator'=> 'nullable'
             ];
             // if ($request->type == 5) {
             //     $rules['topic'] = 'required';
@@ -193,7 +195,6 @@ class ScientificSessionController extends Controller
             } else {
                 return redirect()->back()->withInput()->with('delete', 'Time Slot Already Consumed For This Hall.');
             }
-
         } catch (Exception $e) {
             throw $e;
         }

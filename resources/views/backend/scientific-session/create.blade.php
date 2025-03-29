@@ -178,6 +178,16 @@
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="col-md-3 form-group mb-3" id="moderator" style="display: none;">
+                                <label for="moderator">Moderator <code></code></label>
+                                <input type="text" class="form-control @error('moderator') is-invalid @enderror"
+                                    name="moderator" id="moderator"
+                                    value="{{ isset($scientific_session) ? $scientific_session->moderator : old('moderator') }}"
+                                    placeholder="Enter moderator" />
+                                @error('moderator')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div class="col-md-3 form-group mb-3">
                                 <label for="chairperson">Chairperson <code></code></label>
                                 <input type="text" class="form-control @error('chairperson') is-invalid @enderror"
@@ -377,9 +387,12 @@
             function toggleScreenField() {
                 if ($('#hall_id').val() == '6') {
                     $('#screen-field').show();
+                    $('#moderator').show();
                 } else {
                     $('#screen-field').hide();
+                    $('#moderator').hide();
                     $('#screen').val(''); // Reset value when hidden
+                    $('#moderator').val(''); // Reset value when hidden
                 }
             }
 
