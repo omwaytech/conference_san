@@ -22,7 +22,8 @@ class ScientificSession extends Model
         'duration',
         'status',
         'category_id',
-        'screen'
+        'screen',
+        'moderator'
     ];
 
     // values of type:                      chairperson         participants

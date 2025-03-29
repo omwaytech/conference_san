@@ -137,7 +137,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/export/{type}', 'exportExcel')->name('exportExcel');
         Route::get('/excel/indias', 'exportIndian')->name('exportIndian');
         Route::post('/submit-data', 'submitData')->name('submitData');
-        Route::get('/convert-to-speaker', 'convertToSpeaker')->name('convertToSpeaker');
+        Route::get('/convert-to-speaker', 'convertToSpeaker')->name('convertToSpeaker'); 
         Route::post('/convert-to-speaker-submit', 'convertToSpeakerSubmit')->name('convertToSpeakerSubmit');
         Route::get('/generate-pass/{type}', 'generatePass')->name('generatePass');
         Route::post('/take-attendance', 'takeAttendance')->name('takeAttendance');

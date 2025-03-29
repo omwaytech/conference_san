@@ -118,7 +118,7 @@
                                                                         Export PDF for {{ $hall->hall_name }}
                                                                     </a>
                                                                 </div>
-                                                                @foreach ($hall->scientificSession->where('day', $date)->where('status',1)->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))->groupBy('category_id') as $category_id => $sessions)
+                                                                @foreach ($hall->scientificSession->where('day', $date)->where('status', 1)->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))->groupBy('category_id') as $category_id => $sessions)
                                                                     {{-- @dd($sessions) --}}
                                                                     <div class="accordion mt-3"
                                                                         id="innerAccordion-{{ $dateIndex }}-{{ $hallIndex }}">
@@ -172,16 +172,34 @@
                                                                                 data-bs-parent="#innerAccordion-{{ $dateIndex }}-{{ $hallIndex }}">
                                                                                 <div class="accordion-body">
                                                                                     @if ($hall->id == 6)
-                                                                                        @foreach ($sessions->where('status',1)->groupBy('screen') as $screen => $screenSessions)
+                                                                                        @php
+                                                                                            $groupedSessions = $sessions
+                                                                                                ->where('status', 1)
+                                                                                                ->groupBy('screen')
+                                                                                                ->map(function (
+                                                                                                    $items,
+                                                                                                ) {
+                                                                                                    return [
+                                                                                                        'moderator' => optional(
+                                                                                                            $items->first(),
+                                                                                                        )->moderator,
+                                                                                                        'sessions' => $items,
+                                                                                                    ];
+                                                                                                });
+                                                                                        @endphp
+
+                                                                                        @foreach ($groupedSessions as $screen => $screenSessions)
                                                                                             <div class="screen-info">
                                                                                                 <p>{{ $screen }}
+                                                                                                    @if( $screenSessions['moderator'] ) -
+                                                                                                   <i> {{ $screenSessions['moderator'] }}</i>@endif
                                                                                                 </p>
                                                                                                 <ul>
-                                                                                                    @foreach ($screenSessions as $session)
+                                                                                                    @foreach ($screenSessions['sessions'] as $session)
                                                                                                         <li>
                                                                                                             <b>{{ $session->duration }}</b>
                                                                                                             -
-                                                                                                            {{ $session->topic }}</br>
+                                                                                                            {{ $session->topic }}<br>
                                                                                                             @if ($session->participants)
                                                                                                                 <small>
                                                                                                                     <i>{{ trim($session->participants, '"') }}</i>
@@ -194,7 +212,7 @@
                                                                                         @endforeach
                                                                                     @else
                                                                                         <ul>
-                                                                                            @foreach ($sessions->where('status',1) as $session)
+                                                                                            @foreach ($sessions->where('status', 1) as $session)
                                                                                                 <li>
                                                                                                     <b>{{ $session->duration }}</b>
                                                                                                     -
@@ -362,8 +380,6 @@
 
     <!-- Bootstrap JS -->
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
-
-    
 @endsection
 @section('scripts')
     <script>
