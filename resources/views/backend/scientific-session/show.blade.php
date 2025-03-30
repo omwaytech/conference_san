@@ -78,8 +78,8 @@
                                                     <button title="Delete Data" class="btn btn-sm btn-danger delete"
                                                         type="submit"><i class="nav-icon i-Close-Window"></i></button>
                                                 @endif
-                                                <a href="{{ route('poll.index', $session->id) }}"
-                                                    class="btn btn-sm btn-warning" title="Edit Data">Poll</a>
+                                                {{-- <a href="{{ route('poll.index', $session->id) }}"
+                                                    class="btn btn-sm btn-warning" title="Edit Data">Poll</a> --}}
                                             </form>
                                         </td>
                                     </tr>
