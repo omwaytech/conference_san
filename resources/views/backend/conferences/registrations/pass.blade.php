@@ -101,7 +101,7 @@
         <div style="width:1280px; height:auto;">
             <div style="width:550px; float:left !important; margin:20px;">
                 <div
-                    style="font-size:18px; background:url('{{ asset('pass/Image-07.png') }}') no-repeat center top #66b7ef;  background-size:100%; height:auto; overflow:hidden; padding:20px 0px 0px;">
+                    style="font-size:18px; background:url('{{ asset('pass/image-07.png') }}') no-repeat center top #66b7ef;  background-size:100%; height:auto; overflow:hidden; padding:20px 0px 0px;">
 
                     <ul style="width:100%; margin:0px; float:left; padding:0px; padding-top:0px; padding-bottom:20px;">
 
