@@ -6,7 +6,7 @@
     @elseif ($type == 'speakers')
         Conference Speakers
     @elseif ($type == 'invited-attendees')
-        Conference Invited Attendees 
+        Conference Invited Attendees
     @elseif ($type == 'invited-speakers')
         Conference Invited Speakers
     @endif
@@ -109,6 +109,7 @@
                                     <th scope="col">Transaction ID</th>
                                     <th scope="col">No. of people</th>
                                     <th scope="col">Is Verified ?</th>
+                                    <th scope="col">Registration Id</th>
                                     <th scope="col" style="width: 9%">Action</th>
                                 </tr>
                             </thead>
@@ -168,11 +169,14 @@
                                             @endif
                                         </td>
                                         <td>
+                                            {{ $registrant->registration_id }}
+                                        </td>
+                                        <td>
                                             <button class="btn btn-sm btn-info viewData" type="button" title="View Data"
                                                 data-id="{{ $registrant->id }}" data-toggle="modal"
                                                 data-target="#openModal"><i class="nav-icon i-Eye"></i></button>
                                             @if ($registrant->verified_status == 1)
-                                                <a href="{{ route('conference-registration.generateIndividualPass', $registrant->id) }}"
+                                                <a href="{{ route('conference-registration.generateIndividualPass', [$registrant->id, $type]) }}"
                                                     class="btn btn-primary btn-sm mt-1" target="_blank"><i
                                                         class="nav-icon i-File"></i> Generate Pass</a>
                                             @endif

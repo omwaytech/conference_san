@@ -132,7 +132,7 @@
 
                         <small
                             style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">"Scaling
-                            new heights in Pediatric Anesthesia and beyond"</small> 
+                            new heights in Pediatric Anesthesia and beyond"</small>
                         <p
                             style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
                             4th - 5th April, 2025, Kathmandu, Nepal<br /> </p>
@@ -140,11 +140,22 @@
                         <h6
                             style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
                         </h6>
-                        <h1
-                            style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 10px; width:470px; border-radius:10px; height:30px; padding:22px 0px;">
-                            {{ $participant->user->namePrefix->prefix ?? null }}
-                            {{ $participant->user->fullName($participant, 'user') }}
-                        </h1>
+                        @php
+                            $wordCount = str_word_count($participant->user->fullName($participant, 'user'));
+                        @endphp
+                        @if ($wordCount > 3)
+                            <h2
+                                style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 10px; width:470px; border-radius:10px; height:30px; padding:22px 0px;">
+                                {{ $participant->user->namePrefix->prefix ?? null }}
+                                {{ $participant->user->fullName($participant, 'user') }}
+                            </h2>
+                        @else
+                            <h1
+                                style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 10px; width:470px; border-radius:10px; height:30px; padding:22px 0px;">
+                                {{ $participant->user->namePrefix->prefix ?? null }}
+                                {{ $participant->user->fullName($participant, 'user') }}
+                            </h1>
+                        @endif
                     </div>
                     <div style="width:510px; padding:0px 20px 10px; text-align:center; float:left;">
 
@@ -173,7 +184,7 @@
                                     {{ $participant->user->userDetail->pass_designation }}
                                 </h1>
                             </div>
-                        @elseif ($participant->committeMember)
+                        @elseif ($participant->committeMember->isNotEmpty())
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
                                     style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
@@ -185,7 +196,7 @@
                                 ($participant->user->userDetail->member_type_id == 1 ||
                                     $participant->user->userDetail->member_type_id == 2 ||
                                     $participant->user->userDetail->member_type_id == 4))
-                            <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
+                            <div style="background-color:#009aee; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
                                     style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
                                     Delegate
@@ -200,7 +211,7 @@
                                 </h1>
                             </div>
                         @else
-                            <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
+                            <div style="background-color: #009aee; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
                                     style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
 
@@ -218,7 +229,7 @@
                                     {{ $participant->user->userDetail->pass_designation }}
                                 </h1>
                             </div>
-                        @elseif ($participant->committeMember)
+                        @elseif ($participant->committeMember->isNotEmpty())
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
                                     style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">

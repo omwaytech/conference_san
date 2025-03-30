@@ -47,7 +47,7 @@ class ConferenceRegistration extends Model
 
     public function committeMember()
     {
-        return $this->belongsTo(CommitteeMember::class, 'user_id', 'user_id');
+        return $this->hasMany(CommitteeMember::class, 'user_id', 'user_id')->where('status',1);
     }
 
     public static function totalRegistrants($delegate, $conference)
