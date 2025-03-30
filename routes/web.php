@@ -99,6 +99,7 @@ Route::middleware('auth')->group(function () {
         Route::controller(ConferenceRegistrationController::class)->name('conferenceRegistration.')->prefix('/conference/registration')->group(function () {
             Route::get('/participants/{type}', 'participants')->name('participants');
             Route::get('update-regisration-id', 'updatRegistrationId')->name('updatRegistrationId');
+            Route::get('empty-registrationId-id', 'emptyRegistrationId')->name('emptyRegistrationId');
             Route::post('/verify-registrant', 'verifyForm')->name('verifyForm');
             Route::post('/verify-registrant-submit', 'verifyRegistrant')->name('verifyRegistrant');
             Route::get('/registration-or-invitation', 'registrationByAdmin')->name('byAdmin');
@@ -137,13 +138,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/export/{type}', 'exportExcel')->name('exportExcel');
         Route::get('/excel/indias', 'exportIndian')->name('exportIndian');
         Route::post('/submit-data', 'submitData')->name('submitData');
-        Route::get('/convert-to-speaker', 'convertToSpeaker')->name('convertToSpeaker'); 
+        Route::get('/convert-to-speaker', 'convertToSpeaker')->name('convertToSpeaker');
         Route::post('/convert-to-speaker-submit', 'convertToSpeakerSubmit')->name('convertToSpeakerSubmit');
         Route::get('/generate-pass/{type}', 'generatePass')->name('generatePass');
         Route::post('/take-attendance', 'takeAttendance')->name('takeAttendance');
         Route::post('/take-meal', 'takeMeal')->name('takeMeal');
         Route::get('/generate-certificate/{id}', 'generateCertificate')->name('generateCertificate');
-        Route::get('/generate-individual-pass/{conferenceRegistration}', 'generateIndividualPass')->name('generateIndividualPass');
+        Route::get('/generate-individual-pass/{conferenceRegistration}/{type}', 'generateIndividualPass')->name('generateIndividualPass');
         Route::post('/choose-registrant-type', 'chooseRegistrantType')->name('chooseRegistrantType');
         Route::post('/online-payment', 'onlinePayment')->name('onlinePayment');
         Route::get('/international-payment-result/success-process', 'internationalPaymentResultSuccessProcess')->name('internationalPaymentResultSuccessProcess');

@@ -40,22 +40,52 @@ class ConferenceRegistrationController extends Controller
         return Excel::download(new ConferenceRegisrationIndian(), 'conference_registration_indian.xlsx');
     }
 
+    public function emptyRegistrationId()
+    {
+        $latestConference = Conference::latestConference();
+        $registrants = ConferenceRegistration::where(['conference_id' => @$latestConference->id, 'status' => 1])->get();
+        foreach ($registrants as $registrant) {
+            $registrant->update([
+                'registration_id' => null
+            ]);
+        }
+    }
+
     public function updatRegistrationId()
     {
         $latestConference = Conference::latestConference();
-        $registrations = ConferenceRegistration::where([
-            'conference_id' => $latestConference->id,
-            'status' => 1
-        ])->get();
-        foreach ($registrations as $registration) {
-            if ($registration->user->userDetail) {
+        $registrants = ConferenceRegistration::where(['conference_id' => @$latestConference->id, 'status' => 1])
+            ->with(['user', 'user.userDetail.country', 'committeMember.committee'])
+            ->get()
+            ->sortBy(fn($registrant) => strtolower(trim($registrant->user->f_name)));
+        $validated = [];
+        $prefixCounters = [];
+        foreach ($registrants as $registrant) {
+            $prefix = '';
+
+            // Determine the Prefix
+            if ($registrant->committeMember->isNotEmpty()) {
+                $prefix = 'ORG_';
+            } elseif ($registrant->user->userDetail->country->country_name !== 'Nepal') {
+                $prefix = 'INT_';
+            } else {
+                $prefix = ($registrant->registrant_type == 1) ? 'DEL_' : 'FAC_';
             }
-            $registration->update([
-                'registration_id' => $latestConference->registration_id . '-' . $registration->id
-            ]);
+
+            // Initialize the counter if not set
+            if (!isset($prefixCounters[$prefix])) {
+                $prefixCounters[$prefix] = 1;
+            }
+
+            // Assign the next registration ID
+            $validated['registration_id'] = $prefix . str_pad($prefixCounters[$prefix], 3, '0', STR_PAD_LEFT);
+            $prefixCounters[$prefix]++;
+
+            // Update the registrant record
+            $registrant->update($validated);
         }
-        dd($registrations);
     }
+    
     public function create()
     {
         $checkPayment = null;
@@ -1222,11 +1252,11 @@ class ConferenceRegistrationController extends Controller
         return response()->json(['type' => $type, 'message' => $message]);
     }
 
-    public function generateIndividualPass(ConferenceRegistration $conferenceRegistration)
+    public function generateIndividualPass(ConferenceRegistration $conferenceRegistration, $type)
     {
         // dd($conferenceRegistration);
         $participant = $conferenceRegistration;
-        // return view('backend.conferences.registrations.individual-pass', compact('participant'));
+        return view('backend.conferences.registrations.individual-pass', compact('participant', 'type'));
 
         $customPaper = array(0, 0, 1400, 1600);
         $pdf = PDF::loadView('backend.conferences.registrations.individual-pass', compact('participant'))->setPaper($customPaper);
