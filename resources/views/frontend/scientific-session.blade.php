@@ -119,7 +119,6 @@
                                                                     </a>
                                                                 </div>
                                                                 @foreach ($hall->scientificSession->where('day', $date)->where('status', 1)->sortBy(fn($session) => \Carbon\Carbon::createFromFormat('h:ia', $session->time))->groupBy('category_id') as $category_id => $sessions)
-                                                                    {{-- @dd($sessions) --}}
                                                                     <div class="accordion mt-3"
                                                                         id="innerAccordion-{{ $dateIndex }}-{{ $hallIndex }}">
                                                                         <div class="accordion-item collapsed">
@@ -158,10 +157,13 @@
                                                                                         <span class="session-time">
                                                                                             {{ $sessions->first()->category->duration }}
                                                                                         </span>
-                                                                                        <span
-                                                                                            class="material-symbols-outlined">
-                                                                                            keyboard_arrow_down
-                                                                                        </span>
+                                                                                        {{-- @dd($sessions->whereNotNull('topic')) --}}
+                                                                                        @if ($sessions->whereNotNull('topic')->isNotEmpty())
+                                                                                            <span
+                                                                                                class="material-symbols-outlined">
+                                                                                                keyboard_arrow_down
+                                                                                            </span>
+                                                                                        @endif
 
                                                                                     </div>
                                                                                 </button>
