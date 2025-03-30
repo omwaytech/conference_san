@@ -191,8 +191,11 @@
                                                                                         @foreach ($groupedSessions as $screen => $screenSessions)
                                                                                             <div class="screen-info">
                                                                                                 <p>{{ $screen }}
-                                                                                                    @if( $screenSessions['moderator'] ) -
-                                                                                                   <i> {{ $screenSessions['moderator'] }}</i>@endif
+                                                                                                    @if ($screenSessions['moderator'])
+                                                                                                        -
+                                                                                                        <i>
+                                                                                                            {{ $screenSessions['moderator'] }}</i>
+                                                                                                    @endif
                                                                                                 </p>
                                                                                                 <ul>
                                                                                                     @foreach ($screenSessions['sessions'] as $session)
@@ -213,16 +216,18 @@
                                                                                     @else
                                                                                         <ul>
                                                                                             @foreach ($sessions->where('status', 1) as $session)
-                                                                                                <li>
-                                                                                                    <b>{{ $session->duration }}</b>
-                                                                                                    -
-                                                                                                    {{ $session->topic }}</br>
-                                                                                                    @if ($session->participants)
-                                                                                                        <small>
-                                                                                                            <i>{{ trim($session->participants, '"') }}</i>
-                                                                                                        </small>
-                                                                                                    @endif
-                                                                                                </li>
+                                                                                                @if ($session->topic)
+                                                                                                    <li>
+                                                                                                        <b>{{ $session->duration }}</b>
+                                                                                                        -
+                                                                                                        {{ $session->topic }}</br>
+                                                                                                        @if ($session->participants)
+                                                                                                            <small>
+                                                                                                                <i>{{ trim($session->participants, '"') }}</i>
+                                                                                                            </small>
+                                                                                                        @endif
+                                                                                                    </li>
+                                                                                                @endif
                                                                                             @endforeach
                                                                                         </ul>
                                                                                     @endif

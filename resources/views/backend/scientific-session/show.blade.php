@@ -33,15 +33,16 @@
                             <tbody>
                                 @foreach ($sessions as $session)
                                     <tr>
-                                        <th scope="row">{{$loop->iteration}}</th>
-                                        <td>{{!empty($session->category->category_name) ? $session->category->category_name : ''}}</td>
+                                        <th scope="row">{{ $loop->iteration }}</th>
+                                        <td>{{ !empty($session->category->category_name) ? $session->category->category_name : '' }}
+                                        </td>
                                         <td>
-                                            {{$session->topic}}
-                                        
+                                            {{ $session->topic }}
+
                                         </td>
                                         <td>
                                             @if (!empty($session->hall_id))
-                                                {{$session->hall->hall_name}}
+                                                {{ $session->hall->hall_name }}
                                                 {{-- old code --}}
                                                 {{-- @foreach (json_decode($session->hall_id) as $hallId)
                                                     @php
@@ -56,21 +57,29 @@
                                         <td>
                                             @foreach ($dates as $date)
                                                 @if ($session->day == $date)
-                                                    Day {{$loop->iteration}}
+                                                    Day {{ $loop->iteration }}
                                                 @endif
                                             @endforeach
                                         </td>
-                                        <td>{{$session->time}}</td>
-                                        <td>{{$session->duration}}</td>
+                                        <td>{{ $session->time }}</td>
+                                        <td>{{ $session->duration }}</td>
                                         <td>
-                                            <form action="{{route('scientific-session.destroy', $session->id)}}" method="POST">
+                                            <form action="{{ route('scientific-session.destroy', $session->id) }}"
+                                                method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <a href="{{route('scientific-session.edit', $session->id)}}" class="btn btn-sm btn-success" title="Edit Data"><i class="nav-icon i-Pen-2"></i></a>
-                                                <button class="btn btn-sm btn-info viewData" type="button" data-id="{{$session->id}}" data-toggle="modal" data-target="#openModal"><i class="nav-icon i-Eye"></i></button>
+                                                <a href="{{ route('scientific-session.edit', $session->id) }}"
+                                                    class="btn btn-sm btn-success" title="Edit Data"><i
+                                                        class="nav-icon i-Pen-2"></i></a>
+                                                <button class="btn btn-sm btn-info viewData" type="button"
+                                                    data-id="{{ $session->id }}" data-toggle="modal"
+                                                    data-target="#openModal"><i class="nav-icon i-Eye"></i></button>
                                                 @if (auth()->user()->id == 1)
-                                                    <button title="Delete Data" class="btn btn-sm btn-danger delete" type="submit"><i class="nav-icon i-Close-Window"></i></button>
+                                                    <button title="Delete Data" class="btn btn-sm btn-danger delete"
+                                                        type="submit"><i class="nav-icon i-Close-Window"></i></button>
                                                 @endif
+                                                {{-- <a href="{{ route('poll.index', $session->id) }}"
+                                                    class="btn btn-sm btn-warning" title="Edit Data">Poll</a> --}}
                                             </form>
                                         </td>
                                     </tr>
@@ -78,7 +87,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="modal fade" id="openModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="openModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content" id="modalContent">
                                 {{-- modal body goes here --}}
@@ -92,18 +102,21 @@
 @endsection
 
 @section('scripts')
-<script>
-    $(document).ready(function () {
-        $(document).on("click", ".viewData", function (e) {
-            e.preventDefault();
-            var url = '{{route('scientific-session.show')}}';
-            var _token = '{{csrf_token()}}';
-            var id = $(this).data('id');
-            var data = {_token:_token, id:id};
-            $.post(url, data, function(response){
-                $('#modalContent').html(response);
+    <script>
+        $(document).ready(function() {
+            $(document).on("click", ".viewData", function(e) {
+                e.preventDefault();
+                var url = '{{ route('scientific-session.show') }}';
+                var _token = '{{ csrf_token() }}';
+                var id = $(this).data('id');
+                var data = {
+                    _token: _token,
+                    id: id
+                };
+                $.post(url, data, function(response) {
+                    $('#modalContent').html(response);
+                });
             });
         });
-    });
-</script>
+    </script>
 @endsection

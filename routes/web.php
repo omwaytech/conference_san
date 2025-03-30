@@ -36,6 +36,7 @@ use App\Http\Controllers\Backend\{
     ScientificSessionCategoryController,
     DesignationController
 };
+use App\Http\Controllers\PollController;
 
 /*
 |--------------------------------------------------------------------------
@@ -338,5 +339,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/cms/designation/order-submit', [DesignationController::class, 'orderSubmit'])->name('designation.orderSubmit');
 
     Route::post('/ckeditor/file-upload', [CkEditorController::class, 'ckEditorUpload'])->name('ckeditor.fileUpload');
+
+    Route::controller(PollController::class)->group(function () {
+        Route::get('/cms/poll/{id}', 'index')->name('poll.index');
+        Route::get('/cms/create/{id}', 'create')->name('poll.create');
+        Route::post('/cms/store/', 'store')->name('poll.store');
+        Route::get('/cms/edit/{id}', 'edit')->name('poll.edit');
+        Route::put('/cms/update/{id}', 'update')->name('poll.update');
+        Route::delete('cms/delete/{id}', 'destroy')->name('poll.destroy');
+    });
 });
 Route::post('/send-pass-email', [ConferenceRegistrationController::class, 'sendPassEmail']);
