@@ -150,7 +150,11 @@
 
                         <h1
                             style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
-                            Pre-congress
+                            @if (\Carbon\Carbon::parse($trainer->workshop->start_date)->lt(\Carbon\Carbon::parse('2025-04-04')))
+                                Pre-congress
+                            @elseif (\Carbon\Carbon::parse($trainer->workshop->start_date)->gt(\Carbon\Carbon::parse('2025-04-05')))
+                                Post-congress
+                            @endif
                         </h1>
                         @php
                             $wordCount = str_word_count($trainer->workshop->title);

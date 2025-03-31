@@ -15,7 +15,7 @@ class WorkshopController extends Controller
     {
         $authUser = auth()->user();
         $latestConference = Conference::latestConference();
-        $conference = session()->get('conferenceDetail');
+        $conference = session()->get('conferenceDetail'); 
  
         if ($authUser->role == 1) {
             $workshops = Workshop::where(['conference_id' => $conference->id, 'status' => 1])->latest()->get();

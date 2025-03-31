@@ -193,14 +193,15 @@
                     </li>
 
                 </ul>
-                
+
                 <div
                     style="padding:30px 0px 0px;  font-size:20px; font-size:20px; text-align:center; font-weight:normal; line-height:22px;">
 
 
 
                     <small
-                        style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">Venue: {{$participant->workshop->venue}}
+                        style="font-size:18px; font-weight:500; letter-spacing:-0.02em; color:#000; padding-top:40px;">Venue:
+                        {{ $participant->workshop->venue }}
                     </small>
                     <p
                         style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
@@ -219,7 +220,11 @@
 
                     <h1
                         style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
-                        Pre-congress
+                        @if (\Carbon\Carbon::parse($participant->workshop->start_date)->lt(\Carbon\Carbon::parse('2025-04-04')))
+                            Pre-congress
+                        @elseif (\Carbon\Carbon::parse($participant->workshop->start_date)->gt(\Carbon\Carbon::parse('2025-04-05')))
+                            Post-congress
+                        @endif
                     </h1>
                     @php
                         $wordCount = str_word_count($participant->workshop->title);
@@ -229,8 +234,8 @@
                         <h3 style="padding:0px 20px; height:80px; line-height:36px;">
                             {{ $participant->workshop->title }}</h3>
                     @else --}}
-                        <h2 style="padding:0px 20px; height:80px; line-height:36px;">
-                            {{ $participant->workshop->title }}</h2>
+                    <h2 style="padding:0px 20px; height:80px; line-height:36px;">
+                        {{ $participant->workshop->title }}</h2>
                     {{-- @endif --}}
 
                     <h1
