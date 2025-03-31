@@ -72,28 +72,27 @@
                         <h6
                             style="font-size:24px; background:#fff;  margin:5px 0px; line-height:30px; font-weight:500; padding:2px 0px; background-color:rgba(255, 255, 255, 0.1);">
                         </h6>
-                        <h1
-                            style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
-                            Pre-congress
-                        </h1>
-                        @php
-                            $wordCount = str_word_count($workshop->title);
-                        @endphp
 
-                        {{-- @if ($wordCount > 5)
-                            <h3 style="padding:0px 20px; height:80px; line-height:36px;">{{ $workshop->title }}</h3>
-                        @else --}}
+                        <h1
+                            style="font-size:24px;text-transform:capitalize; letter-spacing:-0.01em; background:red;  
+                        margin:25px auto 0px; width:180px; color:#fff; border-radius:10px; height:30px; padding:5px 0px;">
+                            @if (\Carbon\Carbon::parse($workshop->start_date)->lt(\Carbon\Carbon::parse('2025-04-04')))
+                                Pre-congress
+                            @elseif (\Carbon\Carbon::parse($workshop->start_date)->gt(\Carbon\Carbon::parse('2025-04-05')))
+                                Post-congress
+                            @endif
+                        </h1>
+
+
                         <h2 style="padding:0px 20px; height:80px; font-size:36px; line-height:36px;">
                             {{ $workshop->title }}</h2>
-                        {{-- @endif --}}
+
 
                         <h1
                             style="font-size:34px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 30px; width:470px; border-radius:10px; height:30px; padding:15px 0px;">
                             {{ $workshop->chair_person_name }}
                         </h1>
                     </div>
-
-
                     <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                         <h1
                             style="color:#fff; font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
@@ -102,10 +101,6 @@
                     <div style="width:92%; font-size:15px; padding:105px 25px 48px; color:#fff; float:left;">
 
                     </div>
-
-
-
-
 
 
                 </div>

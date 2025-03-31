@@ -75,7 +75,7 @@
                                                     @else
                                                         <span class="badge bg-warning">Pending</span>
                                                     @endif
-                                                @endif
+                                                @endif 
                                             @endif
                                         </td>
                                         <td>
