@@ -206,12 +206,12 @@
                     <p
                         style="line-height:30PX; color:white; margin:0px; padding:2px 0px 6px; font-size:16px; font-weight:500;">
                         @if ($participant->workshop->start_date == $participant->workshop->end_date)
-                            {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }}
+                            {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }},
                         @else
                             {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS') }}
                             -
-                            {{ \Carbon\Carbon::parse($participant->workshop->end_date)->format('jS F, Y') }}
-                        @endif, Kathmandu, Nepal<br />
+                            {{ \Carbon\Carbon::parse($participant->workshop->end_date)->format('jS F, Y') }},
+                        @endif Kathmandu, Nepal<br />
                     </p>
 
                     <h6

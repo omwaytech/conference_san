@@ -68,6 +68,7 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
     Route::get('/scientific-session-test', 'scientificSessionTest')->name('scientificSessionTest');
     Route::get('/export-pdf/{hall_id}/{date}', 'exportPdf')->name('export.pdf');
     Route::get('/message', 'message')->name('message');
+    Route::post('poll', 'poll')->name('poll');
 });
 
 //==================================== Backend Start ====================================

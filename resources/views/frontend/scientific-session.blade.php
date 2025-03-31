@@ -218,16 +218,32 @@
                                                                                     @else
                                                                                         <ul>
                                                                                             @foreach ($sessions->where('status', 1) as $session)
+                                                                                                {{-- @dd($session) --}}
                                                                                                 @if ($session->topic)
                                                                                                     <li>
                                                                                                         <b>{{ $session->duration }}</b>
                                                                                                         -
                                                                                                         {{ $session->topic }}</br>
+
                                                                                                         @if ($session->participants)
                                                                                                             <small>
                                                                                                                 <i>{{ trim($session->participants, '"') }}</i>
                                                                                                             </small>
                                                                                                         @endif
+                                                                                                        {{-- <div
+                                                                                                            class="d-flex justify-content-end">
+                                                                                                            <div
+                                                                                                                class="col-md-1">
+                                                                                                                <button
+                                                                                                                    class="btn btn-xs btn-warning poll"
+                                                                                                                    type="button"
+                                                                                                                    data-toggle="modal"
+                                                                                                                    data-target="#openModal"
+                                                                                                                    data-id="{{ $session->id }}">
+                                                                                                                    Poll
+                                                                                                                </button>
+                                                                                                            </div>
+                                                                                                        </div> --}}
                                                                                                     </li>
                                                                                                 @endif
                                                                                             @endforeach
@@ -253,27 +269,16 @@
             </div>
         </div>
     </div>
-
-    {{-- @foreach ($dates as $date)
-        <div>
-            <h3>
-                DAY {{ $loop->index + 1 }}:
-                {{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}
-            </h3>
-            @foreach ($halls as $hall)
-                <div class="row">
-                    <span>
-                        <h4>{{ $hall->hall_name }}</h4>
-                    </span>
-                    @foreach ($sessions as $session)
-                        <div class="row">
-                            <span>-{{ $session->topic }}</span>
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
+    <div class="modal fade" id="openModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="modalContent">
+                {{-- modal body goes here --}}
+            </div>
         </div>
-    @endforeach --}}
+    </div>
+
+
 
     <style type="text/css">
         .accordion-item {}
@@ -458,5 +463,22 @@
 
             return dayNumber;
         }
+
+
+        $(document).ready(function() {
+            $(document).on("click", ".poll", function(e) {
+                e.preventDefault();
+                var url = '{{ route('front.poll') }}';
+                var _token = '{{ csrf_token() }}';
+                var id = $(this).data('id');
+                var data = {
+                    _token: _token,
+                    id: id
+                };
+                $.post(url, data, function(response) {
+                    $('#modalContent').html(response);
+                });
+            });
+        });
     </script>
 @endsection

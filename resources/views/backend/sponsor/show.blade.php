@@ -19,7 +19,7 @@
                     <div class="table-responsive">
                         <table class="table table-bordered" id="zero_configuration_table" style="width: 100%;">
                             <thead>
-                                <tr>
+                                <tr> 
                                     <th scope="col">#</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Name</th>
