@@ -49,6 +49,11 @@ class FrontController extends Controller
         return view('frontend.index', $data);
     }
 
+    public function poll(Request $request)
+    {
+        return view('frontend.poll');
+    }
+
     public function speakers()
     {
         session(['isIndex' => false]);
