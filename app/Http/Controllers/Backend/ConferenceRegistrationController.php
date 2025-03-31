@@ -40,6 +40,45 @@ class ConferenceRegistrationController extends Controller
         return Excel::download(new ConferenceRegisrationIndian(), 'conference_registration_indian.xlsx');
     }
 
+    public function dummyPass(Request $request)
+    {
+        try {
+            if ($request->registrant_type == null || $request->number == null) {
+                return redirect()->back()->with('delete', 'Registrant type and number field is required');
+            }
+
+            $numberOfRegistrants = (int) $request->number;
+
+            for ($i = 0; $i < $numberOfRegistrants; $i++) {
+                $user = User::create([
+                    'role' => 2,
+                    'password' => Hash::make('password'),
+                    'status' => 1
+                ]);
+
+                UserDetail::create([
+                    'user_id' => $user->id,
+                    'country_id' => 125,
+                    'status' => 1,
+                ]);
+
+                ConferenceRegistration::create([
+                    'user_id' => $user->id,
+                    'conference_id' => 1,
+                    'registrant_type' => $request->registrant_type,
+                    'token' => Str::random(60),
+                    'verified_status' => 1,
+                    'status' => 1,
+                    'total_attendee' => 1
+                ]);
+            }
+
+            return redirect()->back()->with('success', "$numberOfRegistrants dummy registrants created successfully");
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Something went wrong: ' . $th->getMessage());
+        }
+    }
+    
     public function emptyRegistrationId()
     {
         $latestConference = Conference::latestConference();
@@ -85,7 +124,7 @@ class ConferenceRegistrationController extends Controller
             $registrant->update($validated);
         }
     }
-    
+
     public function create()
     {
         $checkPayment = null;

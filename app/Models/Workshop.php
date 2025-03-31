@@ -10,10 +10,31 @@ class Workshop extends Model
     use HasFactory;
 
     protected $fillable = [
-        'conference_id', 'user_id', 'title', 'slug', 'venue', 'start_date', 'end_date', 'time', 'chair_person_name', 'chair_person_affiliation',
-        'chair_person_image', 'chair_person_cv', 'contact_person_name', 'contact_person_email', 'contact_person_phone', 'cpd_point',
-        'no_of_participants', 'no_of_days', 'estimated_budget', 'registration_deadline', 'description', 'is_applied', 'approved_status',
-        'remarks', 'status'
+        'conference_id',
+        'user_id',
+        'title',
+        'slug',
+        'venue',
+        'start_date',
+        'end_date',
+        'time',
+        'chair_person_name',
+        'chair_person_affiliation',
+        'chair_person_image',
+        'chair_person_cv',
+        'contact_person_name',
+        'contact_person_email',
+        'contact_person_phone',
+        'cpd_point',
+        'no_of_participants',
+        'no_of_days',
+        'estimated_budget',
+        'registration_deadline',
+        'description',
+        'is_applied',
+        'approved_status',
+        'remarks',
+        'status'
     ];
 
     // approved status values
@@ -45,5 +66,10 @@ class Workshop extends Model
     public function discussions()
     {
         return $this->hasMany(WorkshopDiscussion::class);
+    }
+
+    public function trainers()
+    {
+        return $this->hasMany(WorkshopTrainer::class);
     }
 }

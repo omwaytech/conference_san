@@ -58,7 +58,7 @@ class HomeController extends Controller
         // }
 
         return view('backend.dashboard.show', $data);
-    }
+    } 
 
     public function viewParticipants($status)
     {

@@ -122,6 +122,12 @@
                                                         class="btn btn-sm btn-primary mb-1"><i class="nav-icon i-File"></i>
                                                         Export Registrants</a>
                                                 @endif
+                                                @if ($workshop->trainers->where('status', 1)->isNotEmpty())
+                                                    <a href="{{ route('workshop-trainer.excelExport', $workshop->id) }}"
+                                                        class="btn btn-sm btn-primary mb-1"><i class="nav-icon i-File"></i>
+                                                        Export Trainer
+                                                    </a>
+                                                @endif
                                                 @if ($workshop->discussions->isNotEmpty())
                                                     <a href="{{ route('workshop.discussions', $workshop->slug) }}"
                                                         class="btn btn-sm btn-primary mb-1">Workshop Discussions</a>

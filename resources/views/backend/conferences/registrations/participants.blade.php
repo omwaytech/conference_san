@@ -29,36 +29,30 @@
                                 Conference Invited Speakers
                             @endif
                         </h4>
-                        {{-- <div class="d-flex justify-content-center w-full ml-auto">
-
-                            <div>
-                              
-                                <div class="row">
-                                    <div class="col-6 mb-2">
-                                        <select name="selected_delegate_type" class="form-control">
-                                            <option value="" hidden>-- Select Delegate Type --</option>
-                                            <option value="1">National</option>
-                                            <option value="2">International</option>
+                        {{-- <div class="row mt-4">
+                            <form action="{{ route('conferenceRegistration.dummyPass') }}" method="POST">
+                                @csrf
+                                <div class="row mb-4">
+                                    <div class="col-md-3 form-group ">
+                                        <label for="registrant_type">Dummy Pass <code>*</code></label>
+                                        <select name="registrant_type" id="registrant_type" class="form-control ">
+                                            <option value="">-- Select Number Of Guests --</option>
+                                            <option value="1">Participant</option>
+                                            <option value="2">Delegate</option>
                                         </select>
+                                        @error('registrant_type')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    <div class="col-6 form-group mb-2">
-                                        <select name="selected_member_type" class="form-control">
-                                            <option value="" hidden>-- Select Member Type --</option>
-
-                                        </select>
+                                    <div class="col-md-4">
+                                        <label for="registrant_type">Enter Number<code>*</code></label>
+                                        <input class="form-control" type="number" name="number">
                                     </div>
-                                    <div class="col-6 form-group mb-2">
-                                        <select name="selected_voucher_attached" class="form-control">
-                                            <option value="" hidden>-- Select Voucher Attached --</option>
-                                            <option value="1">Yes</option>
-                                            <option value="2">No</option>
-                                        </select>
+                                    <div class="col-md-3 form-group mt-4">
+                                        <button id="calculatePrice" class="btn btn-primary">Generate Pass</button>
                                     </div>
-
-
-                                    
                                 </div>
-                            </div>
+                            </form>
                         </div> --}}
                         <div class="ml-auto">
                             @if ($type == 'attendees')

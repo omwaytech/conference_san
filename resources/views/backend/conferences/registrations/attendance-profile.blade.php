@@ -24,6 +24,7 @@
                             </div>
                             <h5 class="m-0">{{ $participant->user->fullName($participant, 'user') }}</h5>
                             <p class="mt-0">{{ $participant->user->userDetail->affiliation }}</p>
+                            <p class="mt-0">{{ $participant->registration_id }}</p>
                             <p class="mt-0">Conference Attendance</p>
                             @php
                                 $checkAttendance = $participant
@@ -53,7 +54,9 @@
                                         $totalDinnerRemaining = $participant->total_attendee - $checkMeal->dinner_taken;
                                     }
                                 @endphp
-                                <h5>Total Lunch Remaining: <span style="color: red">{{$totalLunchRemaining}}</span> -------&&&&------- Total Dinner Remaining: <span style="color: red">{{$totalDinnerRemaining}}</span></h5>
+                                <h5>Total Lunch Remaining: <span style="color: red">{{ $totalLunchRemaining }}</span>
+                                    -------&&&&------- Total Dinner Remaining: <span
+                                        style="color: red">{{ $totalDinnerRemaining }}</span></h5>
                                 <hr>
                                 <div>
                                     @if (date('H:i') < '16:00')
@@ -61,14 +64,16 @@
                                             <a href="#" class="takeMeal" data-id="{{ $participant->id }}"><button
                                                     class="btn btn-primary btn-rounded">Take Lunch</button></a>
                                         @else
-                                            <span class="badge badge-warning p-3" style="font-size: 100%">Lunch Completed</span>
+                                            <span class="badge badge-warning p-3" style="font-size: 100%">Lunch
+                                                Completed</span>
                                         @endif
                                     @else
                                         @if ($totalDinnerRemaining > 0)
                                             <a href="#" class="takeMeal" data-id="{{ $participant->id }}"><button
                                                     class="btn btn-primary btn-rounded">Take Dinner</button></a>
                                         @else
-                                            <span class="badge badge-warning p-3" style="font-size: 100%">Dinner Completed</span>
+                                            <span class="badge badge-warning p-3" style="font-size: 100%">Dinner
+                                                Completed</span>
                                         @endif
                                     @endif
                                 </div>
@@ -80,76 +85,96 @@
         </div>
     </div>
 
-        <script src="{{ asset('backend') }}/dist-assets/js/plugins/jquery-3.3.1.min.js"></script>
-        <script src="{{ asset('backend') }}/dist-assets/js/plugins/toastr.min.js"></script>
-        <script src="{{ asset('backend') }}/dist-assets/js/scripts/toastr.script.min.js"></script>
-        <script src="{{ asset('backend') }}/dist-assets/js/sweetalert2.js"></script>
+    <script src="{{ asset('backend') }}/dist-assets/js/plugins/jquery-3.3.1.min.js"></script>
+    <script src="{{ asset('backend') }}/dist-assets/js/plugins/toastr.min.js"></script>
+    <script src="{{ asset('backend') }}/dist-assets/js/scripts/toastr.script.min.js"></script>
+    <script src="{{ asset('backend') }}/dist-assets/js/sweetalert2.js"></script>
 
-        <script>
-            $(document).ready(function() {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $('#takeAttendance').click(function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: "Are you sure to take attendance?",
-                        text: "You won't be able to revert it.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, Do it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var id = $(this).data('id');
-                            var data = {
-                                id: id
-                            };
-                            var url = '{{ route('conference-registration.takeAttendance') }}';
-                            $.post(url, data, function(response) {
-                                toastr.success("Attendance done successfully.");
-                                setTimeout(function() {
-                                    window.location.reload();
-                                }, 1000);
-                            });
-                        }
-                    })
-                });
-
-                $('.takeMeal').click(function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: "Are you sure to take meal?",
-                        text: "You won't be able to revert it.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, Take!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var id = $(this).data('id');
-                            var data = {
-                                id: id
-                            };
-                            var url = '{{ route('conference-registration.takeMeal') }}';
-                            $.post(url, data, function(response) {
-                                toastr.success("Meal taken successfully.");
-                                setTimeout(function() {
-                                    window.location.reload();
-                                }, 1000);
-                            });
-                        }
-                    })
-                });
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
-        </script>
 
-        @if (Session::has('status'))
-            <script>
-                toastr.success("{!! Session::get('status') !!}");
-            </script>
-        @endif
+            $('#takeAttendance').click(function(e) {
+                e.preventDefault();
+                let $this = $(this); // Store reference to the clicked <a> tag
+                $this.addClass('disabled').css({
+                    "pointer-events": "none",
+                    "opacity": "0.6"
+                });
+                Swal.fire({
+                    title: "Are you sure to take attendance?",
+                    text: "You won't be able to revert it.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Do it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var id = $(this).data('id');
+                        var data = {
+                            id: id
+                        };
+                        var url = '{{ route('conference-registration.takeAttendance') }}';
+                        $.post(url, data, function(response) {
+                            toastr.success("Attendance done successfully.");
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        });
+                    } else {
+                        $this.removeClass('disabled').css({
+                            "pointer-events": "auto",
+                            "opacity": "1"
+                        });
+                    }
+                })
+            });
+
+            $('.takeMeal').click(function(e) {
+                e.preventDefault();
+                let $this = $(this);
+                $this.addClass('disabled').css({
+                    "pointer-events": "none",
+                    "opacity": "0.6"
+                });
+                Swal.fire({
+                    title: "Are you sure to take meal?",
+                    text: "You won't be able to revert it.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Take!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var id = $(this).data('id');
+                        var data = {
+                            id: id
+                        };
+                        var url = '{{ route('conference-registration.takeMeal') }}';
+                        $.post(url, data, function(response) {
+                            toastr.success("Meal taken successfully.");
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        });
+                    } else {
+                        $this.removeClass('disabled').css({
+                            "pointer-events": "auto",
+                            "opacity": "1"
+                        });
+                    }
+                })
+            });
+        });
+    </script>
+
+    @if (Session::has('status'))
+        <script>
+            toastr.success("{!! Session::get('status') !!}");
+        </script>
+    @endif
 
 </body>
 
