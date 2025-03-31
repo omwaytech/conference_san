@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\WorkshopTrainerExport;
 use App\Http\Controllers\Controller;
 use App\Models\{Workshop, WorkshopTrainer};
 use Illuminate\Http\Request;
-use Exception, Storage;
+use Exception, Storage,Excel;
 
 class WorkshopTrainerController extends Controller
 {
@@ -37,6 +38,14 @@ class WorkshopTrainerController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Something went wrong: ' . $th->getMessage());
         }
+    }
+
+    public function excelExport($id)
+    {
+        // dd($id);
+        $workshop = Workshop::whereId($id)->first();
+        $fileName = $workshop->title . '-Trainers.xlsx';
+        return Excel::download(new WorkshopTrainerExport($workshop), $fileName);
     }
 
     /**

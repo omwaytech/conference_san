@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
 
         // conference registration routes for admin
         Route::controller(ConferenceRegistrationController::class)->name('conferenceRegistration.')->prefix('/conference/registration')->group(function () {
+            Route::post('generate-dummy-passs', 'dummyPass')->name('dummyPass');
             Route::get('/participants/{type}', 'participants')->name('participants');
             Route::get('update-regisration-id', 'updatRegistrationId')->name('updatRegistrationId');
             Route::get('empty-registrationId-id', 'emptyRegistrationId')->name('emptyRegistrationId');
@@ -227,6 +228,7 @@ Route::middleware('auth')->group(function () {
         Route::get('applied/{slug}', 'applied')->name('applied');
         Route::get('generate-pass/{id}', 'generatePass')->name('generatePass');
         Route::post('generate-dummy-passs', 'dummyPass')->name('dummyPass');
+        Route::get('/excel-export/{id}', 'excelExport')->name('excelExport');
     });
 
     // workshop registration routes
