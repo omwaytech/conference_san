@@ -69,6 +69,7 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
     Route::get('/export-pdf/{hall_id}/{date}', 'exportPdf')->name('export.pdf');
     Route::get('/message', 'message')->name('message');
     Route::post('poll', 'poll')->name('poll');
+    Route::post('poll/vote', 'vote')->name('poll.vote');
 });
 
 //==================================== Backend Start ====================================
@@ -301,6 +302,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/cms/sponsor/invite-for-conference', [SponsorController::class, 'inviteForConference'])->name('sponsor.inviteForConference');
     Route::get('/cms/sponsor/generate-pass', [SponsorController::class, 'generatePass'])->name('sponsor.generatePass');
     Route::get('/sponsor/profile/{token}', [SponsorController::class, 'sponsorProfile']);
+    Route::get('/sponsor/update-regisration-id', [SponsorController::class, 'updatRegistrationId'])->name('updatRegistrationId');
+    Route::get('/sponsor/empty-registrationId-id', [SponsorController::class, 'emptyRegistrationId'])->name('emptyRegistrationId');
+    Route::post('/take-meal', [SponsorController::class, 'takeMeal'])->name('sponsor.takeMeal');
+    Route::post('/take-attendance', [SponsorController::class, 'takeAttendance'])->name('sponsor.takeAttendance');
+
     Route::get('/sponsor/take-dinner/{id}/{day}/{type}', [SponsorController::class, 'takeDinner'])->name('sponsor.takeDinner');
     Route::post('/sponsor/add-participant', [SponsorController::class, 'addParticipant'])->name('sponsor.addParticipant');
     Route::post('/sponsor/add-participant-submit', [SponsorController::class, 'addParticipantSubmit'])->name('sponsor.addParticipantSubmit');

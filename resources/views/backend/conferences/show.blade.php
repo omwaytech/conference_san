@@ -42,7 +42,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </tbody>
+                            </tbody> 
                         </table>
                     </div>
                     <div class="modal fade" id="openModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -56,6 +56,7 @@
             </div>
         </div>
     </div>
+    
 @endsection
 
 @section('scripts')
@@ -66,6 +67,7 @@
             var url = '{{route('conference.show')}}';
             var _token = '{{csrf_token()}}';
             var id = $(this).data('id');
+            $('#openModals').modal('show');
             var data = {_token:_token, id:id};
             $.post(url, data, function(response){
                 $('#modalContent').html(response);

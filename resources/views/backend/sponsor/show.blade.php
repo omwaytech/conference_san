@@ -54,9 +54,9 @@
                                                 <a href="{{route('sponsor.edit', $sponsor->id)}}" class="btn btn-success" title="Edit Data"><i class="nav-icon i-Pen-2"></i></a>
                                                 <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal{{$sponsor->id}}"><i class="nav-icon i-Eye"></i></button>
                                                 <button title="Delete Data" class="btn btn-danger delete" type="submit"><i class="nav-icon i-Close-Window"></i></button>
-                                                @if (empty($sponsor->invitation))
+                                                {{-- @if (empty($sponsor->invitation))
                                                     <button class="btn btn-primary btn-sm inviteForConference mt-1" data-id="{{$sponsor->id}}" data-toggle="modal" data-target="#openModal">Invite For Conference</button>
-                                                @endif
+                                                @endif --}}
                                             </form>
                                         </td>
                                     </tr>

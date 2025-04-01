@@ -10,7 +10,7 @@
     <link href="{{ asset('backend') }}/dist-assets/css/themes/lite-purple.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('backend') }}/dist-assets/css/plugins/toastr.css" />
 </head>
-
+ 
 <body class="text-left">
     <div class="app-admin-wrap layout-sidebar-large">
         <!-- =============== Left side End ================-->

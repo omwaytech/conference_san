@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('conference_registration_id')->nullable();
-            $table->tinyInteger('status')->default(1);
-            $table->timestamps();
+        Schema::table('sponsors', function (Blueprint $table) {
+            $table->string('registration_id')->nullable();
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendances');
-    } 
+        Schema::table('sponsors', function (Blueprint $table) {
+            //
+        });
+    }
 };

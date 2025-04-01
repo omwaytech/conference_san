@@ -10,9 +10,20 @@ class Sponsor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'sponsor_category_id', 'name', 'amount', 'logo', 'address', 'contact_person', 'email', 'phone',
-        'description', 'visible_status', 'status', 'token', 'total_attendee', 'dinner_remaining', 'dinner_remaining_2',
-        'dinner_remaining_3', 'dinner_remaining_4'
+        'sponsor_category_id',
+        'name',
+        'amount',
+        'logo',
+        'address',
+        'contact_person',
+        'email',
+        'phone',
+        'description',
+        'visible_status',
+        'status',
+        'token',
+        'total_attendee',
+        'registration_id'
     ];
 
     public function category()
@@ -23,5 +34,15 @@ class Sponsor extends Model
     public function invitation()
     {
         return $this->hasOne(SponsorInvitation::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(SponsorAttendance::class, 'sponsor_id', 'id');
+    }
+
+    public function meals()
+    {
+        return $this->hasMany(SponsorMeal::class, 'sponsor_id', 'id');
     }
 }

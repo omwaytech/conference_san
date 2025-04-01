@@ -1411,7 +1411,7 @@ class ConferenceRegistrationController extends Controller
 
 
     public function participantProfile($token)
-    {
+    { 
         $participant = ConferenceRegistration::where('token', $token)->first();
         $conference = Conference::latestConference();
         return view('backend.conferences.registrations.attendance-profile', compact('participant', 'conference'));

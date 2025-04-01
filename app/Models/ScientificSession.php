@@ -47,4 +47,8 @@ class ScientificSession extends Model
     {
         return $this->belongsTo(User::class, 'chairperson', 'id');
     }
+    public function poll()
+    {
+        return $this->hasMany(Poll::class, 'scientific_session_id', 'id');
+    }
 }

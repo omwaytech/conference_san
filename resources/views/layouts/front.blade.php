@@ -16,6 +16,12 @@
     <link rel="stylesheet preload" href="{{ asset('frontend') }}/assets/css/vendor/bootstrap.min.css" as="style">
     <link rel="stylesheet preload" href="{{ asset('frontend') }}/assets/css/plugins/fontawesome.min.css" as="style">
     <link rel="stylesheet preload" href="{{ asset('frontend') }}/assets/css/style.css" as="style">
+    <!-- jQuery (required for Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
