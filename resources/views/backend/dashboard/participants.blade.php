@@ -41,7 +41,8 @@
                         </h4>
                         <div class="">
 
-                            <form action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">
+                            <form id='exportForm' target="blank"
+                                action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">
@@ -53,12 +54,21 @@
                                             <option value="4">Faculty</option>
                                         </select>
                                     </div>
+                                    <input type="hidden" value="" name="type" id="type">
                                     <div class="col-md-6">
-                                        <button type="submit" class="btn btn-primary ml-2"><i class="nav-icon i-File"></i>
+                                        <button type="submit" class="btn btn-primary ml-2" id="exportExcel"><i
+                                                class="nav-icon i-File"></i>
                                             Export Excel</button>
+                                        <div class="">
+
+                                            <button type="submit" class="btn btn-primary ml-2" id="viewPass"><i
+                                                    class="nav-icon i-File"></i>
+                                                View Pass</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
+
                         </div>
                         <div class="">
                             <a href="{{ route('conference.openConferencePortal', $conference->slug) }}"
@@ -290,6 +300,13 @@
                 $.post(url, data, function(response) {
                     $('#modalContent').html(response);
                 });
+            });
+
+            $('#viewPass').click(function() {
+                $('#type').val('1');
+            });
+            $('#exportExcel').click(function() {
+                $('#type').val('2');
             });
         });
     </script>

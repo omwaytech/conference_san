@@ -1150,16 +1150,37 @@ class ConferenceRegistrationController extends Controller
     public function exportTypeExcel(Request $request)
     {
         $type = $request->input('type');
-        if ($request->exportTypeExcel == 1) {
-            $fileName = 'Organizer.xlsx';
-        } elseif ($request->exportTypeExcel == 2) {
-            $fileName = 'International.xlsx';
-        } elseif ($request->exportTypeExcel == 3) {
-            $fileName = 'Delegate.xlsx';
-        } elseif ($request->exportTypeExcel == 4) {
-            $fileName = 'Faculty.xlsx';
+        if ($type == 1) {
+            $participantUsers = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.f_name', 'asc')
+                ->get();
+            $participants = [];
+            foreach ($participantUsers as $participant) {
+                if ($request->exportTypeExcel == 1  && $participant->committeMember->isNotEmpty()) {
+                    $participants[] = $participant;
+                } elseif ($request->exportTypeExcel == 2 && $participant->user->userDetail->country_id != 125 && !$participant->committeMember->isNotEmpty()) {
+                    $participants[] = $participant;
+                } elseif ($request->exportTypeExcel == 3 && $participant->user->userDetail->country_id == 125 && $participant->registrant_type == 1 && !$participant->committeMember->isNotEmpty()) {
+                    $participants[] = $participant;
+                } elseif ($request->exportTypeExcel  == 4 && $participant->user->userDetail->country_id == 125 && $participant->registrant_type == 2 && !$participant->committeMember->isNotEmpty()) {
+                    $participants[] = $participant;
+                }
+            }
+            $passType = $request->exportTypeExcel;
+            return view('backend.conferences.registrations.pass-type', compact('participants', 'passType'));
+        } else {
+            if ($request->exportTypeExcel == 1) {
+                $fileName = 'Organizer.xlsx';
+            } elseif ($request->exportTypeExcel == 2) {
+                $fileName = 'International.xlsx';
+            } elseif ($request->exportTypeExcel == 3) {
+                $fileName = 'Delegate.xlsx';
+            } elseif ($request->exportTypeExcel == 4) {
+                $fileName = 'Faculty.xlsx';
+            }
+            return Excel::download(new ConferenceRegistrationTypeExport($request->exportTypeExcel), $fileName);
         }
-        return Excel::download(new ConferenceRegistrationTypeExport($request->exportTypeExcel), $fileName);
     }
 
 
