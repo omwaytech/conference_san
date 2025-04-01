@@ -73,8 +73,8 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
 });
 
 //==================================== Backend Start ====================================
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function () { 
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');  
     Route::get('/cms/view/{status}/participants', [HomeController::class, 'viewParticipants'])->name('home.viewParticipants');
     Route::get('/cms/workshop-registrations/{slug}', [HomeController::class, 'workshopRegistrations'])->name('home.workshopRegistrations');
     Route::get('/cms/submissions/{type}', [HomeController::class, 'submission'])->name('home.submission');
