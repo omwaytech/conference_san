@@ -210,6 +210,25 @@
                                                                                                                     <i>{{ trim($session->participants, '"') }}</i>
                                                                                                                 </small>
                                                                                                             @endif
+                                                                                                            {{-- @dd($date) --}}
+                                                                                                            @if ($session->day == \Carbon\Carbon::now()->toDateString())
+                                                                                                                @if ($session->poll->isNotEmpty())
+                                                                                                                    <div
+                                                                                                                        class="d-flex justify-content-end">
+                                                                                                                        <div
+                                                                                                                            class="col-md-1">
+                                                                                                                            <button
+                                                                                                                                class="btn btn-xs btn-warning poll"
+                                                                                                                                type="button"
+                                                                                                                                data-toggle="modal"
+                                                                                                                                data-target="#openModals"
+                                                                                                                                data-id="{{ $session->id }}">
+                                                                                                                                Poll
+                                                                                                                            </button>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                @endif
+                                                                                                            @endif
                                                                                                         </li>
                                                                                                     @endforeach
                                                                                                 </ul>
@@ -218,7 +237,6 @@
                                                                                     @else
                                                                                         <ul>
                                                                                             @foreach ($sessions->where('status', 1) as $session)
-                                                                                                {{-- @dd($session) --}}
                                                                                                 @if ($session->topic)
                                                                                                     <li>
                                                                                                         <b>{{ $session->duration }}</b>
@@ -230,20 +248,24 @@
                                                                                                                 <i>{{ trim($session->participants, '"') }}</i>
                                                                                                             </small>
                                                                                                         @endif
-                                                                                                        {{-- <div
-                                                                                                            class="d-flex justify-content-end">
-                                                                                                            <div
-                                                                                                                class="col-md-1">
-                                                                                                                <button
-                                                                                                                    class="btn btn-xs btn-warning poll"
-                                                                                                                    type="button"
-                                                                                                                    data-toggle="modal"
-                                                                                                                    data-target="#openModal"
-                                                                                                                    data-id="{{ $session->id }}">
-                                                                                                                    Poll
-                                                                                                                </button>
-                                                                                                            </div>
-                                                                                                        </div> --}}
+                                                                                                        @if ($session->day == \Carbon\Carbon::now()->toDateString())
+                                                                                                            @if ($session->poll->isNotEmpty())
+                                                                                                                <div
+                                                                                                                    class="d-flex justify-content-end">
+                                                                                                                    <div
+                                                                                                                        class="col-md-1">
+                                                                                                                        <button
+                                                                                                                            class="btn btn-xs btn-warning poll"
+                                                                                                                            type="button"
+                                                                                                                            data-toggle="modal"
+                                                                                                                            data-target="#openModals"
+                                                                                                                            data-id="{{ $session->id }}">
+                                                                                                                            Poll
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            @endif
+                                                                                                        @endif
                                                                                                     </li>
                                                                                                 @endif
                                                                                             @endforeach
@@ -267,13 +289,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade" id="openModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" id="modalContent">
-                {{-- modal body goes here --}}
+            <div class="modal fade" id="openModals" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitless" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content" id="modalContent">
+                        {{-- modal body goes here --}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -471,6 +493,8 @@
                 var url = '{{ route('front.poll') }}';
                 var _token = '{{ csrf_token() }}';
                 var id = $(this).data('id');
+                console.log(id)
+
                 var data = {
                     _token: _token,
                     id: id

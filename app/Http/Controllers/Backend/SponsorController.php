@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Sponsor, SponsorCategory, SponsorInvitation, Conference};
+use App\Models\{Sponsor, SponsorCategory, SponsorInvitation, Conference, SponsorAttendance, SponsorMeal};
 use Illuminate\Http\Request;
 use Exception, Storage, Image, Str;
 
@@ -135,7 +135,7 @@ class SponsorController extends Controller
 
         return redirect()->route('sponsor.index')->with('delete', 'Sponsor Deleted Successfully');
     }
- 
+
     public function changeStatus(Sponsor $sponsor)
     {
         if ($sponsor->visible_status == 1) {
@@ -175,17 +175,92 @@ class SponsorController extends Controller
         }
     }
 
+    public function emptyRegistrationId()
+    {
+        $latestConference = Conference::latestConference();
+        $registrants = Sponsor::where('status', 1)->get();
+        foreach ($registrants as $registrant) {
+            $registrant->update([
+                'registration_id' => null
+            ]);
+        }
+    }
+
+    public function updatRegistrationId()
+    {
+        $registrants = Sponsor::where('status', 1)
+            ->get()
+            ->sortBy(fn($registrant) => strtolower(trim($registrant->name)));
+        $validated = [];
+        $prefixCounters = [];
+        foreach ($registrants as $registrant) {
+            $prefix = 'SPO_';
+
+
+            // Initialize the counter if not set
+            if (!isset($prefixCounters[$prefix])) {
+                $prefixCounters[$prefix] = 1;
+            }
+
+            // Assign the next registration ID
+            $validated['registration_id'] = $prefix . str_pad($prefixCounters[$prefix], 3, '0', STR_PAD_LEFT);
+            $prefixCounters[$prefix]++;
+
+            // Update the registrant record
+            $registrant->update($validated);
+        }
+    }
+
     public function generatePass()
     {
         $sponsors = Sponsor::where('status', 1)->orderBy('name', 'ASC')->get();
         return view('backend.sponsor.pass', compact('sponsors'));
     }
 
-    public function sponsorProfile($token) 
+    public function sponsorProfile($token)
     {
         $sponsor = Sponsor::where('token', $token)->first();
         $conference = Conference::latestConference();
         return view('backend.sponsor.lunch-profile', compact('sponsor', 'conference'));
+    }
+
+    public function takeAttendance(Request $request)
+    {
+        try {
+            $data['sponsor_id'] = $request->id;
+            SponsorAttendance::create($data);
+            return redirect()->back()->with('status', 'Attendance done successfully.');
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function takeMeal(Request $request)
+    {
+        try {
+            $checkMealDataExist = SponsorMeal::where('sponsor_id', $request->id)->whereDate('created_at', date('Y-m-d'))->first();
+            if (empty($checkMealDataExist)) {
+                $data['sponsor_id'] = $request->id;
+                if (date('H:i') < '16:00') {
+                    $data['lunch_taken'] = 1;
+                } else {
+                    $data['dinner_taken'] = 1;
+                }
+
+                SponsorMeal::create($data);
+            } else {
+                if (date('H:i') < '16:00') {
+                    $data['lunch_taken'] = $checkMealDataExist->lunch_taken + 1;
+                } else {
+                    $data['dinner_taken'] = $checkMealDataExist->dinner_taken + 1;
+                }
+                $checkMealDataExist->update($data);
+            }
+
+            return redirect()->back()->with('status', 'Meal taken successfully.');
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 
     public function takeDinner($id, $day, $type)
@@ -199,7 +274,6 @@ class SponsorController extends Controller
                 $subtractDinner3 = $sponsor->dinner_remaining_3 - 1;
                 $sponsor->update(['dinner_remaining_3' => $subtractDinner3]);
             }
-
         } elseif ($day == 'day2') {
             if ($type == 'lunch') {
                 $subtractDinner2 = $sponsor->dinner_remaining_2 - 1;
@@ -228,10 +302,10 @@ class SponsorController extends Controller
             $sponsor = Sponsor::whereId($request->id)->first();
 
             $validated['total_attendee'] = $sponsor->total_attendee + $validateRequest['additional_value'];
-            $validated['dinner_remaining'] = $sponsor->dinner_remaining + $validateRequest['additional_value'];
-            $validated['dinner_remaining_2'] = $sponsor->dinner_remaining_2 + $validateRequest['additional_value'];
-            $validated['dinner_remaining_3'] = $sponsor->dinner_remaining_3 + $validateRequest['additional_value'];
-            $validated['dinner_remaining_4'] = $sponsor->dinner_remaining_4 + $validateRequest['additional_value'];
+            // $validated['dinner_remaining'] = $sponsor->dinner_remaining + $validateRequest['additional_value'];
+            // $validated['dinner_remaining_2'] = $sponsor->dinner_remaining_2 + $validateRequest['additional_value'];
+            // $validated['dinner_remaining_3'] = $sponsor->dinner_remaining_3 + $validateRequest['additional_value'];
+            // $validated['dinner_remaining_4'] = $sponsor->dinner_remaining_4 + $validateRequest['additional_value'];
 
             $sponsor->update($validated);
 

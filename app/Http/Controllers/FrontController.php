@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Conference, User, UserDetail, MemberType, CommitteeMember, ConferenceRegistration, Committee, Hall, ScientificSession, Sponsor, SponsorCategory};
+use App\Models\{Conference, User, UserDetail, MemberType, CommitteeMember, ConferenceRegistration, Committee, Hall, Poll, ScientificSession, Sponsor, SponsorCategory, UserVote};
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB, Exception, Http, Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Cookie;
 
 class FrontController extends Controller
 {
@@ -49,9 +50,162 @@ class FrontController extends Controller
         return view('frontend.index', $data);
     }
 
+    // public function poll(Request $request)
+    // {
+    //     $polls = Poll::with('answers')->where('scientific_session_id', $request->id)->get();
+
+    //     foreach ($polls as $poll) {
+    //         $poll->userHasVoted = $poll->votes()->where('user_id', auth()->user()->id)->exists();
+
+    //         if ($poll->userHasVoted) {
+    //             $poll->poll_results = $this->calculatePollResults($poll);
+    //         }
+    //     }
+    //     // dd($polls);
+    //     return view('frontend.poll', ['polls' => $polls]);
+    // }
+
+    //using session
+    // public function poll(Request $request)
+    // {
+    //     // session()->flush();
+
+    //     $polls = Poll::with('answers')->where('scientific_session_id', $request->id)->get();
+
+    //     foreach ($polls as $poll) {
+    //         // Check if the user has already voted using session
+    //         $poll->userHasVoted = session()->has("voted_poll_{$poll->id}");
+
+    //         if ($poll->userHasVoted) {
+    //             $poll->poll_results = $this->calculatePollResults($poll);
+    //         }
+    //     }
+
+    //     return view('frontend.poll', ['polls' => $polls]);
+    // }
+
     public function poll(Request $request)
     {
-        return view('frontend.poll');
+        $polls = Poll::with('answers')->where('scientific_session_id', $request->id)->get();
+        
+        foreach ($polls as $poll) {
+            // Cookie::queue(Cookie::forget("voted_poll_{$poll->id}"));
+            // Check if the user has already voted using a cookie
+            $poll->userHasVoted = request()->cookie("voted_poll_{$poll->id}");
+
+            if ($poll->userHasVoted) {
+                $poll->poll_results = $this->calculatePollResults($poll);
+            }
+        }
+
+        return view('frontend.poll', ['polls' => $polls]);
+    }
+
+
+
+
+
+
+    // public function vote(Request $request)
+    // {
+    //     // $conference_registration = ConferenceRegistration::where('user_id', $request->userId)->first();
+    //     if (UserVote::where('user_id', $request->userId)->where('poll_id', $request->poll_id)->exists()) {
+    //         return response()->json(['error' => 'You have already voted for this poll.'], 403);
+    //     }
+    //     UserVote::create([
+    //         'user_id' => $request->userId,
+    //         'poll_id' => $request->poll_id,
+    //         'answer_id' => $request->answer_id,
+    //     ]);
+    //     $poll = Poll::with('answers')->findOrFail($request->poll_id);
+
+
+
+    //     return response()->json([
+    //         'poll_results' => $this->calculatePollResults($poll)
+    //     ]);
+    // }
+
+    //using session
+    // public function vote(Request $request)
+    // {
+    //     $poll = Poll::with('answers')->findOrFail($request->poll_id);
+
+    //     // Check if user has already voted using session
+    //     if (session()->has("voted_poll_{$request->poll_id}")) {
+    //         return response()->json(['error' => 'You have already voted for this poll.'], 403);
+    //     }
+
+    //     // Store in session to prevent multiple votes
+    //     session(["voted_poll_{$request->poll_id}" => true]);
+
+    //     // You may increment vote count directly in the database (example logic)
+    //     $answer = $poll->answers()->where('id', $request->answer_id)->first();
+    //     if ($answer) {
+    //         $answer->increment('votes_count'); // Ensure your answers table has a votes_count column
+    //     }
+
+    //     return response()->json([
+    //         'poll_results' => $this->calculatePollResults($poll)
+    //     ]);
+    // }
+    public function vote(Request $request)
+    {
+        $poll = Poll::with('answers')->findOrFail($request->poll_id);
+
+        // Check if the user has already voted using a cookie
+        if ($request->cookie("voted_poll_{$request->poll_id}")) {
+            return response()->json(['error' => 'You have already voted for this poll.'], 403);
+        }
+
+        // Increment vote count directly
+        $answer = $poll->answers()->where('id', $request->answer_id)->first();
+        if ($answer) {
+            $answer->increment('votes_count'); // Ensure your answers table has a votes_count column
+        }
+
+        $poll->load('answers');
+        // Set a long-term cookie (valid for 1 year)
+        $cookie = cookie("voted_poll_{$request->poll_id}", true, 525600); // 1 year in minutes
+
+        return response()->json([
+            'poll_results' => $this->calculatePollResults($poll)
+        ])->cookie($cookie);
+    }
+
+
+    // private function calculatePollResults($poll)
+    // {
+    //     $totalVotes = $poll->votes()->count();
+    //     $results = [];
+    //     foreach ($poll->answers as $answer) {
+    //         $voteCount = $answer->votes()->count();
+    //         $percentage = $totalVotes ? round(($voteCount / $totalVotes) * 100, 2) : 0;
+
+    //         $results[] = [
+    //             'answer_text' => $answer->answer_text,
+    //             'percentage' => $percentage,
+    //         ];
+    //     }
+
+    //     return $results;
+    // }
+
+    private function calculatePollResults($poll)
+    {
+        // dd($poll->answers);
+        $totalVotes = $poll->answers->sum('votes_count');
+        $results = [];
+
+        foreach ($poll->answers as $answer) {
+            $percentage = $totalVotes ? round(($answer->votes_count / $totalVotes) * 100, 2) : 0;
+            $results[] = [
+                'answer_text' => $answer->answer_text,
+                'percentage' => $percentage,
+            ];
+        }
+
+        return $results;
     }
 
     public function speakers()
