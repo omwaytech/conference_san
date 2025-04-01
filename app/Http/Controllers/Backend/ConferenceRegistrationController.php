@@ -49,7 +49,19 @@ class ConferenceRegistrationController extends Controller
 
             $numberOfRegistrants = (int) $request->number;
 
+
+            // Format the next ID with leading zeros (e.g., JOU_001)
             for ($i = 0; $i < $numberOfRegistrants; $i++) {
+
+                if ($request->registrant_type == 1) {
+                    $prefix = 'DEL_';
+                } elseif ($request->registrant_type == 2) {
+                    $prefix = 'FAC_';
+                }
+                $latestId = ConferenceRegistration::where('registration_id', 'like', "$prefix%")
+                    ->orderBy('registration_id', 'desc')
+                    ->value('registration_id');
+                $nextNumber = $latestId ? ((int)str_replace($prefix, '', $latestId)) + 1 : 1;
                 $user = User::create([
                     'role' => 2,
                     'password' => Hash::make('password'),
@@ -60,6 +72,7 @@ class ConferenceRegistrationController extends Controller
                     'user_id' => $user->id,
                     'country_id' => 125,
                     'status' => 1,
+                    'member_type_id' => 1
                 ]);
 
                 ConferenceRegistration::create([
@@ -69,7 +82,8 @@ class ConferenceRegistrationController extends Controller
                     'token' => Str::random(60),
                     'verified_status' => 1,
                     'status' => 1,
-                    'total_attendee' => 1
+                    'total_attendee' => 1,
+                    'registration_id' =>  $prefix . str_pad($nextNumber, 3, '0', STR_PAD_LEFT)
                 ]);
             }
 
@@ -78,7 +92,7 @@ class ConferenceRegistrationController extends Controller
             return redirect()->back()->with('error', 'Something went wrong: ' . $th->getMessage());
         }
     }
-    
+
     public function emptyRegistrationId()
     {
         $latestConference = Conference::latestConference();
@@ -1411,7 +1425,7 @@ class ConferenceRegistrationController extends Controller
 
 
     public function participantProfile($token)
-    { 
+    {
         $participant = ConferenceRegistration::where('token', $token)->first();
         $conference = Conference::latestConference();
         return view('backend.conferences.registrations.attendance-profile', compact('participant', 'conference'));

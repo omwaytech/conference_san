@@ -16,7 +16,7 @@ class ConferenceRegisrationIndian implements FromCollection, WithHeadings, Shoul
     public function collection()
     {
         $latestConference = Conference::latestConference();
-        $query = ConferenceRegistration::where(['conference_registrations.status' => 1, 'conference_id' => $latestConference->id])
+        $query = ConferenceRegistration::where(['conference_registrations.status' => 1, 'conference_id' => $latestConference->id, 'conference_registrations.registrant_type' => 2])
             ->join('users', 'conference_registrations.user_id', '=', 'users.id')->orderBy('users.f_name', 'asc')->get();
 
         foreach ($query as $key => $value) {
@@ -26,18 +26,17 @@ class ConferenceRegisrationIndian implements FromCollection, WithHeadings, Shoul
             // $countryName = 'India';
             // }
 
-            if ($countryName = $value->user->userDetail->country->country_name == 'India') {
+            if ($value->user->userDetail->country->country_name != 'Nepal') {
 
                 $arrayData[] = [
                     'S.No.' => $key + 1,
                     'Name' => $value->user->fullName($value, 'user'),
-                    'Type' => $value->user->userDetail->memberType->type,
+                    'Type' => $value->user->userDetail->memberType->type ?? null,
                     'Email' => $value->user->email,
                     'Phone' => $value->user->userDetail->phone,
-                    'councilNumber' => $value->user->userDetail->council_number,
-                    'totalAttendee' => $value->total_attendee,
+                    // 'councilNumber' => $value->user->userDetail->council_number,
+                    // 'totalAttendee' => $value->total_attendee,
                     'country' => $value->user->userDetail->country->country_name,
-                    'isInvited' => $value->is_invited == 1 ? 'Invited' : 'Self Registred'
                 ];
             }
         }
@@ -46,6 +45,6 @@ class ConferenceRegisrationIndian implements FromCollection, WithHeadings, Shoul
 
     public function headings(): array
     {
-        return ["S.No.", "Name", "Member Type", "Email", "Phone", "Medical Council Number", "No. of People", "Country",'Registation Type'];
+        return ["S.No.", "Name", "Member Type", "Email", "Phone", "Country"];
     }
 }

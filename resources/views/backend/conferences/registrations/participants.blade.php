@@ -37,8 +37,8 @@
                                         <label for="registrant_type">Dummy Pass <code>*</code></label>
                                         <select name="registrant_type" id="registrant_type" class="form-control ">
                                             <option value="">-- Select Number Of Guests --</option>
-                                            <option value="1">Participant</option>
-                                            <option value="2">Delegate</option>
+                                            <option value="1">Delegate</option>
+                                            <option value="2">Faculty</option>
                                         </select>
                                         @error('registrant_type')
                                             <p class="text-danger">{{ $message }}</p>

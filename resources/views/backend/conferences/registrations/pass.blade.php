@@ -199,7 +199,7 @@
                             <div style="background-color:#009aee; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
                                     style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
-                                    Delegate
+                                    Delegate 
                                 </h1>
                             </div>
                         @elseif($participant->user->userDetail->country->country_name !== 'Nepal')
