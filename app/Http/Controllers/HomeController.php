@@ -21,44 +21,45 @@ class HomeController extends Controller
             'user' => $user
         ];
         // if (auth()->user()->role == 1) {
-            if ($slug != null) {
-                $conference = Conference::whereSlug($slug)->first();
-            } else {
-                $conference = Conference::latestConference();
-            }
-            session(['conferenceDetail' => $conference]);
+        if ($slug != null) {
+            $conference = Conference::whereSlug($slug)->first();
+        } else {
+            $conference = Conference::latestConference();
+        }
+        session(['conferenceDetail' => $conference]);
 
 
-            $registrants = ConferenceRegistration::where(['status' => 1, 'conference_id' => @$conference->id])->latest()->get();
-            $totalNationalRegistrants = ConferenceRegistration::totalRegistrants(1, $conference);
-            $totalInternationalRegistrants = ConferenceRegistration::totalRegistrants(2, $conference);
-            $workshops = Workshop::where(['approved_status' => 1, 'status' => 1])->get();
-            $submissions = Submission::where(['status' => 1])->get();
-            $registrantsDetail = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])->get();
-            $sponsors = Sponsor::where('status', 1)->get();
+        $registrants = ConferenceRegistration::where(['status' => 1, 'conference_id' => @$conference->id])->latest()->get();
+        $totalNationalRegistrants = ConferenceRegistration::totalRegistrants(1, $conference);
+        $totalInternationalRegistrants = ConferenceRegistration::totalRegistrants(2, $conference);
+        $workshops = Workshop::where(['approved_status' => 1, 'status' => 1])->get();
+        $submissions = Submission::where(['status' => 1])->get();
+        $registrantsDetail = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])->get();
+        $sponsors = Sponsor::where('status', 1)->get();
 
-            $checkRegistrationCommittee = null;
-            if ($user->role == 2) {
-                $registrationCommittee = DB::table('committees')->where('committee_name', 'Registration Committee')->first();
-                $checkRegistrationCommittee = DB::table('committee_members')->where(['conference_id' => $conference->id, 'committee_id' => $registrationCommittee->id , 'user_id' => $user->id, 'status' => 1])->first();
-            }
+        $checkRegistrationCommittee = null;
+        if ($user->role == 2) {
+            $registrationCommittee = DB::table('committees')->where('committee_name', 'Registration Committee')->first();
+            $checkRegistrationCommittee = DB::table('committee_members')->where(['conference_id' => $conference->id, 'committee_id' => $registrationCommittee->id, 'user_id' => $user->id, 'status' => 1])->first();
+        }
+        
 
-            $data = [
-                'user' => $user,
-                'registrants' => $registrants,
-                'totalNationalRegistrants' => $totalNationalRegistrants,
-                'totalInternationalRegistrants' => $totalInternationalRegistrants,
-                'workshops' => $workshops,
-                'submissions' => $submissions,
-                'registrantsDetail' => $registrantsDetail,
-                'sponsors' => $sponsors,
-                'conference' => $conference,
-                'checkRegistrationCommittee' => $checkRegistrationCommittee,
-            ];
+        $data = [
+            'user' => $user,
+            'registrants' => $registrants,
+            'totalNationalRegistrants' => $totalNationalRegistrants,
+            'totalInternationalRegistrants' => $totalInternationalRegistrants,
+            'workshops' => $workshops,
+            'submissions' => $submissions,
+            'registrantsDetail' => $registrantsDetail,
+            'sponsors' => $sponsors,
+            'conference' => $conference,
+            'checkRegistrationCommittee' => $checkRegistrationCommittee,
+        ];
         // }
 
         return view('backend.dashboard.show', $data);
-    } 
+    }
 
     public function viewParticipants($status)
     {
@@ -69,18 +70,18 @@ class HomeController extends Controller
             $registrants = ConferenceRegistration::where(['verified_status' => 1, 'status' => 1, 'conference_id' => $conference->id])->latest()->get();
         } elseif ($status == 'national') {
             $registrants = ConferenceRegistration::where(['verified_status' => 1, 'status' => 1, 'conference_id' => $conference->id])
-                            ->whereHas('userDetail', function ($query) {
-                                $query->whereHas('memberType', function ($subquery) {
-                                    $subquery->where('delegate', 'National');
-                                });
-                            })->latest()->get();
+                ->whereHas('userDetail', function ($query) {
+                    $query->whereHas('memberType', function ($subquery) {
+                        $subquery->where('delegate', 'National');
+                    });
+                })->latest()->get();
         } elseif ($status == 'international') {
             $registrants = ConferenceRegistration::where(['verified_status' => 1, 'status' => 1, 'conference_id' => $conference->id])
-                            ->whereHas('userDetail', function ($query) {
-                                $query->whereHas('memberType', function ($subquery) {
-                                    $subquery->where('delegate', 'International');
-                                });
-                            })->latest()->get();
+                ->whereHas('userDetail', function ($query) {
+                    $query->whereHas('memberType', function ($subquery) {
+                        $subquery->where('delegate', 'International');
+                    });
+                })->latest()->get();
         } elseif ($status == 'accompany-persons') {
             $registrants = ConferenceRegistration::where(['verified_status' => 1, 'status' => 1, 'conference_id' => $conference->id])->where('total_attendee', '>', 1)->latest()->get();
         }
@@ -95,7 +96,7 @@ class HomeController extends Controller
     }
 
     public function submission($type)
-{
+    {
         $latestConference = Conference::latestConference();
 
         $authUser = auth()->user();
@@ -192,7 +193,7 @@ class HomeController extends Controller
             }
 
             if (!empty($validated['image'])) {
-                Storage::delete("public/users/".$userData->userDetail->image);
+                Storage::delete("public/users/" . $userData->userDetail->image);
                 $imageName = time() . rand(0, 99) . '.' . $validated['image']->getClientOriginalExtension();
                 Storage::putFileAs("public/users", $validated['image'], $imageName);
                 $validated['image'] = $imageName;
@@ -243,14 +244,21 @@ class HomeController extends Controller
     {
         $conference = session()->get('conferenceDetail');
         $registrants = DB::table('conference_registrations as CR')
-                        ->select('CR.id', 'CR.status', 'CR.conference_id', 'verified_status', 'U.f_name', 'U.m_name', 'U.l_name', 'MT.delegate', 'MT.type')
-                        ->where(['verified_status' => 1, 'CR.status' => 1, 'CR.conference_id' => $conference->id])
-                        ->join('users as U', 'CR.user_id', '=', 'U.id')
-                        ->join('user_details as UD', 'U.id', '=', 'UD.user_id')
-                        ->join('member_types as MT', 'UD.member_type_id', '=', 'MT.id')
-                        ->orderBy('U.f_name', 'asc')
-                        ->get();
+            ->select('CR.id', 'CR.status', 'CR.conference_id', 'verified_status', 'CR.registration_id', 'U.f_name', 'U.m_name', 'U.l_name', 'MT.delegate', 'MT.type')
+            ->where(['verified_status' => 1, 'CR.status' => 1, 'CR.conference_id' => $conference->id])
+            ->join('users as U', 'CR.user_id', '=', 'U.id')
+            ->join('user_details as UD', 'U.id', '=', 'UD.user_id')
+            ->join('member_types as MT', 'UD.member_type_id', '=', 'MT.id')
+            ->orderBy('U.f_name', 'asc')
+            ->get();
         return view('backend.dashboard.attendance-status', compact('registrants', 'conference'));
+    }
+
+    public function viewSponsorAttendanceStatus()
+    {
+        $conference = session()->get('conferenceDetail');
+        $registrants = Sponsor::where('status',1)->orderBy('name', 'asc')->get();
+        return view('backend.dashboard.sponsor-attendance-status', compact('registrants', 'conference'));
     }
 
     public function viewAttendanceLunchDetail($day, $type, $status)
@@ -259,52 +267,52 @@ class HomeController extends Controller
             if ($type == 'attendance') {
                 if ($status == 'taken') {
                     $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1, 'attendance_status' => 1])
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 } elseif ($status == 'remaining') {
                     $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1, 'attendance_status' => 0])
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 }
             } elseif ($type == 'lunch') {
                 if ($status == 'taken') {
                     $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1, 'remaining_dinner' => 0])
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 } elseif ($status == 'remaining') {
-                    $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])->where('remaining_dinner', '!=' ,0)
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                    $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])->where('remaining_dinner', '!=', 0)
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 }
             }
         } elseif ($day == 'day2') {
             if ($type == 'attendance') {
                 if ($status == 'taken') {
                     $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1, 'attendance_status_2' => 1])
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 } elseif ($status == 'remaining') {
                     $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1, 'attendance_status_2' => 0])
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 }
             } elseif ($type == 'lunch') {
                 if ($status == 'taken') {
                     $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1, 'remaining_dinner_2' => 0])
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 } elseif ($status == 'remaining') {
-                    $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])->where('remaining_dinner_2', '!=' ,0)
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                    $registrants = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])->where('remaining_dinner_2', '!=', 0)
+                        ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                        ->orderBy('users.name', 'asc')
+                        ->get();
                 }
             }
         }
@@ -325,14 +333,14 @@ class HomeController extends Controller
     {
         if ($times == 'first') {
             $participants = ConferenceRegistration::where(['conference_registrations.status' => 1, 'verified_status' => 1])->where('conference_registrations.created_at', '>=', '2024-04-04 12:00:00')->where('created_at', '<=', '2024-04-04 20:00:00')
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.name', 'asc')
+                ->get();
         } elseif ($times == 'second') {
             $participants = ConferenceRegistration::where(['conference_registrations.status' => 1, 'verified_status' => 1])->where('conference_registrations.created_at', '>=', '2024-04-04 20:00:00')
-                            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-                            ->orderBy('users.name', 'asc')
-                            ->get();
+                ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+                ->orderBy('users.name', 'asc')
+                ->get();
         }
         return view('backend.conferences.registrations.pass', compact('participants'));
     }

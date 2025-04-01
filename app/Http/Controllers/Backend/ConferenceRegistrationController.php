@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Exports\ConferenceRegisrationIndian;
 use App\Exports\ConferenceRegistrationExport;
+use App\Exports\ConferenceRegistrationTypeExport;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendReceiptJob;
 use App\Mail\Conference\{RegistrantAcceptMail, RegistrantRejectMail, RegistrationMail, RegistrantCorrectionMail, RegistrationByUserMail, RegistrationInExceptionalCaseMail};
@@ -1145,6 +1146,22 @@ class ConferenceRegistrationController extends Controller
         $voucherAttached = $request->voucher_attached;
         return Excel::download(new ConferenceRegistrationExport($type, $memberTypeId, $voucherAttached), $fileName);
     }
+
+    public function exportTypeExcel(Request $request)
+    {
+        $type = $request->input('type');
+        if ($request->exportTypeExcel == 1) {
+            $fileName = 'Organizer.xlsx';
+        } elseif ($request->exportTypeExcel == 2) {
+            $fileName = 'International.xlsx';
+        } elseif ($request->exportTypeExcel == 3) {
+            $fileName = 'Delegate.xlsx';
+        } elseif ($request->exportTypeExcel == 4) {
+            $fileName = 'Faculty.xlsx';
+        }
+        return Excel::download(new ConferenceRegistrationTypeExport($request->exportTypeExcel), $fileName);
+    }
+
 
     public function submitData(Request $request)
     {

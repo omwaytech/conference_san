@@ -90,7 +90,7 @@ class FrontController extends Controller
         
         foreach ($polls as $poll) {
             // Cookie::queue(Cookie::forget("voted_poll_{$poll->id}"));
-            // Check if the user has already voted using a cookie
+
             $poll->userHasVoted = request()->cookie("voted_poll_{$poll->id}");
 
             if ($poll->userHasVoted) {

@@ -22,7 +22,7 @@
         <div class="col-md-12 mb-3">
             <div class="card text-left">
                 <div class="card-body">
-                    <div class="row mb-2">
+                    <div class="row mb-2 d-flex justify-content-between">
                         <h4 class="card-title">
                             @if ($status == 'unverified')
                                 Unverified
@@ -39,7 +39,28 @@
                             @endif
                             Participants
                         </h4>
-                        <div class="ml-auto">
+                        <div class="">
+
+                            <form action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select name="exportTypeExcel" class="form-control">
+                                            <option>Select</option>
+                                            <option value="1">Organizer</option>
+                                            <option value="2">International</option>
+                                            <option value="3">Delegate</option>
+                                            <option value="4">Faculty</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="btn btn-primary ml-2"><i class="nav-icon i-File"></i>
+                                            Export Excel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="">
                             <a href="{{ route('conference.openConferencePortal', $conference->slug) }}"
                                 class="btn btn-danger"> Back</a>
                             @if ($status == 'total-registrants' || $status == 'national' || $status == 'international')
