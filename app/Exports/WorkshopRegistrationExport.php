@@ -32,6 +32,7 @@ class WorkshopRegistrationExport implements FromCollection, WithHeadings, Should
                 'Phone' => $value->user->userDetail->phone,
                 'councilNumber' => $value->user->userDetail->council_number,
                 'country' => $countryName,
+                'MealType' => $value->meal_type == 1 ? 'Veg' : ($value->meal_type == 2 ? 'Non-Veg' : ''),
             ];
         }
         return collect($arrayData);
