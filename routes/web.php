@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cms/conference-duplicate-registrations', [HomeController::class, 'conferenceDuplicateRegistration'])->name('home.conferenceDuplicateRegistration');
     Route::get('/cms/conference-duplicate-datas/{council_number}', [HomeController::class, 'conferenceDuplicateDatas'])->name('home.conferenceDuplicateDatas');
     Route::get('/cms/view/attendance-status', [HomeController::class, 'viewAttendanceStatus'])->name('home.viewAttendanceStatus');
+    Route::get('/cms/view/sponsor-attendance-status', [HomeController::class, 'viewSponsorAttendanceStatus'])->name('home.viewSponsorAttendanceStatus');
     Route::get('/cms/view/status-details/{day}/{type}/{status}', [HomeController::class, 'viewAttendanceLunchDetail'])->name('home.viewAttendanceLunchDetail');
     Route::get('/cms/view/later-participants/{times}', [HomeController::class, 'viewLaterParticipants'])->name('home.viewLaterParticipants');
     Route::get('/cms/view/generate-later-participants-pass/{times}', [HomeController::class, 'generateLaterRegistrantPass'])->name('home.generateLaterRegistrantPass');
@@ -139,6 +140,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-conference-registation', 'updateRegistration')->name('updateRegistration');
         // Route::get('/sendRecipt', 'sendRecipt')->name('sendRecipt');
         Route::get('/register', 'register')->name('register');
+        Route::post('/exportTypeExcel', 'exportTypeExcel')->name('exportTypeExcel');
+
         Route::get('/export/{type}', 'exportExcel')->name('exportExcel');
         Route::get('/excel/indias', 'exportIndian')->name('exportIndian');
         Route::post('/submit-data', 'submitData')->name('submitData');

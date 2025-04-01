@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="row mb-2">
                         <h4 class="card-title">
-                            Atttendance Status
+                            Sponsor Atttendance Status
                         </h4>
                         <div class="ml-auto">
                             <a href="{{ route('conference.openConferencePortal', $conference->slug) }}"
@@ -24,8 +24,6 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Applicant Name</th>
-                                    <th scope="col">Delegate</th>
-                                    <th scope="col">Membership Type</th>
                                     <th scope="col">Registration Id</th>
                                     <th scope="col">Attendance</th>
                                     <th scope="col">Meal</th>
@@ -35,21 +33,18 @@
                             </thead>
                             <tbody>
                                 @foreach ($registrants as $registrant)
+                                    {{-- @dd($registrant) --}}
                                     <tr>
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         @php
-                                            $middleName = !empty($registrant->m_name) ? $registrant->m_name . ' ' : '';
-                                            $name = $registrant->f_name . ' ' . $middleName . $registrant->l_name;
-                                            $attendances = DB::table('attendances')
-                                                ->where('conference_registration_id', $registrant->id)
+                                            $attendances = DB::table('sponsor_attendances')
+                                                ->where('sponsor_id', $registrant->id)
                                                 ->get();
-                                            $meals = DB::table('meals')
-                                                ->where('conference_registration_id', $registrant->id)
+                                            $meals = DB::table('sponsor_meals')
+                                                ->where('sponsor_id', $registrant->id)
                                                 ->get();
                                         @endphp
-                                        <td>{{ $name }}</td>
-                                        <td>{{ $registrant->delegate }}</td>
-                                        <td>{{ $registrant->type }}</td>
+                                        <td>{{ $registrant->name }}</td>
                                         <td>{{ $registrant->registration_id }}</td>
                                         <td>
                                             <ul>
@@ -66,8 +61,8 @@
                                                         @php
                                                             $totalLunchRemaining = $registrant->total_attendee;
                                                             $totalDinnerRemaining = $registrant->total_attendee;
-                                                            $checkMeal = DB::table('meals')
-                                                                ->where('conference_registration_id', $registrant->id)
+                                                            $checkMeal = DB::table('sponsor_meals')
+                                                                ->where('sponsor_id', $registrant->id)
                                                                 ->where('created_at', $meal->created_at)
                                                                 ->first();
                                                             // dd($checkMeal);
@@ -84,11 +79,11 @@
                                                         <li>{{ Carbon\Carbon::parse($meal->created_at)->format('d M') }}
                                                             <ul>
                                                                 <li>Launch:
-                                                                    {{ $meal->lunch_taken == 1 ? 'Taken' : 'Not Taken' }}
+                                                                    {{ $meal->lunch_taken != null ? 'Taken' : 'Not Taken' }}
                                                                     (Remaining:{{ $totalLunchRemaining }})
                                                                 </li>
                                                                 <li>Dinner:
-                                                                    {{ $meal->dinner_taken == 1 ? 'Taken' : 'Not Taken' }}
+                                                                    {{ $meal->dinner_taken != null ? 'Taken' : 'Not Taken' }}
                                                                     (Remaining:{{ $totalDinnerRemaining }})
                                                                 </li>
                                                             </ul>

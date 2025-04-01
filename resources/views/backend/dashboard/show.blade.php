@@ -46,6 +46,7 @@
                                     <a href="#"><p class="lead text-primary text-24 mb-2">{{$totalRegistrants}}</p></a>
                                     <a href="{{route('home.viewParticipants', 'total-registrants')}}" class="btn btn-primary btn-sm">View All</a>
                                     <a href="{{route('home.viewAttendanceStatus')}}" class="btn btn-primary btn-sm mt-1">View Attendance Status</a>
+                                    <a href="{{route('home.viewSponsorAttendanceStatus')}}" class="btn btn-primary btn-sm mt-1">View Sponsor Attendance Status</a>
                                 </div>
                             </div>
                         </div>
