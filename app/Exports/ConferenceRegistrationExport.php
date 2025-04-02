@@ -142,10 +142,18 @@ class ConferenceRegistrationExport implements FromCollection, WithHeadings, Shou
                     $participantType = 'Guest-Speaker';
                 }
 
+                if ($value->committeMember->isNotEmpty()) {
+                    $color = 'red';
+                } elseif ($value->registrant_type == 1) {
+                    $color = 'Sky Blue';
+                } elseif ($value->registrant_type == 2) {
+                    $color = 'Green';
+                }
+
                 $arrayData[] = [
                     'S.No.' => $key + 1,
                     'Name' => $value->user->fullName($value, 'user'),
-                    'Type' => $value->user->userDetail->memberType->type?? null,
+                    'Type' => $value->user->userDetail->memberType->type ?? null,
                     'Email' => $value->user->email,
                     'Phone' => $value->user->userDetail->phone,
                     'councilNumber' => $value->user->userDetail->council_number,
@@ -154,6 +162,7 @@ class ConferenceRegistrationExport implements FromCollection, WithHeadings, Shou
                     'country' => $countryName,
                     'participantType' => $participantType,
                     'registrationId' => $value->registration_id,
+                    'color' => $color,
 
                 ];
             } else {
@@ -179,9 +188,9 @@ class ConferenceRegistrationExport implements FromCollection, WithHeadings, Shou
     public function headings(): array
     {
         if ($this->type == 'all') {
-            return ["S.No.", "Name", "Member Type", "Email", "Phone", "Medical Council Number", "No. of People", "Verification Status", "Country", "Participant Type",'Registration Id'];
+            return ["S.No.", "Name", "Member Type", "Email", "Phone", "Medical Council Number", "No. of People", "Verification Status", "Country", "Participant Type", 'Registration Id','color'];
         } else {
-            return ["S.No.", "Name", "Member Type", "Email", "Phone", "Medical Council Number", "No. of People", "Verification Status", "Country",'Registration Id'];
+            return ["S.No.", "Name", "Member Type", "Email", "Phone", "Medical Council Number", "No. of People", "Verification Status", "Country", 'Registration Id'];
         }
     }
 }
