@@ -147,7 +147,7 @@
                         @if ($charCount > 24)
                             {{-- Adjust the character limit as needed --}}
                             <h2
-                                style="font-size:30px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 10px; width:470px; border-radius:10px; height:30px; padding:22px 0px;">
+                                style="font-size:26px;text-transform:capitalize; letter-spacing:-0.02em; background:#fff; margin:25px auto 10px; width:470px; border-radius:10px; height:30px; padding:22px 0px;">
                                 {{ $participant->user->namePrefix->prefix ?? null }}
                                 {{ $participant->user->fullName($participant, 'user') }}
                             </h2>
@@ -204,42 +204,48 @@
                         @elseif ($participant->committeMember->isNotEmpty())
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
                                     Organizer
                                 </h1>
                             </div>
                         @endif
                     @endif
                     @if ($passType == 2)
-                        @if (
-                            !empty($participant->user->userDetail->pass_designation) &&
-                                $participant->user->userDetail->country->country_name == 'Nepal' &&
-                                $participant->registrant_type == 2 &&
-                                !$participant->committeMember->isNotEmpty())
+                        @if (!empty($participant->user->userDetail->pass_designation))
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
                                     {{ $participant->user->userDetail->pass_designation }}
                                 </h1>
-                            @elseif ($participant->user->userDetail->country->country_name != 'Nepal')
-                                @if ($participant->registrant_type == 1)
-                                    <div
-                                        style="background-color:#009aee; height:auto; float:left; width:100%; overflow:hidden;">
-                                        <h1
-                                            style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
-                                            Delegate ({{ $participant->user->userDetail->country->country_name }})
-                                        </h1>
-                                    </div>
-                                @endif
-                                @if ($participant->registrant_type == 2)
-                                    <div
-                                        style="background-color:green; height:auto; float:left; width:100%; overflow:hidden;">
-                                        <h1
-                                            style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
-                                            Faculty ({{ $participant->user->userDetail->country->country_name }})
-                                        </h1>
-                                    </div>
-                                @endif
+                            </div>
+                        @elseif($participant->committeMember->isNotEmpty())
+                            <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
+                                <h1
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; height: 50px; margin:0px;  weight:bold; text-align:center;">
+                                    Organizer<small style=""> - ASPA</small>
+                                </h1>
+                            </div>
+                        @elseif ($participant->user->userDetail->country->country_name != 'Nepal')
+                            @if ($participant->registrant_type == 1)
+                                <div
+                                    style="background-color:#009aee; height:auto; float:left; width:100%; overflow:hidden;">
+                                    <h1
+                                        style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
+                                        Delegate<small style=""> -
+                                            {{ $participant->user->userDetail->country->country_name }}</small>
+                                    </h1>
+                                </div>
+                            @endif
+                            @if ($participant->registrant_type == 2)
+                                <div
+                                    style="background-color:green; height:auto; float:left; width:100%; overflow:hidden;">
+                                    <h1
+                                        style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
+                                        Faculty<small style=""> -
+                                            {{ $participant->user->userDetail->country->country_name }}</small>
+                                    </h1>
+                                </div>
+                            @endif
                         @endif
                     @endif
 
@@ -251,7 +257,7 @@
                                 !$participant->committeMember->isNotEmpty())
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
                                     {{ $participant->user->userDetail->pass_designation }}
                                 </h1>
                             </div>
@@ -262,7 +268,7 @@
                             <div
                                 style="background-color:#009aee; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
                                     Delegate
                                 </h1>
                             </div>
@@ -277,17 +283,29 @@
                                 !$participant->committeMember->isNotEmpty())
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
                                     {{ $participant->user->userDetail->pass_designation }}
                                 </h1>
                             </div>
                         @elseif (
                             $participant->user->userDetail->country->country_name == 'Nepal' &&
                                 $participant->registrant_type == 2 &&
-                                !$participant->committeMember->isNotEmpty())
+                                !$participant->committeMember->isNotEmpty() &&
+                                ($participant->user->userDetail->member_type_id == 2 || $participant->user->userDetail->member_type_id == 4))
                             <div style="background-color:green; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px;  weight:bold; text-align:center;">
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
+                                    Speaker
+                                </h1>
+                            </div>
+                        @elseif(
+                            $participant->user->userDetail->country->country_name == 'Nepal' &&
+                                $participant->registrant_type == 2 &&
+                                !$participant->committeMember->isNotEmpty() &&
+                                $participant->user->userDetail->member_type_id == 1)
+                            <div style="background-color:green; height:auto; float:left; width:100%; overflow:hidden;">
+                                <h1
+                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
                                     Faculty
                                 </h1>
                             </div>

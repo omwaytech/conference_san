@@ -43,7 +43,7 @@
 
                             <form id='exportForm' target="blank"
                                 action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">
-                                @csrf
+                                @csrf 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <select name="exportTypeExcel" class="form-control">

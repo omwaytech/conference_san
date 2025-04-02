@@ -79,7 +79,7 @@ class HomeController extends Controller
             $registrants = ConferenceRegistration::where(['verified_status' => 1, 'status' => 1, 'conference_id' => $conference->id])
                 ->whereHas('userDetail', function ($query) {
                     $query->whereHas('memberType', function ($subquery) {
-                        $subquery->where('delegate', 'International');
+                        $subquery->where('delegate', 'International'); 
                     });
                 })->latest()->get();
         } elseif ($status == 'accompany-persons') {

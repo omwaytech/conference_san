@@ -118,7 +118,7 @@ class ConferenceRegistrationController extends Controller
             $prefix = '';
 
             // Determine the Prefix
-            if ($registrant->committeMember->isNotEmpty()) {
+            if ($registrant->committeMember->isNotEmpty() && $registrant->user->userDetail->country_id == 125) {
                 $prefix = 'ORG_';
             } elseif ($registrant->user->userDetail->country->country_name !== 'Nepal') {
                 $prefix = 'INT_';
@@ -902,10 +902,13 @@ class ConferenceRegistrationController extends Controller
 
             if ($request->has('invited_guest')) {
                 $rules['council_number'] = 'nullable';
+                $rules['is_paid'] = 'nullable';
                 $rules['transaction_id'] = 'nullable|unique:conference_registrations,transaction_id';
                 $rules['amount'] = 'nullable';
             } else {
                 $rules['council_number'] = 'required';
+                $rules['is_paid'] = 'required';
+
                 $rules['transaction_id'] = 'required|unique:conference_registrations,transaction_id';
                 $rules['amount'] = 'required|numeric';
             }
@@ -1031,6 +1034,8 @@ class ConferenceRegistrationController extends Controller
                 'amount' => 'required',
                 'meal_type' => 'required',
                 'additional_guests' => 'nullable|numeric',
+                'is_paid' => 'required',
+
                 'payment_voucher' => 'nullable|mimes:jpg,png,pdf|max:250'
             ];
 
@@ -1092,7 +1097,7 @@ class ConferenceRegistrationController extends Controller
                 'country' => $user->userDetail->country_id
             ];
 
-            Mail::to($user->email)->send(new RegistrationInExceptionalCaseMail($mailData));
+            // Mail::to($user->email)->send(new RegistrationInExceptionalCaseMail($mailData));
 
             DB::beginTransaction();
             // insert table-1
@@ -1157,9 +1162,9 @@ class ConferenceRegistrationController extends Controller
                 ->get();
             $participants = [];
             foreach ($participantUsers as $participant) {
-                if ($request->exportTypeExcel == 1  && $participant->committeMember->isNotEmpty()) {
+                if ($request->exportTypeExcel == 1  && $participant->committeMember->isNotEmpty() && $participant->user->userDetail->country_id == 125) {
                     $participants[] = $participant;
-                } elseif ($request->exportTypeExcel == 2 && $participant->user->userDetail->country_id != 125 && !$participant->committeMember->isNotEmpty()) {
+                } elseif ($request->exportTypeExcel == 2 && $participant->user->userDetail->country_id != 125) {
                     $participants[] = $participant;
                 } elseif ($request->exportTypeExcel == 3 && $participant->user->userDetail->country_id == 125 && $participant->registrant_type == 1 && !$participant->committeMember->isNotEmpty()) {
                     $participants[] = $participant;

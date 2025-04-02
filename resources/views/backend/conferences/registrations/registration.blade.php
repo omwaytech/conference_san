@@ -291,6 +291,18 @@
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="col-md-4 form-group mb-3 hideDiv">
+                                <label for="is_paid">Is Paid <code>*</code></label>
+                                <select name="is_paid" id="is_paid"
+                                    class="form-control @error('is_paid') is-invalid @enderror">
+                                    <option value="">-- Select Is Paid --</option>
+                                    <option value="1" @selected(old('is_paid') == 1)>Yes</option>
+                                    <option value="2" @selected(old('is_paid') == 2)>No</option>
+                                </select>
+                                @error('is_paid')
+                                    <p class="text-danger">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div class="col-md-12">
                                 <div class="row" id="accompanyPersonsDetail">
 
