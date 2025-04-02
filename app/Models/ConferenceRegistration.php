@@ -27,7 +27,8 @@ class ConferenceRegistration extends Model
         'status',
         'amount',
         'meal_type',
-        'registration_id'
+        'registration_id',
+        'is_paid'
     ];
 
     // registrant_type => // 1 for attendee, 2 for speaker
@@ -47,7 +48,7 @@ class ConferenceRegistration extends Model
 
     public function committeMember()
     {
-        return $this->hasMany(CommitteeMember::class, 'user_id', 'user_id')->where('status',1);
+        return $this->hasMany(CommitteeMember::class, 'user_id', 'user_id')->where('status', 1);
     }
 
     public static function totalRegistrants($delegate, $conference)

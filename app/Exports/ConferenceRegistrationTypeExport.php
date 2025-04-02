@@ -29,7 +29,7 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
         $serialNumber = 1; // Initialize serial number counter
 
         foreach ($registrants as $registrant) {
-            if ($this->type == 1 && $registrant->committeMember->isNotEmpty()) {
+            if ($this->type == 1 && $registrant->committeMember->isNotEmpty() && $registrant->user->userDetail->country_id == 125) {
                 $arrayData[] = [
                     'S.No.' => $serialNumber++,
                     'Name' => $registrant->user->fullName($registrant, 'user'),
@@ -38,7 +38,7 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
                     'registrationId' => $registrant->registration_id,
 
                 ];
-            } elseif ($this->type == 2 && $registrant->user->userDetail->country_id != 125 && !$registrant->committeMember->isNotEmpty()) {
+            } elseif ($this->type == 2 && $registrant->user->userDetail->country_id != 125) {
                 $arrayData[] = [
                     'S.No.' => $serialNumber++,
                     'Name' => $registrant->user->fullName($registrant, 'user'),
