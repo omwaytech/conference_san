@@ -213,14 +213,14 @@
                     @if ($passType == 2)
                         @if (!empty($participant->user->userDetail->pass_designation))
                             @php
-                                $charCount = strlen($participant->user->fullName($participant, 'user'));
+                                $charCounts = strlen($participant->user->userDetail->pass_designation);
                             @endphp
-                            @if ($charCount > 30)
+                            @if ($charCounts > 25)
                                 <div
                                     style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                     <h1
-                                        style="color:#fff;  font-size:30px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
-                                        {{ $participant->user->userDetail->pass_designation }}
+                                        style="color:#fff;  font-size:32px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;  ">
+                                       {{ $participant->user->userDetail->pass_designation }}
                                     </h1>
                                 </div>
                             @else
@@ -228,7 +228,7 @@
                                     style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                     <h1
                                         style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
-                                        {{ $participant->user->userDetail->pass_designation }}
+                                       {{ $participant->user->userDetail->pass_designation }}
                                     </h1>
                                 </div>
                             @endif
