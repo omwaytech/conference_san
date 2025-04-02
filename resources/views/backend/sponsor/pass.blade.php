@@ -136,9 +136,9 @@
                     <div style="width:510px; padding:0px 20px 10px; text-align:center; float:left;">
 
                         <div
-                            style="padding:5px; font-size:15px; border-radius:5px; height:138px; width:120px; margin:10px auto 15px; overflow:hidden; background:#fff;">
+                            style="padding:5px; font-size:13px; border-radius:5px; height:138px; width:120px; margin:10px auto 15px; overflow:hidden; background:#fff;">
                             {!! QrCode::size(120)->generate(config('app.url') . '/sponsor/profile/' . $sponsor->token) !!}
-                            <br />Serial No: FAC002
+                            <br />Serial No:{{$sponsor->registration_id}}
 
                         </div>
 
