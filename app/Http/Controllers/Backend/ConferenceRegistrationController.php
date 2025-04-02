@@ -57,7 +57,7 @@ class ConferenceRegistrationController extends Controller
                 if ($request->registrant_type == 1) {
                     $prefix = 'DEL_';
                 } elseif ($request->registrant_type == 2) {
-                    $prefix = 'FAC_';
+                    $prefix = 'SPE_';
                 }
                 $latestId = ConferenceRegistration::where('registration_id', 'like', "$prefix%")
                     ->orderBy('registration_id', 'desc')
@@ -123,7 +123,8 @@ class ConferenceRegistrationController extends Controller
             } elseif ($registrant->user->userDetail->country->country_name !== 'Nepal') {
                 $prefix = 'INT_';
             } else {
-                $prefix = ($registrant->registrant_type == 1) ? 'DEL_' : 'FAC_';
+                // $prefix = ($registrant->registrant_type == 1) ? 'DEL_' : 'SPE_';
+                $prefix = 'SANCON_';
             }
 
             // Initialize the counter if not set

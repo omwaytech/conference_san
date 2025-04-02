@@ -51,7 +51,7 @@
                                             <option value="1">Organizer</option>
                                             <option value="2">International</option>
                                             <option value="3">Delegate</option>
-                                            <option value="4">Faculty</option>
+                                            <option value="4">Faculty/Speaker</option>
                                         </select>
                                     </div>
                                     <input type="hidden" value="" name="type" id="type">

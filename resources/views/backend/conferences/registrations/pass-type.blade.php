@@ -163,12 +163,12 @@
                     <div style="width:510px; padding:0px 20px 10px; text-align:center; float:left;">
 
                         <div
-                            style="padding:5px; font-size:15px; border-radius:5px; height:138px; width:120px; margin:10px auto 15px; overflow:hidden; background:#fff;">
+                            style="padding:5px; font-size:11px; border-radius:5px; height:138px; width:120px; margin:10px auto 15px; overflow:hidden; background:#fff;">
                             {!! QrCode::size(120)->generate(config('app.url') . '/participant/profile/' . $participant->token) !!}
                             {{-- <img src="data:image/png;base64, {!! base64_encode(
                                 QrCode::size(200)->generate(config('app.url') . '/participant/profile/' . $participant->token),
                             ) !!} "> --}}
-                            <br />Serial No: ORG002
+                            <br />Serial No:{{ $participant->registration_id }}
 
                         </div>
 
@@ -212,17 +212,31 @@
                     @endif
                     @if ($passType == 2)
                         @if (!empty($participant->user->userDetail->pass_designation))
-                            <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
-                                <h1
-                                    style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
-                                    {{ $participant->user->userDetail->pass_designation }}
-                                </h1>
-                            </div>
+                            @php
+                                $charCount = strlen($participant->user->fullName($participant, 'user'));
+                            @endphp
+                            @if ($charCount > 30)
+                                <div
+                                    style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
+                                    <h1
+                                        style="color:#fff;  font-size:30px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
+                                        {{ $participant->user->userDetail->pass_designation }}
+                                    </h1>
+                                </div>
+                            @else
+                                <div
+                                    style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
+                                    <h1
+                                        style="color:#fff;  font-size:40px; padding:0px 30px 8px; margin:0px; height: 50px;  weight:bold; text-align:center;">
+                                        {{ $participant->user->userDetail->pass_designation }}
+                                    </h1>
+                                </div>
+                            @endif
                         @elseif($participant->committeMember->isNotEmpty())
                             <div style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                 <h1
                                     style="color:#fff;  font-size:40px; padding:0px 30px 8px; height: 50px; margin:0px;  weight:bold; text-align:center;">
-                                    Organizer<small style=""> - ASPA</small>
+                                    Organizer
                                 </h1>
                             </div>
                         @elseif ($participant->user->userDetail->country->country_name != 'Nepal')

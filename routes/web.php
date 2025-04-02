@@ -112,7 +112,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/change-featured-status/{conference_registration}', 'changeFeatured')->name('changeFeatured');
             Route::post('/send-correction-mail-form', 'sendCorrectionMailForm')->name('sendCorrectionMailForm');
             Route::post('/send-correction-mail-submit', 'sendCorrectionMailSubmit')->name('sendCorrectionMailSubmit');
-            Route::post('/fetch-user-data', 'fetchUserData')->name('fetchUserData');
+            Route::post('/fetch-user-data', 'fetchUserData')->name('fetchUserData'); 
             Route::post('/edit-attendees-number', 'editAttendeesNumber')->name('editAttendeesNumber');
             Route::post('/edit-attendees-number-submit', 'editAttendeesNumberSubmit')->name('editAttendeesNumberSubmit');
             Route::post('/add-role', 'addRole')->name('addRole');
