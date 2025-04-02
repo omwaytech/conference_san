@@ -184,7 +184,7 @@
                             @php
                                 $charCount = strlen($participant->user->userDetail->pass_designation);
                             @endphp
-                            @if ($charCount > 30)
+                            @if ($charCount > 25)
                                 <div
                                     style="background-color:red; height:auto; float:left; width:100%; overflow:hidden;">
                                     <h1

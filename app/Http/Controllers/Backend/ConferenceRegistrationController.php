@@ -1157,7 +1157,7 @@ class ConferenceRegistrationController extends Controller
     {
         $type = $request->input('type');
         if ($type == 1) {
-            $participantUsers = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])
+            $participantUsers = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1,'conference_registrations'])
                 ->join('users', 'conference_registrations.user_id', '=', 'users.id')
                 ->orderBy('users.f_name', 'asc')
                 ->get();
