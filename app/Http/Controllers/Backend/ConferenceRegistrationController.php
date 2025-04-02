@@ -55,9 +55,9 @@ class ConferenceRegistrationController extends Controller
             for ($i = 0; $i < $numberOfRegistrants; $i++) {
 
                 if ($request->registrant_type == 1) {
-                    $prefix = 'DEL_';
+                    $prefix = 'SAN_';
                 } elseif ($request->registrant_type == 2) {
-                    $prefix = 'SPE_';
+                    $prefix = 'SAN_';
                 }
                 $latestId = ConferenceRegistration::where('registration_id', 'like', "$prefix%")
                     ->orderBy('registration_id', 'desc')
@@ -124,7 +124,7 @@ class ConferenceRegistrationController extends Controller
                 $prefix = 'INT_';
             } else {
                 // $prefix = ($registrant->registrant_type == 1) ? 'DEL_' : 'SPE_';
-                $prefix = 'SANCON_';
+                $prefix = 'SAN_';
             }
 
             // Initialize the counter if not set

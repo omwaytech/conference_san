@@ -29,7 +29,7 @@
                                 Conference Invited Speakers
                             @endif
                         </h4>
-                        {{-- <div class="row mt-4">
+                        <div class="row mt-4">
                             <form action="{{ route('conferenceRegistration.dummyPass') }}" method="POST">
                                 @csrf
                                 <div class="row mb-4">
@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div> --}}
+                        </div>
                         <div class="ml-auto">
                             @if ($type == 'attendees')
                                 {{-- <a href="javascript:void(0)" class="btn btn-primary ml-2 export-excel-btn"
