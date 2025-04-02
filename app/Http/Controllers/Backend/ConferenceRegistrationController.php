@@ -64,6 +64,7 @@ class ConferenceRegistrationController extends Controller
                     ->value('registration_id');
                 $nextNumber = $latestId ? ((int)str_replace($prefix, '', $latestId)) + 1 : 1;
                 $user = User::create([
+                    'f_name' => 'Omway Technologies',
                     'role' => 2,
                     'password' => Hash::make('password'),
                     'status' => 1
