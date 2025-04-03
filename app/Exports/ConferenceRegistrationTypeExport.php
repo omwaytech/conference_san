@@ -51,7 +51,7 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
 
 
                 ];
-            } elseif ($this->type == 3 && $registrant->user->userDetail->country_id == 125 && ($registrant->registrant_type == 1 || $registrant->registrant_type == 2) && !$registrant->committeMember->isNotEmpty()) {
+            } elseif ($this->type == 3 && $registrant->user->userDetail->country_id == 125 && $registrant->registrant_type == 1 && !$registrant->committeMember->isNotEmpty()) {
                 $arrayData[] = [
                     'S.No.' => $serialNumber++,
                     'Name' => $registrant->user->fullName($registrant, 'user'),
