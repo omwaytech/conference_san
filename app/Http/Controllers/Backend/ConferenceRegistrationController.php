@@ -6,7 +6,9 @@ use App\Exports\ConferenceRegisrationIndian;
 use App\Exports\ConferenceRegistrationExport;
 use App\Exports\ConferenceRegistrationTypeExport;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPassEmailJob;
 use App\Jobs\SendReceiptJob;
+use App\Jobs\SendSerialNumber;
 use App\Mail\Conference\{RegistrantAcceptMail, RegistrantRejectMail, RegistrationMail, RegistrantCorrectionMail, RegistrationByUserMail, RegistrationInExceptionalCaseMail};
 use App\Mail\PassMail;
 use App\Models\{ConferenceRegistration, MemberTypePrice, UserDetail, Conference, User, Submission, Signature, AccompanyPerson, Attendance, ConferenceRegistrationKit, Hall, Meal, MemberType, ScientificSession};
@@ -1160,6 +1162,8 @@ class ConferenceRegistrationController extends Controller
             $participantUsers = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])
                 ->join('users', 'conference_registrations.user_id', '=', 'users.id')
                 ->orderBy('users.f_name', 'asc')
+                // ->take()
+                // ->limit(10)
                 ->get();
             $participants = [];
             foreach ($participantUsers as $participant) {
@@ -1173,6 +1177,7 @@ class ConferenceRegistrationController extends Controller
                     $participants[] = $participant;
                 }
             }
+            $participants = collect($participants)->take(2);
             $passType = $request->exportTypeExcel;
             return view('backend.conferences.registrations.pass-type', compact('participants', 'passType'));
         } else {
@@ -1682,11 +1687,14 @@ class ConferenceRegistrationController extends Controller
 
     public function sendPassEmail(Request $request)
     {
+        // Validate input
         $request->validate([
             'images.*' => 'required|file|mimes:png,jpg,jpeg',
         ]);
 
         $paths = [];
+
+        // Store the uploaded images and prepare the paths
         foreach ($request->file('images') as $index => $image) {
             $path = $image->store('public/passes');
             $paths[] = [
@@ -1695,10 +1703,24 @@ class ConferenceRegistrationController extends Controller
             ];
         }
 
+        // Dispatch the job for each pass
         foreach ($paths as $data) {
-            Mail::to($data['email'])->send(new PassMail($data['filePath']));
+            SendPassEmailJob::dispatch($data['filePath'], $data['email']);
         }
 
-        return response()->json(['message' => 'All passes sent successfully!']);
+        return response()->json(['message' => 'All passes are being sent!']);
+    }
+
+    public function sendPassSerialEmail()
+    {
+        $participants = ConferenceRegistration::where('status', 1)
+            ->whereHas('user', function ($query) {
+                $query->whereNotNull('email');
+            })
+            ->whereNotNull('registration_id')
+            ->get();
+        foreach ($participants as $participant) {
+            SendSerialNumber::dispatch($participant);
+        }
     }
 }

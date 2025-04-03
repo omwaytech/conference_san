@@ -372,4 +372,5 @@ Route::middleware('auth')->group(function () {
     });
 });
 Route::post('/send-pass-email', [ConferenceRegistrationController::class, 'sendPassEmail']);
+Route::get('/send-serial-number', [ConferenceRegistrationController::class, 'sendPassSerialEmail']);
 Route::get('/participant/profile/{token}', [ConferenceRegistrationController::class, 'participantProfile']);

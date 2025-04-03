@@ -69,7 +69,7 @@
 
 <body>
     <h1 style="text-align:center;">SANCON 2025 Passes</h1>
-    <div id="pass-container" class="pass-container">
+    <div id="pass-container" class="pass-container"> 
         @foreach ($participants as $participant)
             <div class="pass" id="pass-{{ $loop->index }}" data-email="{{ $participant->user->email }}">
                 <div style="text-align:center;">
