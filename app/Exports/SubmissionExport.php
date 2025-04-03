@@ -46,29 +46,34 @@ class SubmissionExport implements FromCollection, WithHeadings, ShouldAutoSize
             } else {
                 $registeredStatus = 'No';
             }
-            $arrayData[] = [
-                'S.No.' => $key + 1,
-                'Name' => $value->user->fullName($value, 'user'),
-                'Type' => $value->user->userDetail->memberType->type ?? null,
-                'presentationType' => $value->presentation_type == 1 ? 'Poster' : 'Oral(Abstract)',
-                'Email' => $value->user->email,
-                'Phone' => $value->user->userDetail->phone,
-                'Address' => $value->user->userDetail->address,
-                'Affiliation' => $value->user->userDetail->affiliation,
-                'InstituteName' => $value->user->userDetail->institute_name,
-                // 'Has Registered Conference?' => $registeredStatus,
-                'councilNumber' => $value->user->userDetail->council_number,
-                'requestStatus' => $status,
-                'country' => $countryName,
-                // 'shortCv' => $value->conferenceRegistration ? strip_tags(html_entity_decode($value->conferenceRegistration->description)) : null
+            if ($value->request_status == 1) {
+                $affiliationDetails = trim(
+                    implode(', ', array_filter([
+                        $value->user->userDetail->affiliation ?? '',
+                        $value->user->userDetail->institute_name ?? '',
+                        $value->user->userDetail->address ?? ''
+                    ]))
+                );
+                $arrayData[] = [
+                    'S.No.' => $key + 1,
+                    'presentationType' => $value->presentation_type == 1 ? 'Poster' : 'Oral(Abstract)',
+                    'topic' => $value->topic,
+                    'Name' => $value->user->fullName($value, 'user'),
+                    'Affiliation' => $affiliationDetails,
+                    'Type' => $value->user->userDetail->memberType->type ?? null,
+                    'Email' => $value->user->email,
+                    'Phone' => $value->user->userDetail->phone,
+                    'councilNumber' => $value->user->userDetail->council_number,
+                    'country' => $countryName,
 
-            ];
+                ];
+            }
         }
 
         return collect($arrayData);
     }
     public function headings(): array
     {
-        return ["S.No.", "Name", "Member Type", "Presentation Type", "Email", "Phone", "Address", "Affiliation", "Institute Name", "Medical Council Number", "Request Status", "Country"];
+        return ["S.No.", "Presentation Type", "Title", "Name", "Affiliation", "Member Type", "Email", "Phone Number", " Council Number", "Country"];
     }
 }
