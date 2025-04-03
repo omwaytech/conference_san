@@ -74,7 +74,7 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
 
 //==================================== Backend Start ====================================
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('home'); 
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
     Route::get('/cms/view/{status}/participants', [HomeController::class, 'viewParticipants'])->name('home.viewParticipants');
     Route::get('/cms/workshop-registrations/{slug}', [HomeController::class, 'workshopRegistrations'])->name('home.workshopRegistrations');
     Route::get('/cms/submissions/{type}', [HomeController::class, 'submission'])->name('home.submission');
@@ -90,6 +90,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/cms/view/generate-later-participants-pass/{times}', [HomeController::class, 'generateLaterRegistrantPass'])->name('home.generateLaterRegistrantPass');
     Route::get('/cms/conference/open-portal/{slug}', [HomeController::class, 'index'])->name('conference.openConferencePortal');
     Route::get('/view-/attendance/{day}/{memberType}', [HomeController::class, 'viewMemberTypesDailyAttendance'])->name('viewMemberTypesDailyAttendance');
+    Route::get('/view/conference-kit/{day}/{memberType}', [HomeController::class, 'viewMemberTypesConferenceKit'])->name('viewMemberTypesConferenceKit');
+    Route::get('/view-sponsor/attendance/{day}', [HomeController::class, 'viewSponsorAttendance'])->name('viewSponsorAttendance');
     Route::get('/view/meal/{day}/{memberType}/{mealType}', [HomeController::class, 'viewMemberTypesDailyMeal'])->name('viewMemberTypesDailyMeal');
     Route::get('/meal/sponsor/{day}/{mealType}', [HomeController::class, 'viewSponsorDailyMeal'])->name('viewSponsorDailyMeal');
 
@@ -313,6 +315,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/sponsor/empty-registrationId-id', [SponsorController::class, 'emptyRegistrationId'])->name('emptyRegistrationId');
     Route::post('/take-meal', [SponsorController::class, 'takeMeal'])->name('sponsor.takeMeal');
     Route::post('/take-attendance', [SponsorController::class, 'takeAttendance'])->name('sponsor.takeAttendance');
+    Route::get('/sponsor/generate-certificate/{id}', [SponsorController::class, 'generateCertificate'])->name('sponsor.generateCertificate');
+
+    Route::get('/sponsor/bulkCertificate', [SponsorController::class, 'bulkCertificate'])->name('sponsor.bulkCertificate');
+
 
     Route::get('/sponsor/take-dinner/{id}/{day}/{type}', [SponsorController::class, 'takeDinner'])->name('sponsor.takeDinner');
     Route::post('/sponsor/add-participant', [SponsorController::class, 'addParticipant'])->name('sponsor.addParticipant');

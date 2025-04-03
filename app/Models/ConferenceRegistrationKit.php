@@ -12,4 +12,8 @@ class ConferenceRegistrationKit extends Model
         'conference_registration_id',
         'status'
     ];
+    public function conferenceRegistration()
+    {
+        return $this->belongsTo(ConferenceRegistration::class);
+    }
 }

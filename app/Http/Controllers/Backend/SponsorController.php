@@ -317,4 +317,17 @@ class SponsorController extends Controller
         }
         return response()->json(['type' => $type, 'message' => $message]);
     }
+
+    public function generateCertificate($id)
+    {
+        $sponsor = Sponsor::where('id', $id)->first();
+
+        return view('backend.sponsor.generate-certificate', compact('sponsor'));
+    }
+
+    public function bulkCertificate()
+    {
+        $sponsors = Sponsor::where('status', 1)->get();
+        return view('backend.sponsor.bulk-certificate', compact('sponsors'));
+    }
 }

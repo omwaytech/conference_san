@@ -36,7 +36,7 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens"></i>
                                 <div style="margin-left: 6%;">
@@ -93,7 +93,7 @@
                                         </li>
                                         <li>Sponsor:{{ $SponsorAttendaceDay1 }} |
                                             <span class="badge badge-success"><a
-                                                    href="{{ route('viewMemberTypesDailyAttendance', ['day1', 'sponsor']) }}">View</a></span>
+                                                    href="{{ route('viewSponsorAttendance', ['day1']) }}">View</a></span>
                                         </li>
 
                                     </ul>
@@ -134,7 +134,7 @@
                         @endphp
                     @endforeach
 
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens"></i>
                                 <div style="margin-left: 6%;">
@@ -206,7 +206,7 @@
                             $sponsorDinnerDay1 = $sponsorDinnerDay1 + $sponsorDinner->dinner_taken;
                         @endphp
                     @endforeach
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens"></i>
                                 <div style="margin-left: 6%;">
@@ -253,6 +253,72 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                            <div class="card-body"><i class="i-Mens"></i>
+                                <div style="margin-left: 6%;">
+                                    <h5 class="text-muted mt-2 mb-0">Conference Kit</h5>
+                                    <ul>
+                                        @php
+                                            $OrganizerKitDay1 = 0;
+                                            $InternationalKitDay1 = 0;
+                                            $SpeakerKitDay1 = 0;
+                                            $AttendeeKitDay1 = 0;
+                                        @endphp
+                                        @foreach ($day1ConferenceKit as $kit)
+                                            {{-- @dd($kit->conferenceRegistration->committeMember->isNotEmpty()) --}}
+
+                                            @if (
+                                                $kit->conferenceRegistration &&
+                                                    $kit->conferenceRegistration->committeMember->isNotEmpty() &&
+                                                    $kit->conferenceRegistration->user->userDetail->country_id == 125)
+                                                @php $OrganizerKitDay1++ @endphp
+                                            @elseif ($kit->conferenceRegistration && $kit->conferenceRegistration->user->userDetail->country_id != 125)
+                                                @php $InternationalKitDay1++ @endphp
+                                            @elseif ($kit->conferenceRegistration && $kit->conferenceRegistration->registrant_type == 2)
+                                                @php $SpeakerKitDay1++ @endphp
+                                            @else
+                                                @php $AttendeeKitDay1++ @endphp
+                                            @endif
+                                        @endforeach
+                                        @php
+                                            // Calculate total attendance for Day 1
+                                            $TotalKitDay1 =
+                                                $OrganizerKitDay1 +
+                                                $InternationalKitDay1 +
+                                                $SpeakerKitDay1 +
+                                                $AttendeeKitDay1;
+                                        @endphp
+
+                                        <li>Organizer:{{ $OrganizerKitDay1 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'organizer']) }}">View</a></span>
+                                        </li>
+                                        <li>International:{{ $InternationalKitDay1 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'international']) }}">View</a></span>
+                                        </li>
+                                        <li>Speaker/Faculty:{{ $SpeakerKitDay1 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'speaker']) }}">View</a></span>
+                                        </li>
+                                        <li>Delegate:{{ $AttendeeKitDay1 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'delegate']) }}">View</a></span>
+                                        </li>
+
+                                        {{-- @php
+                                        $totalDinnerDay2 += $day2Dinner->total_dinners;
+                                    @endphp --}}
+                                    </ul>
+                                    <hr style="margin: 5px 0; border: 0; border-top: 1px solid #ccc;">
+                                    <h4>Total: {{ $TotalKitDay1 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="separator-breadcrumb border-top"></div>
 
@@ -261,7 +327,7 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens"></i>
                                 <div style="margin-left: 6%;">
@@ -317,7 +383,7 @@
                                         </li>
                                         <li>Sponsor:{{ $SponsorAttendaceDay2 }} |
                                             <span class="badge badge-success"><a
-                                                    href="{{ route('viewMemberTypesDailyAttendance', ['day2', 'sponsor']) }}">View</a></span>
+                                                    href="{{ route('viewSponsorAttendance', ['day2']) }}">View</a></span>
                                         </li>
 
                                     </ul>
@@ -358,7 +424,7 @@
                         @endphp
                     @endforeach
 
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens"></i>
                                 <div style="margin-left: 6%;">
@@ -431,7 +497,7 @@
                             $sponsorDinnerDay2 = $sponsorDinnerDay2 + $sponsorLunch->dinner_taken;
                         @endphp
                     @endforeach
-                    <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body"><i class="i-Mens"></i>
                                 <div style="margin-left: 6%;">
@@ -474,6 +540,71 @@
                                     </ul>
                                     <hr style="margin: 5px 0; border: 0; border-top: 1px solid #ccc;">
                                     <h4>Total: {{ $totalDinnerDay2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                            <div class="card-body"><i class="i-Mens"></i>
+                                <div style="margin-left: 6%;">
+                                    <h5 class="text-muted mt-2 mb-0">Conference Kit</h5>
+                                    <ul>
+                                        @php
+                                            $OrganizerKitDay2 = 0;
+                                            $InternationalKitDay2 = 0;
+                                            $SpeakerKitDay2 = 0;
+                                            $AttendeeKitDay2 = 0;
+                                        @endphp
+                                        @foreach ($day2ConferenceKit as $kit)
+                                            {{-- @dd($kit->conferenceRegistration->committeMember->isNotEmpty()) --}}
+
+                                            @if (
+                                                $kit->conferenceRegistration &&
+                                                    $kit->conferenceRegistration->committeMember->isNotEmpty() &&
+                                                    $kit->conferenceRegistration->user->userDetail->country_id == 125)
+                                                @php $OrganizerKitDay2++ @endphp
+                                            @elseif ($kit->conferenceRegistration && $kit->conferenceRegistration->user->userDetail->country_id != 125)
+                                                @php $InternationalKitDay2++ @endphp
+                                            @elseif ($kit->conferenceRegistration && $kit->conferenceRegistration->registrant_type == 2)
+                                                @php $SpeakerKitDay2++ @endphp
+                                            @else
+                                                @php $AttendeeKitDay2++ @endphp
+                                            @endif
+                                        @endforeach
+                                        @php
+                                            // Calculate total attendance for Day 1
+                                            $TotalKitDay2 =
+                                                $OrganizerKitDay2 +
+                                                $InternationalKitDay2 +
+                                                $SpeakerKitDay2 +
+                                                $AttendeeKitDay2;
+                                        @endphp
+
+                                        <li>Organizer:{{ $OrganizerKitDay2 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'organizer']) }}">View</a></span>
+                                        </li>
+                                        <li>International:{{ $InternationalKitDay2 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'international']) }}">View</a></span>
+                                        </li>
+                                        <li>Speaker/Faculty:{{ $SpeakerKitDay2 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'speaker']) }}">View</a></span>
+                                        </li>
+                                        <li>Delegate:{{ $AttendeeKitDay2 }} |
+                                            <span class="badge badge-success"><a
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'delegate']) }}">View</a></span>
+                                        </li>
+
+                                        {{-- @php
+                                        $totalDinnerDay2 += $day2Dinner->total_dinners;
+                                    @endphp --}}
+                                    </ul>
+                                    <hr style="margin: 5px 0; border: 0; border-top: 1px solid #ccc;">
+                                    <h4>Total: {{ $TotalKitDay2 }}</p>
                                 </div>
                             </div>
                         </div>
