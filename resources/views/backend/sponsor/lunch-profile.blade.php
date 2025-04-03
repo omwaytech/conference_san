@@ -175,67 +175,81 @@
                 <div class="col-md-12">
                     <div class="card card-profile-1 mb-4">
                         <div class="card-body text-center">
-                            <div class="avatar box-shadow-2 mb-3"><img src="{{ asset('default-images/avatar.png') }}"
-                                    alt="" />
-                            </div>
-                            <h5 class="m-0">{{ $sponsor->name }}</h5>
-                            <p class="mt-0">{{ $sponsor->category->category_name }}</p>
-                            <p class="mt-0">{{ $sponsor->registration_id }}</p>
+                            @if (auth()->user() && auth()->user()->id == 2)
 
-                            <p class="mt-0">Conference Attendance</p>
-                            @php
-                                $checkAttendance = $sponsor
-                                    ->attendances()
-                                    ->where(['sponsor_id' => $sponsor->id, 'status' => 1])
-                                    ->whereDate('created_at', date('Y-m-d'))
-                                    ->first();
-                            @endphp
-                            @if (empty($checkAttendance))
-                                <a href="#" id="takeAttendance" data-id="{{ $sponsor->id }}"><button
-                                        class="btn btn-primary btn-rounded">Take Attendance</button></a>
-                            @else
-                                <div>
-                                    <span class="badge badge-warning p-3" style="font-size: 100%">Attendance Done</span>
+                                <div class="avatar box-shadow-2 mb-3"><img
+                                        src="{{ asset('default-images/avatar.png') }}" alt="" />
                                 </div>
-                                <br>
+                                <h5 class="m-0">{{ $sponsor->name }}</h5>
+                                <p class="mt-0">{{ $sponsor->category->category_name }}</p>
+                                <p class="mt-0">{{ $sponsor->registration_id }}</p>
+
+                                <p class="mt-0">Conference Attendance</p>
                                 @php
-                                    $totalLunchRemaining = $sponsor->total_attendee;
-                                    $totalDinnerRemaining = $sponsor->total_attendee;
-                                    $checkMeal = $sponsor
-                                        ->meals()
-                                        ->where(['sponsor_id' => $sponsor->id])
+                                    $checkAttendance = $sponsor
+                                        ->attendances()
+                                        ->where(['sponsor_id' => $sponsor->id, 'status' => 1])
                                         ->whereDate('created_at', date('Y-m-d'))
                                         ->first();
-                                    if (!empty($checkMeal)) {
-                                        $totalLunchRemaining = $sponsor->total_attendee - $checkMeal->lunch_taken;
-                                        $totalDinnerRemaining = $sponsor->total_attendee - $checkMeal->dinner_taken;
-                                    }
                                 @endphp
-                                <h5>Total Lunch Remaining: <span style="color: red">{{ $totalLunchRemaining }}</span>
-                                    -------&&&&------- Total Dinner Remaining: <span
-                                        style="color: red">{{ $totalDinnerRemaining }}</span></h5>
-                                <hr>
-                                <div>
-                                    @if (date('H:i') < '16:00')
-                                        @if ($totalLunchRemaining > 0)
-                                            <a href="#" class="takeMeal" data-id="{{ $sponsor->id }}"><button
-                                                    class="btn btn-primary btn-rounded">Take Lunch</button></a>
+                                @if (empty($checkAttendance))
+                                    <a href="#" id="takeAttendance" data-id="{{ $sponsor->id }}"><button
+                                            class="btn btn-primary btn-rounded">Take Attendance</button></a>
+                                @else
+                                    <div>
+                                        <span class="badge badge-warning p-3" style="font-size: 100%">Attendance
+                                            Done</span>
+                                    </div>
+                                    <br>
+                                    @php
+                                        $totalLunchRemaining = $sponsor->total_attendee;
+                                        $totalDinnerRemaining = $sponsor->total_attendee;
+                                        $checkMeal = $sponsor
+                                            ->meals()
+                                            ->where(['sponsor_id' => $sponsor->id])
+                                            ->whereDate('created_at', date('Y-m-d'))
+                                            ->first();
+                                        if (!empty($checkMeal)) {
+                                            $totalLunchRemaining = $sponsor->total_attendee - $checkMeal->lunch_taken;
+                                            $totalDinnerRemaining = $sponsor->total_attendee - $checkMeal->dinner_taken;
+                                        }
+                                    @endphp
+                                    <h5>Total Lunch Remaining: <span
+                                            style="color: red">{{ $totalLunchRemaining }}</span>
+                                        -------&&&&------- Total Dinner Remaining: <span
+                                            style="color: red">{{ $totalDinnerRemaining }}</span></h5>
+                                    <hr>
+                                    <div>
+                                        @if (date('H:i') < '16:00')
+                                            @if ($totalLunchRemaining > 0)
+                                                <a href="#" class="takeMeal"
+                                                    data-id="{{ $sponsor->id }}"><button
+                                                        class="btn btn-primary btn-rounded">Take Lunch</button></a>
+                                            @else
+                                                <span class="badge badge-warning p-3" style="font-size: 100%">Lunch
+                                                    Completed</span>
+                                            @endif
                                         @else
-                                            <span class="badge badge-warning p-3" style="font-size: 100%">Lunch
-                                                Completed</span>
+                                            @if ($totalDinnerRemaining > 0)
+                                                <a href="#" class="takeMeal"
+                                                    data-id="{{ $sponsor->id }}"><button
+                                                        class="btn btn-primary btn-rounded">Take Dinner</button></a>
+                                            @else
+                                                <span class="badge badge-warning p-3" style="font-size: 100%">Dinner
+                                                    Completed</span>
+                                            @endif
                                         @endif
-                                    @else
-                                        @if ($totalDinnerRemaining > 0)
-                                            <a href="#" class="takeMeal" data-id="{{ $sponsor->id }}"><button
-                                                    class="btn btn-primary btn-rounded">Take Dinner</button></a>
-                                        @else
-                                            <span class="badge badge-warning p-3" style="font-size: 100%">Dinner
-                                                Completed</span>
-                                        @endif
-                                    @endif
+                                    </div>
+                                @endif
+                            @else
+                                <div class="">
+                                    Welcome To San Conference
                                 </div>
                             @endif
+
+
                         </div>
+
                     </div>
                 </div>
             </div>

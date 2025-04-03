@@ -36,6 +36,8 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
                     'Type' => $registrant->user->userDetail->memberType->type ?? null,
                     'Email' => $registrant->user->email,
                     'registrationId' => $registrant->registration_id,
+                    'isPaid' => $registrant->is_paid == 2 ? 'Unpaid' : ''
+
 
                 ];
             } elseif ($this->type == 2 && $registrant->user->userDetail->country_id != 125) {
@@ -45,6 +47,8 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
                     'Type' => $registrant->user->userDetail->memberType->type ?? null,
                     'Email' => $registrant->user->email,
                     'registrationId' => $registrant->registration_id,
+                    'isPaid' => $registrant->is_paid == 2 ? 'Unpaid' : ''
+
 
                 ];
             } elseif ($this->type == 3 && $registrant->user->userDetail->country_id == 125 && $registrant->registrant_type == 1 && !$registrant->committeMember->isNotEmpty()) {
@@ -54,6 +58,8 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
                     'Type' => $registrant->user->userDetail->memberType->type ?? null,
                     'Email' => $registrant->user->email,
                     'registrationId' => $registrant->registration_id,
+                    'isPaid' => $registrant->is_paid == 2 ? 'Unpaid' : ''
+
 
                 ];
             } elseif ($this->type == 4 && $registrant->user->userDetail->country_id == 125 && $registrant->registrant_type == 2 && !$registrant->committeMember->isNotEmpty()) {
@@ -63,6 +69,8 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
                     'Type' => $registrant->user->userDetail->memberType->type ?? null,
                     'Email' => $registrant->user->email,
                     'registrationId' => $registrant->registration_id,
+                    'isPaid' => $registrant->is_paid == 2 ? 'Unpaid' : ''
+
                 ];
             }
         }
@@ -72,6 +80,6 @@ class ConferenceRegistrationTypeExport implements FromCollection, WithHeadings, 
 
     public function headings(): array
     {
-        return ["S.No.", "Name", "Member Type", "Email", "Registration Id", "Day 1", "Day 2"];
+        return ["S.No.", "Name", "Member Type", "Email", "Registration Id","Is Paid", "Day 1", "Day 2"];
     }
 }

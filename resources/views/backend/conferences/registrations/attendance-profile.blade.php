@@ -262,7 +262,7 @@
                                                                                                                 {{ $sessions->first()->category->duration }}
                                                                                                             </span>
                                                                                                             {{-- @dd($sessions->whereNotNull('topic')) --}}
-                                                                                                          
+
                                                                                                             @if ($sessions->whereNotNull('topic')->isNotEmpty())
                                                                                                                 <i
                                                                                                                     class="fa-solid fa-chevron-down"></i>
@@ -271,25 +271,26 @@
                                                                                                         </div>
                                                                                                     </button>
                                                                                                     @if ($sessions->whereNull('topic')->isNotEmpty())
-                                                                                                    @if ($session->day == \Carbon\Carbon::now()->toDateString())
-                                                                                                        @if ($sessions->first()->poll->isNotEmpty())
-                                                                                                            <div
-                                                                                                                class="d-flex justify-content-end">
+                                                                                                        @if ($session->day == \Carbon\Carbon::now()->toDateString())
+                                                                                                            @if ($sessions->first()->poll->isNotEmpty())
                                                                                                                 <div
-                                                                                                                    class="col-md-2">
-                                                                                                                    <button style="background-color: #ffc107; color: white;"
-                                                                                                                        class="btn btn-xs btn-warning poll"
-                                                                                                                        type="button"
-                                                                                                                        data-toggle="modal"
-                                                                                                                        data-target="#openModals"
-                                                                                                                        data-id="{{ $sessions->first()->id }}">
-                                                                                                                        Poll
-                                                                                                                    </button>
+                                                                                                                    class="d-flex justify-content-end">
+                                                                                                                    <div
+                                                                                                                        class="col-md-2">
+                                                                                                                        <button
+                                                                                                                            style="background-color: #ffc107; color: white;"
+                                                                                                                            class="btn btn-xs btn-warning poll"
+                                                                                                                            type="button"
+                                                                                                                            data-toggle="modal"
+                                                                                                                            data-target="#openModals"
+                                                                                                                            data-id="{{ $sessions->first()->id }}">
+                                                                                                                            Poll
+                                                                                                                        </button>
+                                                                                                                    </div>
                                                                                                                 </div>
-                                                                                                            </div>
+                                                                                                            @endif
                                                                                                         @endif
                                                                                                     @endif
-                                                                                                @endif
                                                                                                 </h2>
                                                                                                 <div id="category-collapse-{{ $dateIndex }}-{{ $hallIndex }}-{{ $category_id }}"
                                                                                                     class="accordion-collapse collapse"
@@ -381,25 +382,25 @@
                                                                                                                                     <i>{{ trim($session->participants, '"') }}</i>
                                                                                                                                 </small>
                                                                                                                             @endif
-                                                                                                                            {{-- @if ($session->day == \Carbon\Carbon::now()->toDateString()) --}}
-                                                                                                                            @if ($session->poll->isNotEmpty())
-                                                                                                                                <div
-                                                                                                                                    class="d-flex justify-content-end">
+                                                                                                                            @if ($session->day == \Carbon\Carbon::now()->toDateString())
+                                                                                                                                @if ($session->poll->isNotEmpty())
                                                                                                                                     <div
-                                                                                                                                        class="col-md-2">
-                                                                                                                                        <button
-                                                                                                                                            style=""
-                                                                                                                                            class="btn btn-xs btn-warning poll"
-                                                                                                                                            type="button"
-                                                                                                                                            data-toggle="modal"
-                                                                                                                                            data-target="#openModals"
-                                                                                                                                            data-id="{{ $session->id }}">
-                                                                                                                                            Poll
-                                                                                                                                        </button>
+                                                                                                                                        class="d-flex justify-content-end">
+                                                                                                                                        <div
+                                                                                                                                            class="col-md-2">
+                                                                                                                                            <button
+                                                                                                                                                style=""
+                                                                                                                                                class="btn btn-xs btn-warning poll"
+                                                                                                                                                type="button"
+                                                                                                                                                data-toggle="modal"
+                                                                                                                                                data-target="#openModals"
+                                                                                                                                                data-id="{{ $session->id }}">
+                                                                                                                                                Poll
+                                                                                                                                            </button>
+                                                                                                                                        </div>
                                                                                                                                     </div>
-                                                                                                                                </div>
+                                                                                                                                @endif
                                                                                                                             @endif
-                                                                                                                            {{-- @endif --}}
                                                                                                                         </li>
                                                                                                                     @endif
                                                                                                                 @endforeach

@@ -39,7 +39,7 @@
                             @endif
                             Participants
                         </h4>
-                        <div class="">
+                        <div class=""> 
 
                             <form id='exportForm' target="blank"
                                 action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">

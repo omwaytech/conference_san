@@ -12,4 +12,9 @@ class SponsorAttendance extends Model
         'sponsor_id',
         'status'
     ];
+
+    public function sponsor()
+    {
+        return $this->belongsTo(sponsor::class);
+    }
 }

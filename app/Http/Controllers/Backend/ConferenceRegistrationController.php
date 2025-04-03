@@ -1541,7 +1541,7 @@ class ConferenceRegistrationController extends Controller
     public function generateCertificate($id)
     {
         $filename = 'test.pdf';
-        $participant = ConferenceRegistration::where('id', $id)->first(); 
+        $participant = ConferenceRegistration::where('id', $id)->first();
         $latestConference = Conference::latestConference();
         // $html = view()->make('backend.conferences.registrations.certificate-test', compact('participant'))->render();
         // $pdf = new TCPDF;
@@ -1558,6 +1558,8 @@ class ConferenceRegistrationController extends Controller
         // return $response;
         $customPaper = array(0, 0, 2600, 1200);
         $signatures = Signature::where(['conference_id' => $latestConference->id, 'status' => 1])->get();
+        return view('backend.conferences.registrations.certificate', compact('participant', 'signatures'));
+
         $pdf = PDF::loadView('backend.conferences.registrations.certificate', compact('participant', 'signatures'))->setPaper($customPaper);
         return $pdf->stream();
     }
