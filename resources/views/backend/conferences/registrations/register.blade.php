@@ -41,7 +41,7 @@
                                             <p class="text-danger">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6 form-group mb-3" <label for="transaction_id">Transaction ID/Bill
+                                    <div class="col-md-6 form-group mb-3"> <label for="transaction_id">Transaction ID/Bill
                                         No/Reference Code <code>*</code></label>
                                         <input type="text"
                                             class="form-control @error('transaction_id') is-invalid @enderror"

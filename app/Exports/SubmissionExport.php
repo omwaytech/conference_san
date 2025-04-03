@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Conference;
 use App\Models\Submission;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -51,10 +52,12 @@ class SubmissionExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Type' => $value->user->userDetail->memberType->type ?? null,
                 'presentationType' => $value->presentation_type == 1 ? 'Poster' : 'Oral(Abstract)',
                 'Email' => $value->user->email,
-                'Has Registered Conference?' => $registeredStatus,
+                // 'Has Registered Conference?' => $registeredStatus,
                 'councilNumber' => $value->user->userDetail->council_number,
                 'requestStatus' => $status,
                 'country' => $countryName,
+                'shortCv' => $value->conferenceRegistration ? strip_tags(html_entity_decode($value->conferenceRegistration->description)) : null
+
             ];
         }
 
@@ -62,6 +65,6 @@ class SubmissionExport implements FromCollection, WithHeadings, ShouldAutoSize
     }
     public function headings(): array
     {
-        return ["S.No.", "Name", "Member Type", "Presentation Type", "Email", "Has Registered Conference?", "Medical Council Number", "Request Status", "Country"];
+        return ["S.No.", "Name", "Member Type", "Presentation Type", "Email", "Medical Council Number", "Request Status", "Country", 'shortCv'];
     }
 }
