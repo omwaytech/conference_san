@@ -52,11 +52,15 @@ class SubmissionExport implements FromCollection, WithHeadings, ShouldAutoSize
                 'Type' => $value->user->userDetail->memberType->type ?? null,
                 'presentationType' => $value->presentation_type == 1 ? 'Poster' : 'Oral(Abstract)',
                 'Email' => $value->user->email,
+                'Phone' => $value->user->userDetail->phone,
+                'Address' => $value->user->userDetail->address,
+                'Affiliation' => $value->user->userDetail->affiliation,
+                'InstituteName' => $value->user->userDetail->institute_name,
                 // 'Has Registered Conference?' => $registeredStatus,
                 'councilNumber' => $value->user->userDetail->council_number,
                 'requestStatus' => $status,
                 'country' => $countryName,
-                'shortCv' => $value->conferenceRegistration ? strip_tags(html_entity_decode($value->conferenceRegistration->description)) : null
+                // 'shortCv' => $value->conferenceRegistration ? strip_tags(html_entity_decode($value->conferenceRegistration->description)) : null
 
             ];
         }
@@ -65,6 +69,6 @@ class SubmissionExport implements FromCollection, WithHeadings, ShouldAutoSize
     }
     public function headings(): array
     {
-        return ["S.No.", "Name", "Member Type", "Presentation Type", "Email", "Medical Council Number", "Request Status", "Country", 'shortCv'];
+        return ["S.No.", "Name", "Member Type", "Presentation Type", "Email", "Phone", "Address", "Affiliation", "Institute Name", "Medical Council Number", "Request Status", "Country"];
     }
 }
