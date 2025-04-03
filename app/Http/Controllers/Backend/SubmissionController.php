@@ -51,7 +51,7 @@ class SubmissionController extends Controller
         }
         return view('backend.submission.show', compact('submissions', 'authUser', 'checkScientificCommitee'));
     }
- 
+
     public function create()
     {
         // $userDetail = UserDetail::where('user_id', auth()->user()->id)->first();
@@ -588,169 +588,183 @@ class SubmissionController extends Controller
 
     public function bulkWordExport(Request $request)
     {
-        if ($request->selected_presentation_type == null || $request->selected_request_status == null) {
-            return redirect()->back()->with('delete', 'Please select presentation type, request status and submission track');
-        } else {
-            $authUser = auth()->user();
-            $latestConference = Conference::latestConference();
-            $scientificCommittee = DB::table('committees')
-                ->where('committee_name', 'Scientific Committee')
-                ->first();
-            $checkScientificCommitee = DB::table('committee_members')
-                ->where([
-                    'conference_id' => $latestConference->id,
-                    'committee_id' => $scientificCommittee->id,
-                    'user_id' => $authUser->id,
-                    'status' => 1,
-                ])
-                ->first();
-            if (!empty($authUser->expert) || !empty($checkScientificCommitee)) {
+        if ($request->excel == 2) {
 
-                if (!empty($checkScientificCommitee)) {
-                    $submissions = Submission::where(['presentation_type' => $request->selected_presentation_type, 'request_status' => $request->selected_request_status, 'status' => 1])->get();
-                } else {
-                    // dd('dd');
-                    $submissions = Submission::where(['presentation_type' => $request->selected_presentation_type, 'expert_id' => $authUser->id, 'request_status' => $request->selected_request_status, 'status' => 1])->get();
-                }
-                // dd($submissions);
+            if ($request->selected_presentation_type == null || $request->selected_request_status == null) {
+                return redirect()->back()->with('delete', 'Please select presentation type, request status and submission track');
             } else {
-                $submissions = Submission::where(['presentation_type' => $request->selected_presentation_type, 'request_status' => $request->selected_request_status, 'status' => 1])->get();
-            }
-            $phpWord = new \PhpOffice\PhpWord\PhpWord();
+                $authUser = auth()->user();
+                $latestConference = Conference::latestConference();
+                $scientificCommittee = DB::table('committees')
+                    ->where('committee_name', 'Scientific Committee')
+                    ->first();
+                $checkScientificCommitee = DB::table('committee_members')
+                    ->where([
+                        'conference_id' => $latestConference->id,
+                        'committee_id' => $scientificCommittee->id,
+                        'user_id' => $authUser->id,
+                        'status' => 1,
+                    ])
+                    ->first();
+                if (!empty($authUser->expert) || !empty($checkScientificCommitee)) {
 
-            foreach ($submissions as $submission) {
-                $authors = $submission->authors;
-                $mainAuthor = null;
-                $names = '';
-                $affiliation = [];
-
-                if ($authors->isNotEmpty()) {
-                    $mainAuthor = $authors->first();
-                    $groupedAuthors = $authors->groupBy(['designation', 'institution', 'institution_address']);
-                    $duplicatedData = [];
-                    $nonDuplicatedData = [];
-                    $i = 1;
-
-                    foreach ($groupedAuthors as $designationGroup) {
-                        foreach ($designationGroup as $institutionGroup) {
-                            foreach ($institutionGroup as $addressGroup) {
-                                foreach ($addressGroup as $record) {
-                                    $data = [
-                                        'designation' => $record->designation ?? '',
-                                        'institution' => $record->institution ?? '',
-                                        'institution_address' => $record->institution_address ?? '',
-                                        'countValue' => $i,
-                                    ];
-
-                                    if ($addressGroup->count() > 1) {
-                                        $duplicatedData[$record->name][] = $data;
-                                    } else {
-                                        $nonDuplicatedData[$record->name] = $data;
-                                    }
-                                }
-                                $i++;
-                            }
-                        }
+                    if (!empty($checkScientificCommitee)) {
+                        $submissions = Submission::where(['presentation_type' => $request->selected_presentation_type, 'request_status' => $request->selected_request_status, 'status' => 1])->get();
+                    } else {
+                        // dd('dd');
+                        $submissions = Submission::where(['presentation_type' => $request->selected_presentation_type, 'expert_id' => $authUser->id, 'request_status' => $request->selected_request_status, 'status' => 1])->get();
                     }
-
-                    $uniqueValues = [];
-                    foreach ($duplicatedData as $key => $value) {
-                        $names .= $key . ' ' . $value[0]['countValue'] . ', ';
-                        if (!in_array($value[0]['countValue'], $uniqueValues)) {
-                            $affiliation[] = $value[0]['countValue'] . $value[0]['designation'] . ', ' . $value[0]['institution'] . ', ' . $value[0]['institution_address'];
-                            $uniqueValues[] = $value[0]['countValue'];
-                        }
-                    }
-
-                    foreach ($nonDuplicatedData as $key => $value) {
-                        $names .= $key . ' ' . $value['countValue'] . ', ';
-                        $affiliation[] = $value['countValue'] . $value['designation'] . ', ' . $value['institution'] . ', ' . $value['institution_address'];
-                    }
-
-                    $names = rtrim($names, ', ');
+                    // dd($submissions);
+                } else {
+                    $submissions = Submission::where(['presentation_type' => $request->selected_presentation_type, 'request_status' => $request->selected_request_status, 'status' => 1])->get();
                 }
+                $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
-                // Add submission section
-                $section = $phpWord->addSection();
-                $presentationType = $submission->presentation_type == 1 ? 'Poster Submission' : 'Oral Submission';
-                $section->addText($presentationType, ['name' => 'Times New Roman', 'size' => 18, 'bold' => true]);
-                $section->addTextBreak(1);
-                $section->addText($submission->topic, ['name' => 'Times New Roman', 'size' => 16, 'bold' => true]);
-                $section->addTextBreak(1);
-                if ($submission->expert_id !== $authUser->id) {
+                foreach ($submissions as $submission) {
+                    $authors = $submission->authors;
+                    $mainAuthor = null;
+                    $names = '';
+                    $affiliation = [];
 
                     if ($authors->isNotEmpty()) {
-                        $namesArray = explode(', ', $names);
-                        $textRun = $section->addTextRun();
-                        $totalNames = count($namesArray);
+                        $mainAuthor = $authors->first();
+                        $groupedAuthors = $authors->groupBy(['designation', 'institution', 'institution_address']);
+                        $duplicatedData = [];
+                        $nonDuplicatedData = [];
+                        $i = 1;
 
-                        foreach ($namesArray as $key => $name) {
-                            $parts = explode(' ', $name);
-                            $number = array_pop($parts);
-                            $person = implode(' ', $parts);
+                        foreach ($groupedAuthors as $designationGroup) {
+                            foreach ($designationGroup as $institutionGroup) {
+                                foreach ($institutionGroup as $addressGroup) {
+                                    foreach ($addressGroup as $record) {
+                                        $data = [
+                                            'designation' => $record->designation ?? '',
+                                            'institution' => $record->institution ?? '',
+                                            'institution_address' => $record->institution_address ?? '',
+                                            'countValue' => $i,
+                                        ];
 
-                            $textRun->addText($person . ' ', ['name' => 'Times New Roman', 'size' => 14, 'bold' => true]);
-                            $textRun->addText($number, ['superscript' => true, 'name' => 'Times New Roman', 'size' => 10, 'bold' => true]);
-
-                            if ($key !== $totalNames - 1) {
-                                $textRun->addText(", ", ['name' => 'Times New Roman', 'size' => 14]);
+                                        if ($addressGroup->count() > 1) {
+                                            $duplicatedData[$record->name][] = $data;
+                                        } else {
+                                            $nonDuplicatedData[$record->name] = $data;
+                                        }
+                                    }
+                                    $i++;
+                                }
                             }
                         }
-                        $textRun->getParagraphStyle()->setLineHeight(0.8);
 
-                        foreach ($affiliation as $affiliationText) {
-                            $textRunAffiliation = $section->addTextRun();
-                            $textRunAffiliation->addText(substr($affiliationText, 0, 1), ['superscript' => true, 'name' => 'Times New Roman', 'size' => 10]);
-                            $textRunAffiliation->addText(substr($affiliationText, 1), ['name' => 'Times New Roman', 'size' => 12]);
-                            $textRunAffiliation->getParagraphStyle()->setLineHeight(0.8);
+                        $uniqueValues = [];
+                        foreach ($duplicatedData as $key => $value) {
+                            $names .= $key . ' ' . $value[0]['countValue'] . ', ';
+                            if (!in_array($value[0]['countValue'], $uniqueValues)) {
+                                $affiliation[] = $value[0]['countValue'] . $value[0]['designation'] . ', ' . $value[0]['institution'] . ', ' . $value[0]['institution_address'];
+                                $uniqueValues[] = $value[0]['countValue'];
+                            }
+                        }
+
+                        foreach ($nonDuplicatedData as $key => $value) {
+                            $names .= $key . ' ' . $value['countValue'] . ', ';
+                            $affiliation[] = $value['countValue'] . $value['designation'] . ', ' . $value['institution'] . ', ' . $value['institution_address'];
+                        }
+
+                        $names = rtrim($names, ', ');
+                    }
+
+                    // Add submission section
+                    $section = $phpWord->addSection();
+                    $presentationType = $submission->presentation_type == 1 ? 'Poster Submission' : 'Oral Submission';
+                    $section->addText($presentationType, ['name' => 'Times New Roman', 'size' => 18, 'bold' => true]);
+                    $section->addTextBreak(1);
+                    $section->addText($submission->topic, ['name' => 'Times New Roman', 'size' => 16, 'bold' => true]);
+                    $section->addTextBreak(1);
+                    if ($submission->expert_id !== $authUser->id) {
+
+                        if ($authors->isNotEmpty()) {
+                            $namesArray = explode(', ', $names);
+                            $textRun = $section->addTextRun();
+                            $totalNames = count($namesArray);
+
+                            foreach ($namesArray as $key => $name) {
+                                $parts = explode(' ', $name);
+                                $number = array_pop($parts);
+                                $person = implode(' ', $parts);
+
+                                $textRun->addText($person . ' ', ['name' => 'Times New Roman', 'size' => 14, 'bold' => true]);
+                                $textRun->addText($number, ['superscript' => true, 'name' => 'Times New Roman', 'size' => 10, 'bold' => true]);
+
+                                if ($key !== $totalNames - 1) {
+                                    $textRun->addText(", ", ['name' => 'Times New Roman', 'size' => 14]);
+                                }
+                            }
+                            $textRun->getParagraphStyle()->setLineHeight(0.8);
+
+                            foreach ($affiliation as $affiliationText) {
+                                $textRunAffiliation = $section->addTextRun();
+                                $textRunAffiliation->addText(substr($affiliationText, 0, 1), ['superscript' => true, 'name' => 'Times New Roman', 'size' => 10]);
+                                $textRunAffiliation->addText(substr($affiliationText, 1), ['name' => 'Times New Roman', 'size' => 12]);
+                                $textRunAffiliation->getParagraphStyle()->setLineHeight(0.8);
+                            }
                         }
                     }
-                }
-                if ($submission->expert_id !== $authUser->id) {
+                    if ($submission->expert_id !== $authUser->id) {
 
-                    if ($mainAuthor) {
-                        $section->addTextBreak(1);
-                        $section->addText('Correspondence', ['name' => 'Times New Roman', 'size' => 14, 'bold' => true]);
-                        $section->addText($mainAuthor->name, ['name' => 'Times New Roman', 'size' => 12]);
-                        $section->addText($mainAuthor->designation, ['name' => 'Times New Roman', 'size' => 12]);
-                        $section->addText($mainAuthor->institution, ['name' => 'Times New Roman', 'size' => 12]);
-                        $section->addText($mainAuthor->institution_address, ['name' => 'Times New Roman', 'size' => 12]);
-                        $section->addText('Email: ' . $mainAuthor->email, ['name' => 'Times New Roman', 'size' => 12]);
-                        $section->addText('Phone: ' . $mainAuthor->phone, ['name' => 'Times New Roman', 'size' => 12]);
-                        $section->addTextBreak(1);
+                        if ($mainAuthor) {
+                            $section->addTextBreak(1);
+                            $section->addText('Correspondence', ['name' => 'Times New Roman', 'size' => 14, 'bold' => true]);
+                            $section->addText($mainAuthor->name, ['name' => 'Times New Roman', 'size' => 12]);
+                            $section->addText($mainAuthor->designation, ['name' => 'Times New Roman', 'size' => 12]);
+                            $section->addText($mainAuthor->institution, ['name' => 'Times New Roman', 'size' => 12]);
+                            $section->addText($mainAuthor->institution_address, ['name' => 'Times New Roman', 'size' => 12]);
+                            $section->addText('Email: ' . $mainAuthor->email, ['name' => 'Times New Roman', 'size' => 12]);
+                            $section->addText('Phone: ' . $mainAuthor->phone, ['name' => 'Times New Roman', 'size' => 12]);
+                            $section->addTextBreak(1);
+                        }
                     }
+
+                    $section->addText('Received Date: ' . Carbon::parse($submission->submitted_date)->format('d M, Y'), ['name' => 'Times New Roman', 'size' => 12]);
+                    if (!empty($submission->expert)) {
+                        $section->addText('Reviewer: ' . $submission->expert->fullName($submission, 'expert'), ['name' => 'Times New Roman', 'size' => 12]);
+                    }
+                    $section->addTextBreak(1);
+
+                    $section->addText('Abstract', ['name' => 'Times New Roman', 'size' => 14, 'bold' => true]);
+                    $section->addText(htmlspecialchars(strip_tags($submission->abstract_content)), ['name' => 'Times New Roman', 'size' => 12]);
+                    $section->addTextBreak(1);
+
+                    $keywordsRun = $section->addTextRun();
+                    $keywordsRun->addText('Keywords: ', ['name' => 'Times New Roman', 'size' => 12, 'bold' => true]);
+                    $keywordsRun->addText($submission->keywords, ['name' => 'Times New Roman', 'size' => 12]);
+
+                    // Add page break between submissions
+                    $section->addPageBreak();
                 }
 
-                $section->addText('Received Date: ' . Carbon::parse($submission->submitted_date)->format('d M, Y'), ['name' => 'Times New Roman', 'size' => 12]);
-                if (!empty($submission->expert)) {
-                    $section->addText('Reviewer: ' . $submission->expert->fullName($submission, 'expert'), ['name' => 'Times New Roman', 'size' => 12]);
+                // Save the file
+                $filename = 'Bulk_Submissions_' . now()->format('Ymd_His') . '.docx';
+                $filePath = public_path('downloads/' . $filename);
+
+                if (!file_exists(public_path('downloads'))) {
+                    mkdir(public_path('downloads'), 0777, true);
                 }
-                $section->addTextBreak(1);
 
-                $section->addText('Abstract', ['name' => 'Times New Roman', 'size' => 14, 'bold' => true]);
-                $section->addText(htmlspecialchars(strip_tags($submission->abstract_content)), ['name' => 'Times New Roman', 'size' => 12]);
-                $section->addTextBreak(1);
+                $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+                $objWriter->save($filePath);
 
-                $keywordsRun = $section->addTextRun();
-                $keywordsRun->addText('Keywords: ', ['name' => 'Times New Roman', 'size' => 12, 'bold' => true]);
-                $keywordsRun->addText($submission->keywords, ['name' => 'Times New Roman', 'size' => 12]);
-
-                // Add page break between submissions
-                $section->addPageBreak();
+                return response()->download($filePath)->deleteFileAfterSend(true);
             }
-
-            // Save the file
-            $filename = 'Bulk_Submissions_' . now()->format('Ymd_His') . '.docx';
-            $filePath = public_path('downloads/' . $filename);
-
-            if (!file_exists(public_path('downloads'))) {
-                mkdir(public_path('downloads'), 0777, true);
+        } elseif ($request->excel == 3) {
+            if ($request->selected_presentation_type == null || $request->selected_request_status == null) {
+                return redirect()->back()->with('delete', 'Please select presentation type, request status');
+            } else {
+                $submissions = Submission::where([
+                    'presentation_type' => $request->selected_presentation_type,
+                    'request_status' => $request->selected_request_status,
+                    'status' => 1
+                ])->get();
             }
-
-            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-            $objWriter->save($filePath);
-
-            return response()->download($filePath)->deleteFileAfterSend(true);
+            return view('backend.submission.bulk_display', compact('submissions'));
         }
     }
     public function wordExport($id)

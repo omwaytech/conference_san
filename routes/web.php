@@ -73,8 +73,8 @@ Route::controller(FrontController::class)->name('front.')->group(function () {
 });
 
 //==================================== Backend Start ====================================
-Route::middleware('auth')->group(function () { 
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('home');  
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('home'); 
     Route::get('/cms/view/{status}/participants', [HomeController::class, 'viewParticipants'])->name('home.viewParticipants');
     Route::get('/cms/workshop-registrations/{slug}', [HomeController::class, 'workshopRegistrations'])->name('home.workshopRegistrations');
     Route::get('/cms/submissions/{type}', [HomeController::class, 'submission'])->name('home.submission');
@@ -89,6 +89,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/cms/view/later-participants/{times}', [HomeController::class, 'viewLaterParticipants'])->name('home.viewLaterParticipants');
     Route::get('/cms/view/generate-later-participants-pass/{times}', [HomeController::class, 'generateLaterRegistrantPass'])->name('home.generateLaterRegistrantPass');
     Route::get('/cms/conference/open-portal/{slug}', [HomeController::class, 'index'])->name('conference.openConferencePortal');
+    Route::get('/view-/attendance/{day}/{memberType}', [HomeController::class, 'viewMemberTypesDailyAttendance'])->name('viewMemberTypesDailyAttendance');
+    Route::get('/view/meal/{day}/{memberType}/{mealType}', [HomeController::class, 'viewMemberTypesDailyMeal'])->name('viewMemberTypesDailyMeal');
+    Route::get('/meal/sponsor/{day}/{mealType}', [HomeController::class, 'viewSponsorDailyMeal'])->name('viewSponsorDailyMeal');
 
     // ==================================== main admin start ====================================
     // Route::middleware('admin')->group(function () {
@@ -112,7 +115,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/change-featured-status/{conference_registration}', 'changeFeatured')->name('changeFeatured');
             Route::post('/send-correction-mail-form', 'sendCorrectionMailForm')->name('sendCorrectionMailForm');
             Route::post('/send-correction-mail-submit', 'sendCorrectionMailSubmit')->name('sendCorrectionMailSubmit');
-            Route::post('/fetch-user-data', 'fetchUserData')->name('fetchUserData'); 
+            Route::post('/fetch-user-data', 'fetchUserData')->name('fetchUserData');
             Route::post('/edit-attendees-number', 'editAttendeesNumber')->name('editAttendeesNumber');
             Route::post('/edit-attendees-number-submit', 'editAttendeesNumberSubmit')->name('editAttendeesNumberSubmit');
             Route::post('/add-role', 'addRole')->name('addRole');
@@ -137,6 +140,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dash/conference-registration', ConferenceRegistrationController::class)->except('show');
     Route::controller(ConferenceRegistrationController::class)->name('conference-registration.')->prefix('/dash/conference-registration')->group(function () {
         Route::post('/view-data', 'show')->name('show');
+        Route::post('/take-conference-kit', 'takeConferenceKit')->name('takeConferenceKit');
+
         Route::post('/update-conference-registation', 'updateRegistration')->name('updateRegistration');
         // Route::get('/sendRecipt', 'sendRecipt')->name('sendRecipt');
         Route::get('/register', 'register')->name('register');
@@ -164,7 +169,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/fone-pay/success', 'fonePaySuccess')->name('fonePaySuccess');
         Route::post('/convert-usd-to-inr', 'convertUsdToInr')->name('convertUsdToInr');
     });
-    Route::get('/participant/profile/{token}', [ConferenceRegistrationController::class, 'participantProfile']);
 
     // admins (scientific committee & experts) route
     Route::resource('/cms/admin', AdminController::class)->except('show', 'destroy');
@@ -362,3 +366,4 @@ Route::middleware('auth')->group(function () {
     });
 });
 Route::post('/send-pass-email', [ConferenceRegistrationController::class, 'sendPassEmail']);
+Route::get('/participant/profile/{token}', [ConferenceRegistrationController::class, 'participantProfile']);

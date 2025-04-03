@@ -26,7 +26,7 @@
                             @elseif ($type == 'invited-attendees')
                                 Conference Invited Attendees
                             @elseif ($type == 'invited-speakers')
-                                Conference Invited Speakers
+                                Conference Invited Speakers 
                             @endif
                         </h4>
                         <div class="row mt-4">

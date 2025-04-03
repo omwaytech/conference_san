@@ -57,6 +57,8 @@
 </div>
 <script>
     $(document).ready(function() {
+        var userToken = '{{ $userToken }}';
+
         $(".poll-button").click(function() {
             const answerId = $(this).data('answer-id');
             const pollId = $(this).data('question-id');
@@ -65,13 +67,14 @@
             vote(answerId, pollId, pollContainer);
         });
 
-        function vote(answerId, pollId, pollContainer) { 
+        function vote(answerId, pollId, pollContainer) {
             $.ajax({
                 url: `{{ route('front.poll.vote') }}`,
                 method: 'POST',
                 data: {
                     answer_id: answerId,
                     poll_id: pollId,
+                    user_token: userToken,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
