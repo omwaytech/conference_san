@@ -45,4 +45,9 @@ class Sponsor extends Model
     {
         return $this->hasMany(SponsorMeal::class, 'sponsor_id', 'id');
     }
+
+    public function meal()
+    {
+        return $this->hasOne(SponsorMeal::class, 'sponsor_id', 'id');
+    }
 }

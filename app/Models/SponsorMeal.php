@@ -13,4 +13,9 @@ class SponsorMeal extends Model
         'lunch_taken',
         'dinner_taken'
     ];
+
+    public function sponsor()
+    {
+        return $this->belongsTo(Sponsor::class);
+    }
 }

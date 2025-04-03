@@ -12,4 +12,9 @@ class Attendance extends Model
     protected $fillable = [
         'conference_registration_id'
     ];
+
+    public function conferenceRegistration()
+    {
+        return $this->belongsTo(ConferenceRegistration::class);
+    }
 }

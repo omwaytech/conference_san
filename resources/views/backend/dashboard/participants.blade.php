@@ -43,7 +43,7 @@
 
                             <form id='exportForm' target="blank"
                                 action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">
-                                @csrf 
+                                @csrf
                                 <div class="row">
                                     <div class="col-md-6">
                                         <select name="exportTypeExcel" class="form-control">
@@ -174,6 +174,7 @@
                                                     data-id="{{ $registrant->id }}" data-toggle="modal"
                                                     data-target="#openModal">Add Voucher</button>
                                             @endif
+                                        
                                             {{-- @if ($status == 'accepted' || $status == 'total-registrants')
                                                 <button class="btn btn-sm btn-primary mt-1 addRole" data-id="{{$registrant->id}}" data-toggle="modal" data-target="#openModal">Add Role</button>
                                             @endif

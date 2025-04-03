@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NamePrefix;
 use Illuminate\Http\Request;
-use App\Models\{User, ConferenceRegistration, Workshop, Submission, WorkshopRegistration, Conference, UserDetail, Sponsor};
+use App\Models\{Attendance, User, ConferenceRegistration, Workshop, Submission, WorkshopRegistration, Conference, Meal, UserDetail, Sponsor, SponsorAttendance, SponsorMeal};
 use Exception, DB, Storage, Http;
 
 class HomeController extends Controller
@@ -42,7 +42,23 @@ class HomeController extends Controller
             $registrationCommittee = DB::table('committees')->where('committee_name', 'Registration Committee')->first();
             $checkRegistrationCommittee = DB::table('committee_members')->where(['conference_id' => $conference->id, 'committee_id' => $registrationCommittee->id, 'user_id' => $user->id, 'status' => 1])->first();
         }
-        
+
+        $day1Attendance = Attendance::whereDate('attendances.created_at', '2025-4-03')->get();
+        $day2Attendance = Attendance::whereDate('attendances.created_at', '2025-4-05')->get();
+
+        $day1Launch = Meal::whereDate('meals.created_at', '2025-4-03')->get();
+        $day2Launch = Meal::whereDate('meals.created_at', '2025-4-05')->get();
+
+        $day1Dinner = Meal::whereDate('meals.created_at', '2025-4-03')->get();
+        $day2Dinner = Meal::whereDate('meals.created_at', '2025-4-05')->get();
+
+        $day1AttendanceSponsor = SponsorAttendance::whereDate('sponsor_attendances.created_at', '2025-4-03')->get();
+        $day2AttendanceSponsor = SponsorAttendance::whereDate('sponsor_attendances.created_at', '2025-4-05')->get();
+
+        $day1LaunchSponsor = SponsorMeal::whereDate('sponsor_meals.created_at', '2025-4-03')->get();
+        $day2LauncSponsor = SponsorMeal::whereDate('sponsor_meals.created_at', '2025-4-05')->get();
+        $day1DinnerSponsor = SponsorMeal::whereDate('sponsor_meals.created_at', '2025-4-04')->get();
+        $day2DinnerSponsor = SponsorMeal::whereDate('sponsor_meals.created_at', '2025-4-05')->get();
 
         $data = [
             'user' => $user,
@@ -55,10 +71,105 @@ class HomeController extends Controller
             'sponsors' => $sponsors,
             'conference' => $conference,
             'checkRegistrationCommittee' => $checkRegistrationCommittee,
+            'day1Attendance' => $day1Attendance,
+            'day2Launch' => $day2Launch,
+            'day1Launch' => $day1Launch,
+            'day1Dinner' => $day1Dinner,
+            'day2Dinner' => $day2Dinner,
+            'day2Attendance' => $day2Attendance,
+            'day1LaunchSponsor' => $day1LaunchSponsor,
+            'day2LaunchSponsor' => $day2LauncSponsor,
+            'day1DinnerSponsor' => $day1DinnerSponsor,
+            'day2DinnerSponsor' => $day2DinnerSponsor,
+            'day1AttendanceSponsor' => $day1AttendanceSponsor,
+            'day2AttendanceSponsor' => $day2AttendanceSponsor,
         ];
         // }
 
         return view('backend.dashboard.show', $data);
+    }
+
+    public function viewMemberTypesDailyAttendance($day, $memberType)
+    {
+        if ($day == 'day1') {
+            $date = '2025-04-03';
+        } elseif ($day == 'day2') {
+            $date = '2025-04-05';
+        }
+        $attendenceTaken = [];
+        $attendences = Attendance::whereDate('created_at', $date)->where('status', 1)->get();
+        foreach ($attendences as $attendence) {
+            if ($attendence->conferenceRegistration && $attendence->conferenceRegistration->committeMember->isNotEmpty() && $attendence->conferenceRegistration->user->userDetail->country_id == 125 && $memberType == 'organizer') {
+                $attendenceTaken[] = $attendence->conferenceRegistration;
+            } elseif ($attendence->conferenceRegistration && $attendence->conferenceRegistration->user->userDetail->country_id != 125 && $memberType == 'international') {
+                $attendenceTaken[] = $attendence->conferenceRegistration;
+            } elseif ($attendence->conferenceRegistration && $attendence->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
+                $attendenceTaken[] = $attendence->conferenceRegistration;
+            } elseif ($memberType == 'attendee') {
+                $attendenceTaken[] = $attendence->conferenceRegistration;
+            }
+        }
+
+        return view('backend.dashboard.attendance-list', compact('attendenceTaken', 'memberType', 'day'));
+    }
+
+    public function viewMemberTypesDailyMeal($day, $memberType, $mealType)
+    {
+        if ($day == 'day1') {
+            $date = '2025-04-03';
+        } elseif ($day == 'day2') {
+            $date = '2025-04-05';
+        }
+        $mealTaken = [];
+        if ($mealType == 'lunch') {
+            $meals = Meal::whereDate('created_at', $date)->whereNotNull('lunch_taken')->get();
+            foreach ($meals as $meal) {
+                if ($meal->conferenceRegistration && $meal->conferenceRegistration->committeMember->isNotEmpty() && $meal->conferenceRegistration->user->userDetail->country_id == 125 && $memberType == 'organizer') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                } elseif ($meal->conferenceRegistration && $meal->conferenceRegistration->user->userDetail->country_id != 125 && $memberType == 'international') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                } elseif ($meal->conferenceRegistration && $meal->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                } elseif ($memberType == 'attendee') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                }
+            }
+        }
+        if ($mealType == 'dinner') {
+            $meals = Meal::whereDate('created_at', $date)->whereNotNull('dinner_taken')->get();
+            foreach ($meals as $meal) {
+                if ($meal->conferenceRegistration && $meal->conferenceRegistration->committeMember->isNotEmpty() && $meal->conferenceRegistration->user->userDetail->country_id == 125 && $memberType == 'organizer') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                } elseif ($meal->conferenceRegistration && $meal->conferenceRegistration->user->userDetail->country_id != 125 && $memberType == 'international') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                } elseif ($meal->conferenceRegistration && $meal->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                } elseif ($memberType == 'attendee') {
+                    $mealTaken[] = $meal->conferenceRegistration;
+                }
+            }
+        }
+        return view('backend.dashboard.lunch-dinner-list', compact('mealTaken', 'memberType', 'date', 'mealType', 'day'));
+    }
+
+
+    public function viewSponsorDailyMeal($day, $mealType)
+    {
+        if ($day == 'day1') {
+            $date = '2025-04-03';
+        } elseif ($day == 'day2') {
+            $date = '2025-04-05';
+        }
+        if ($mealType == 'lunch') {
+            $meals = SponsorMeal::whereDate('created_at', $date)->whereNotNull('lunch_taken')->get();
+          
+        }
+        if ($mealType == 'dinner') {
+            $meals = SponsorMeal::whereDate('created_at', $date)->whereNotNull('dinner_taken')->get();
+            
+        }
+        // dd($mealTaken);
+        return view('backend.dashboard.sponsor-lunch-dinner-list', compact('meals', 'day', 'mealType', 'date'));
     }
 
     public function viewParticipants($status)
@@ -79,7 +190,7 @@ class HomeController extends Controller
             $registrants = ConferenceRegistration::where(['verified_status' => 1, 'status' => 1, 'conference_id' => $conference->id])
                 ->whereHas('userDetail', function ($query) {
                     $query->whereHas('memberType', function ($subquery) {
-                        $subquery->where('delegate', 'International'); 
+                        $subquery->where('delegate', 'International');
                     });
                 })->latest()->get();
         } elseif ($status == 'accompany-persons') {
@@ -257,7 +368,7 @@ class HomeController extends Controller
     public function viewSponsorAttendanceStatus()
     {
         $conference = session()->get('conferenceDetail');
-        $registrants = Sponsor::where('status',1)->orderBy('name', 'asc')->get();
+        $registrants = Sponsor::where('status', 1)->orderBy('name', 'asc')->get();
         return view('backend.dashboard.sponsor-attendance-status', compact('registrants', 'conference'));
     }
 

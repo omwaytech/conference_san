@@ -101,9 +101,18 @@ class ConferenceRegistration extends Model
         return $this->hasMany(Attendance::class, 'conference_registration_id', 'id');
     }
 
+    public function conferenceRegistrationKit()
+    {
+        return $this->hasOne(ConferenceRegistrationKit::class);
+    }
+
     public function meals()
     {
         return $this->hasMany(Meal::class, 'conference_registration_id', 'id');
+    }
+    public function meal()
+    {
+        return $this->hasOne(Meal::class, 'conference_registration_id', 'id');
     }
 
     public function accompanyPersons()

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\SendReceiptJob;
 use App\Mail\Conference\{RegistrantAcceptMail, RegistrantRejectMail, RegistrationMail, RegistrantCorrectionMail, RegistrationByUserMail, RegistrationInExceptionalCaseMail};
 use App\Mail\PassMail;
-use App\Models\{ConferenceRegistration, MemberTypePrice, UserDetail, Conference, User, Submission, Signature, AccompanyPerson, Attendance, Meal, MemberType};
+use App\Models\{ConferenceRegistration, MemberTypePrice, UserDetail, Conference, User, Submission, Signature, AccompanyPerson, Attendance, ConferenceRegistrationKit, Hall, Meal, MemberType, ScientificSession};
 use Illuminate\Http\Request;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -1472,7 +1472,20 @@ class ConferenceRegistrationController extends Controller
     {
         $participant = ConferenceRegistration::where('token', $token)->first();
         $conference = Conference::latestConference();
-        return view('backend.conferences.registrations.attendance-profile', compact('participant', 'conference'));
+        $sessions = ScientificSession::where('status', 1)->orderBy('day', 'ASC')->orderByRaw("STR_TO_DATE(time, '%h:%i%p') ASC")->get();
+
+        $halls = Hall::orderBy('created_at')->whereStatus(1)->get();
+        $latestConference = Conference::latestConference();
+        $startDate = Carbon::parse($latestConference->start_date);
+        $endDate = Carbon::parse($latestConference->end_date);
+
+        $dates = [];
+
+        while ($startDate->lte($endDate)) {
+            $dates[] = $startDate->toDateString();
+            $startDate->addDay();
+        }
+        return view('backend.conferences.registrations.attendance-profile', compact('participant', 'conference', 'halls', 'dates', 'sessions'));
     }
 
     public function takeAttendance(Request $request)
@@ -1481,6 +1494,17 @@ class ConferenceRegistrationController extends Controller
             $data['conference_registration_id'] = $request->id;
             Attendance::create($data);
             return redirect()->back()->with('status', 'Attendance done successfully.');
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function takeConferenceKit(Request $request)
+    {
+        try {
+            $data['conference_registration_id'] = $request->id;
+            ConferenceRegistrationKit::create($data);
+            return redirect()->back()->with('status', 'Conference kit provided successfully.');
         } catch (Exception $e) {
             throw $e;
         }
@@ -1517,7 +1541,7 @@ class ConferenceRegistrationController extends Controller
     public function generateCertificate($id)
     {
         $filename = 'test.pdf';
-        $participant = ConferenceRegistration::where('id', $id)->first();
+        $participant = ConferenceRegistration::where('id', $id)->first(); 
         $latestConference = Conference::latestConference();
         // $html = view()->make('backend.conferences.registrations.certificate-test', compact('participant'))->render();
         // $pdf = new TCPDF;

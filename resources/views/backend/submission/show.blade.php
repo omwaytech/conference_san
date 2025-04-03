@@ -14,7 +14,7 @@
         .modal .select2-container {
             width: 100% !important;
         }
-    </style> 
+    </style>
 @endsection
 
 @section('content')
@@ -65,11 +65,14 @@
                                             <option value="3">Rejected</option>
                                         </select>
                                     </div>
+                                    <input type="hidden" name="excel" id="excelInput">
 
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <button type="button" onclick="window.location.reload();"
                                             class="btn btn-sm btn-danger">Reset</button>
-                                        <button type="submit" class="btn btn-sm btn-primary">Export Word File</button>
+                                        <button type="submit" class="btn btn-sm btn-primary html">View
+                                            Abstract</button>
+                                        <button type="submit" class="btn btn-sm btn-primary word">Export Word File</button>
                                     </div>
                                 </div>
                             </form>
@@ -347,7 +350,12 @@
                         }
                     });
                 });
-
+            $(".html").on("click", function() {
+                $("#excelInput").val("3");
+            });
+            $(".word").on("click", function() {
+                $("#excelInput").val("2");
+            });
         });
     </script>
 @endsection

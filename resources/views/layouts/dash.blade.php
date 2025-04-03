@@ -116,7 +116,7 @@
         <div class="side-content-wrap">
             <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                 <ul class="navigation-left">
-                    @if ($authUser->role == 1 && $authUser->id == 1)
+                    @if ($authUser->role == 1)
                         {{-- <li class="nav-item {{empty($latestConference) ? 'disabled' : ''}}" data-item=""><a class="nav-item-hold" href="{{ route('admin.index') }}"><i
                                     class="nav-icon i-Mens"></i><span class="nav-text">Admins</span></a>
                             <div class="triangle"></div>
