@@ -44,9 +44,15 @@ class Submission extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
     public function userDetails()
     {
         return $this->hasOne(UserDetail::class, 'user_id', 'user_id');
+    }
+
+    public function conferenceRegistration()
+    {
+        return $this->hasOne(ConferenceRegistration::class, 'user_id', 'user_id');
     }
 
     public function presenter()
