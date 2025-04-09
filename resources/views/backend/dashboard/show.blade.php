@@ -120,7 +120,7 @@
                             @php $OrganizerLaunchDay1 = $OrganizerLaunchDay1+$launch->lunch_taken @endphp
                         @elseif ($launch->conferenceRegistration && $launch->conferenceRegistration->user->userDetail->country_id != 125)
                             @php $InternationalLaunchDay1 =  $InternationalLaunchDay1+$launch->lunch_taken @endphp
-                        @elseif ($launch->conferenceRegistration && $launch->conferenceRegistration->registrant_type == 2)
+                        @elseif ($launch->conferenceRegistration && $launch->conferenceRegistration->registrant_type == 2 )
                             @php $SpeakerLaunchDay1 =  $SpeakerLaunchDay1+$launch->lunch_taken @endphp
                         @else
                             @php $AttendeeLaunchDay1 = $AttendeeLaunchDay1+$launch->lunch_taken @endphp
@@ -292,7 +292,7 @@
                                                 $AttendeeKitDay1;
                                         @endphp
 
-                                        <li>Organizer:{{ $OrganizerKitDay1 }} |
+                                        <li>Organizer:{{ $OrganizerKitDay1 }} | 
                                             <span class="badge badge-success"><a
                                                     href="{{ route('viewMemberTypesConferenceKit', ['day1', 'organizer']) }}">View</a></span>
                                         </li>
@@ -411,7 +411,7 @@
                             @php $OrganizerLaunchDay2 = $OrganizerLaunchDay2+$launch->lunch_taken @endphp
                         @elseif ($launch->conferenceRegistration && $launch->conferenceRegistration->user->userDetail->country_id != 125)
                             @php $InternationalLaunchDay2 =  $InternationalLaunchDay2+$launch->lunch_taken @endphp
-                        @elseif ($launch->conferenceRegistration && $launch->conferenceRegistration->registrant_type == 2)
+                        @elseif ($launch->conferenceRegistration && $launch->conferenceRegistration->registrant_type == 2 )
                             @php $SpeakerLaunchDay2 =  $SpeakerLaunchDay2+$launch->lunch_taken @endphp
                         @else
                             @php $AttendeeLaunchDay2 = $AttendeeLaunchDay2+$launch->lunch_taken @endphp
@@ -584,19 +584,19 @@
 
                                         <li>Organizer:{{ $OrganizerKitDay2 }} |
                                             <span class="badge badge-success"><a
-                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'organizer']) }}">View</a></span>
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day2', 'organizer']) }}">View</a></span>
                                         </li>
                                         <li>International:{{ $InternationalKitDay2 }} |
                                             <span class="badge badge-success"><a
-                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'international']) }}">View</a></span>
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day2', 'international']) }}">View</a></span>
                                         </li>
                                         <li>Speaker/Faculty:{{ $SpeakerKitDay2 }} |
                                             <span class="badge badge-success"><a
-                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'speaker']) }}">View</a></span>
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day2', 'speaker']) }}">View</a></span>
                                         </li>
                                         <li>Delegate:{{ $AttendeeKitDay2 }} |
                                             <span class="badge badge-success"><a
-                                                    href="{{ route('viewMemberTypesConferenceKit', ['day1', 'delegate']) }}">View</a></span>
+                                                    href="{{ route('viewMemberTypesConferenceKit', ['day2', 'delegate']) }}">View</a></span>
                                         </li>
 
                                         {{-- @php

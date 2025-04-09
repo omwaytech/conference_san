@@ -63,6 +63,7 @@
                                             @if ($meals->isNotEmpty())
                                                 <ul>
                                                     @foreach ($meals as $meal)
+                                                    
                                                         @php
                                                             $totalLunchRemaining = $registrant->total_attendee;
                                                             $totalDinnerRemaining = $registrant->total_attendee;

@@ -45,7 +45,7 @@
                                     <th scope="col">Verified Status</th>
                                     <th scope="col">Remarks</th>
                                     <th scope="col">Action</th>
-                                    {{-- <th scope="col">Certificate</th> --}}
+                                    <th scope="col">Certificate</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,7 +99,7 @@
                                                         class="nav-icon i-File"></i> Generate Pass</a>
                                             @endif
                                         </td>
-                                        {{-- <td><a href="{{ route('workshop-registration.generateCertificate', $registration->id) }}" class="btn btn-info btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate</a></td> --}}
+                                        <td><a href="{{ route('workshop-registration.generateCertificate', $registration->id) }}" class="btn btn-info btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>

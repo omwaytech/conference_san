@@ -111,10 +111,10 @@ class HomeController extends Controller
                 $attendenceTaken[] = $attendence->conferenceRegistration;
             } elseif ($attendence->conferenceRegistration && $attendence->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
                 $attendenceTaken[] = $attendence->conferenceRegistration;
-            } elseif ($memberType == 'attendee') {
+            } elseif ($memberType == 'delegate') {
                 $attendenceTaken[] = $attendence->conferenceRegistration;
             }
-        }
+        } 
 
         return view('backend.dashboard.attendance-list', compact('attendenceTaken', 'memberType', 'day'));
     }
@@ -134,7 +134,7 @@ class HomeController extends Controller
                 $attendenceTaken[] = $attendence->conferenceRegistration;
             } elseif ($attendence->conferenceRegistration && $attendence->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
                 $attendenceTaken[] = $attendence->conferenceRegistration;
-            } elseif ($memberType == 'attendee') {
+            } elseif ($memberType == 'delegate') {
                 $attendenceTaken[] = $attendence->conferenceRegistration;
             }
         }
@@ -170,7 +170,7 @@ class HomeController extends Controller
                     $mealTaken[] = $meal->conferenceRegistration;
                 } elseif ($meal->conferenceRegistration && $meal->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
                     $mealTaken[] = $meal->conferenceRegistration;
-                } elseif ($memberType == 'attendee') {
+                } elseif ($memberType == 'delegate') { 
                     $mealTaken[] = $meal->conferenceRegistration;
                 }
             }
@@ -184,7 +184,7 @@ class HomeController extends Controller
                     $mealTaken[] = $meal->conferenceRegistration;
                 } elseif ($meal->conferenceRegistration && $meal->conferenceRegistration->registrant_type == 2 && $memberType == 'speaker') {
                     $mealTaken[] = $meal->conferenceRegistration;
-                } elseif ($memberType == 'attendee') {
+                } elseif ($memberType == 'delegate') {
                     $mealTaken[] = $meal->conferenceRegistration;
                 }
             }
@@ -393,7 +393,7 @@ class HomeController extends Controller
     {
         $conference = session()->get('conferenceDetail');
         $registrants = DB::table('conference_registrations as CR')
-            ->select('CR.id', 'CR.status', 'CR.conference_id', 'verified_status', 'CR.registration_id', 'U.f_name', 'U.m_name', 'U.l_name', 'MT.delegate', 'MT.type')
+            ->select('CR.id', 'CR.status', 'CR.conference_id','CR.total_attendee', 'verified_status', 'CR.registration_id', 'U.f_name', 'U.m_name', 'U.l_name', 'MT.delegate', 'MT.type')
             ->where(['verified_status' => 1, 'CR.status' => 1, 'CR.conference_id' => $conference->id])
             ->join('users as U', 'CR.user_id', '=', 'U.id')
             ->join('user_details as UD', 'U.id', '=', 'UD.user_id')

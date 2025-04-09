@@ -167,7 +167,7 @@
         });
         $(document).on("click", ".passDesgination", function (e) {
             e.preventDefault();
-            var url = '{{route('admin.passDesgination')}}';
+            var url = '{{route('admin.passDesgination')}}'; 
             var _token = '{{csrf_token()}}';
             var id = $(this).data('id');
             var data = {_token:_token, id:id};

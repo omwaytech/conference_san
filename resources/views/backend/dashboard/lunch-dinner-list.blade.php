@@ -4,7 +4,7 @@
     Lunch/Dinner List
 @endsection
 
-@section('content')
+@section('content') 
     <div class="row mb-4">
         <div class="col-md-12 mb-3">
             <div class="card text-left">

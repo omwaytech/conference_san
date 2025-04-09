@@ -63,98 +63,6 @@ header('Access-Control-Allow-Origin: *');
         h3 {
             font-family: "Tangerine", cursive;
         }
-
-        /*.invoice-box {*/
-        /*    max-width: 100%;*/
-        /*    margin: auto;*/
-        /*    padding: 30px;*/
-        /*    border: 1px solid #eee;*/
-        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);*/
-        /*    font-size: 16px;*/
-        /*    line-height: 24px;*/
-        /*    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;*/
-        /*    color: #555;*/
-        /*}*/
-
-        /*.invoice-box table {*/
-        /*    width: 100%;*/
-        /*    line-height: inherit;*/
-        /*    text-align: left;*/
-        /*}*/
-
-        /*.invoice-box table td {*/
-        /*    padding: 5px;*/
-        /*    vertical-align: top;*/
-        /*}*/
-
-        /*.invoice-box table tr td:nth-child(2) {*/
-        /*    text-align: right;*/
-        /*}*/
-
-        /*.invoice-box table tr.top table td {*/
-        /*    padding-bottom: 20px;*/
-        /*}*/
-
-        /*.invoice-box table tr.top table td.title {*/
-        /*    font-size: 45px;*/
-        /*    line-height: 45px;*/
-        /*    color: #333;*/
-        /*}*/
-
-        /*.invoice-box table tr.information table td {*/
-        /*    padding-bottom: 40px;*/
-        /*}*/
-
-        /*.invoice-box table tr.heading td {*/
-        /*    background: #eee;*/
-        /*    border-bottom: 1px solid #ddd;*/
-        /*    font-weight: bold;*/
-        /*}*/
-
-        /*.invoice-box table tr.details td {*/
-        /*    padding-bottom: 20px;*/
-        /*}*/
-
-        /*.invoice-box table tr.item td {*/
-        /*    border-bottom: 1px solid #eee;*/
-        /*}*/
-
-        /*.invoice-box table tr.item.last td {*/
-        /*    border-bottom: none;*/
-        /*}*/
-
-        /*.invoice-box table tr.total td:nth-child(2) {*/
-        /*    border-top: 2px solid #eee;*/
-        /*    font-weight: bold;*/
-        /*}*/
-
-        /*@media only screen and (max-width: 600px) {*/
-        /*    .invoice-box table tr.top table td {*/
-        /*        width: 100%;*/
-        /*        display: block;*/
-        /*        text-align: center;*/
-        /*    }*/
-
-        /*    .invoice-box table tr.information table td {*/
-        /*        width: 100%;*/
-        /*        display: block;*/
-        /*        text-align: center;*/
-        /*    }*/
-        /*}*/
-
-        /*!** RTL **!*/
-        /*.invoice-box.rtl {*/
-        /*    direction: rtl;*/
-        /*    font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;*/
-        /*}*/
-
-        /*.invoice-box.rtl table {*/
-        /*    text-align: right;*/
-        /*}*/
-
-        /*.invoice-box.rtl table tr td:nth-child(2) {*/
-        /*    text-align: left;*/
-        /*}*/
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -181,7 +89,7 @@ header('Access-Control-Allow-Origin: *');
                 //more custom settings
                 var opt = {
                     margin: 0,
-                    filename: 'nesog-certificate_' + js.AutoCode() + '.pdf',
+                    filename: 'workshop_' + js.AutoCode() + '.pdf',
                     image: {
                         type: 'jpeg',
                         quality: 5
@@ -221,63 +129,120 @@ header('Access-Control-Allow-Origin: *');
 
     <div class="container_content" id="container_content">
         <div class="invoice-box">
-            <table width="1410" border="0" cellspacing="0" cellpadding="0"
-                style="font-size:18px; background:url('/certificate/urogynaecology/background.png') no-repeat center top; background-size:100%; padding-bottom:50px;">
-
+            <table width="1400" border="0" cellspacing="0" cellpadding="0"
+                style="
+              font-size: 18px;
+              background: url('{{ asset('certificate/deafult/frame.png') }}') no-repeat center top;
+              background-size: 100%;
+              padding-bottom: 20px;
+            ">
                 <tr>
                     <td>
-                        <table width="1698" border="0" cellspacing="0" cellpadding="0"
-                            style="text-align:center; margin-top:70px;">
+                        <table width="1670" border="0" cellspacing="0" cellpadding="0"
+                            style="text-align: center; margin-top: 80px">
                             <tr>
-                                <td width="380">&nbsp;</td>
-                                <td width="180">
-                                    <img src="{{ asset('certificate/NESOG.png') }}" width="180"
+                                <td width="210">&nbsp;</td>
+                                <td width="150">
+                                    <img src="{{ asset('certificate/deafult/san.jpg') }}"
+                                        style="
+                          height: 130px;
+                          width: 133px;
+                          margin-left: 30px;
+                          border-radius: 100%;
+                          background: #fff;
+                          padding: 6px;
+                          border: 2px red solid;
+                        "
                                         alt="" />
                                 </td>
-                                <td width="500"><img src="{{ asset('certificate/urogynaecology/golden.png') }}" width="120"
-                                        style="float:left;" alt="" />
+                                <td width="470"
+                                    style="
+                        text-align: left;
+                        font-size: 60px;
+                        font-weight: bold;
+                        color: red;
+                      ">
+                                    SANCON-ASPA 2025
+                                </td>
+
+                                <td width="350" style="text-align: left">
+                                    <img src="{{ asset('frontend/assets/images/logo/ASPN.png') }}" alt=""
+                                        style="
+                          height: 140px;
+                          border-radius: 100%;
+                          padding: 6px;
+                          border: 2px red solid;
+                        " />
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
-
                 <tr>
                     <td>
-
                         <table width="1698" border="0" cellspacing="0" cellpadding="0"
-                            style="padding-top:0px; text-align:center; line-height:0px;">
+                            style="padding-top: 0px; text-align: center; line-height: 0px">
                             <tr>
-
-                                <td width="148">&nbsp;</td>
-                                <td width="1200">
+                                <td width="248">&nbsp;</td>
+                                <td width="900">
                                     <h1
-                                        style="line-height:50px; padding-bottom:0px; margin-top:0px; margin-bottom:0px; font-size:42px;">
-                                        17<sup>th</sup> National Conference <br />
-                                        <small>Of</small><br /> <span style="color:#254d9e;">Nepal Society of Obstetricians and
-                                            Gynaecologists (NESOG)</span><br />
-                                        <i style="font-weight:400; font-size:38px; padding:10px 0px;">"Advances in Women's
-                                            Health Care Now & Beyond"</i>
+                                        style="
+                          font-size: 35px;
+                          width: auto;
+                          height: 45px;
+                          line-height: 50px;
+                          padding: 10px 0px;
+                          margin: 5px 0px;
+                        ">
+                                        "Scaling new heights in Pediatric Anesthesia and beyond"
                                     </h1>
                                 </td>
-                                <td width="155">&nbsp;</td>
+                                <td width="255">&nbsp;</td>
                             </tr>
                         </table>
                     </td>
                 </tr>
                 <tr>
                     <td>
-
                         <table width="1698" border="0" cellspacing="0" cellpadding="0"
-                            style="padding-top:0px; text-align:center; line-height:0px;">
+                            style="padding-top: 0px; text-align: center; line-height: 0px">
                             <tr>
-
-                                <td width="100">&nbsp;</td>
-                                <td width="1498">
-
-                                    <h2 style="font-weight:500; font-size:58px;">This Certificate has been awarded </h2>
+                                <td width="348">&nbsp;</td>
+                                <td width="700">
+                                    <h1
+                                        style="
+                          text-transform: uppercase;
+                          font-size: 40px;
+                          background-color: #26268e;
+                          width: auto;
+                          height: 60px;
+                          line-height: 50px;
+                          padding: 10px 0px;
+                          margin: 20px 0px;
+                          overflow: hidden;
+                          color: #fff;
+                        ">
+                                        certificate of Appreciation
+                                    </h1>
                                 </td>
-                                <td width="100">&nbsp;</td>
+                                <td width="355">&nbsp;</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <table width="1698" border="0" cellspacing="0" cellpadding="0"
+                            style="padding-top: 10px; text-align: center; line-height: 0px">
+                            <tr>
+                                <td width="300">&nbsp;</td>
+                                <td width="1098">
+                                    <h2 style="font-weight: 500; font-size: 60px">
+                                        This Certificate has been awarded
+                                    </h2>
+                                </td>
+                                <td width="300">&nbsp;</td>
                             </tr>
                         </table>
                     </td>
@@ -285,28 +250,22 @@ header('Access-Control-Allow-Origin: *');
                 <tr>
                     <td>
                         <table width="1698" border="0" cellspacing="0" cellpadding="0"
-                            style="text-align:center; line-height:0px;">
+                            style="text-align: center; line-height: 0px">
                             <tr>
                                 <td width="315">&nbsp;</td>
                                 <td width="780">
-                                    <h6 style="font-size:40px; margin:0px; padding:10px 0px;">to</h6>
-                                    <h3 style="font-weight:500; font-size:80px; margin-bottom:15px; color:#e5a356;">
-                                        @if (@$participant->user->userDetail->member_type_id == 6)
-                                            @if ($participant->user->userDetail->gender == 'M')
-                                                Mr. {{$participant->user->name}}
-                                            @else
-                                                M/S {{$participant->user->name}}
-                                            @endif
-                                        @else
-                                            @php
-                                                $explodeName = explode(' ', $participant->user->name);
-                                            @endphp
-                                            @if ($explodeName[0] == 'Dr.')
-                                                {{$participant->user->name}}
-                                            @else
-                                                Dr. {{$participant->user->name}}
-                                            @endif
-                                        @endif
+                                    <h6 style="font-size: 40px; margin: 0px; padding: 10px 0px">
+                                        to
+                                    </h6>
+                                    <h3
+                                        style="
+                          font-weight: 500;
+                          font-size: 80px;
+                          margin-bottom: 15px;
+                          color: red;
+                        ">
+                                        {{ $participant->user->namePrefix->prefix }}
+                                        {{ $participant->user->fullname($participant, 'user') }}
                                     </h3>
                                 </td>
                                 <td width="315">&nbsp;</td>
@@ -317,111 +276,332 @@ header('Access-Control-Allow-Origin: *');
                 <tr>
                     <td>
                         <table width="1698" border="0" cellspacing="0" cellpadding="0"
-                            style="text-align:center; font-size:22px; line-height:32px;">
+                            style="text-align: center; font-size: 22px; line-height: 32px">
                             <tr>
-                                <td width="260">&nbsp;</td>
-                                <td width="1210">
-                                    <h1 style="line-height:60px; margin-bottom:0px;">for his/her participation in the <br />
-                                        <small><b style="font-size:60px; margin:10px 0px; color:#e5a356;">Urogynecology Workshop
-                                            </b> <br />3<sup>rd
-                                            </sup> & 4<sup>th</sup>April, 2024, Kathmandu, Nepal</small>
+                                <td width="160">&nbsp;</td>
+                                <td width="1410">
+                                    <h1 style="line-height: 60px; margin-bottom: 50px">
+                                        for the participating in <br />
+                                        <small><b
+                                                style="
+                              font-size: 60px;
+                              line-height: 80px;
+                              margin: 20px 0px;
+                              color: red;
+                            ">{{ $participant->workshop->title }}</b>
+                                            <br />held @if ($participant->workshop->start_date == $participant->workshop->end_date)
+                                                {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }},
+                                            @else
+                                                {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($participant->workshop->end_date)->format('jS F, Y') }},
+                                            @endif Kathmandu,
+                                            Nepal</small><br /><!-- <i style="font-size:10px; margin:0px; padding:0px">NMC CPD Point Awarded</i>-->
                                     </h1>
+                                </td>
 
-                                <td width="200"></td>
+                                <td width="100">&nbsp;</td>
                             </tr>
                         </table>
                     </td>
                 </tr>
 
-
                 <tr>
                     <td>
                         <table width="1600" border="0" cellspacing="0" cellpadding="0"
-                            style="margin-top:60px; margin-bottom:100px;">
-                            <tr>
-                                <td style="padding:0px 25px 0px 120px; text-align:center;">
-                                    <table width="310" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td width="260" height="100"><img
-                                                    src="{{ asset('certificate/saroja.png') }}" alt=""
-                                                    style="height:85px;" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260" style="border-bottom:#000 2px dotted;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260"><span
-                                                    style="text-align:center; line-height:35px; padding:12px 0px; font-size:26px;"><b>Dr.
-                                                        Saroja Karki Pande</b><br />
-                                                    (President NESOG)</span>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td style="padding:0px 25px 0px 25px; text-align:center;">
+                            style="margin-top: 10px; margin-bottom: 100px">
+                            <tbody>
+                                <tr>
+                                    @if ($participant->workshop->id == 7)
+                                        <td style="padding: 0px 0px 0px 100px; text-align: center">
+                                            <table border="0" width="340" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <img src="{{ asset('certificate/deafult/Josephine.png') }}"
+                                                                alt="" style="height: 100px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260" style="border-bottom: #000 2px dotted">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <span
+                                                                style="
+                                text-align: center;
+                                line-height: 35px;
+                                padding: 12px 0px;
+                                font-size: 22px;
+                              "><b> Dr Josephine TAN </b><br />
+                                                                (Workshop Coordinator)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    @endif
+                                    @if ($participant->workshop->id == 5 || $participant->workshop->id == 6)
+                                        <td style="padding: 0px 0px 0px 100px; text-align: center">
+                                            <table border="0" width="340" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <img src="{{ asset('certificate/deafult/ritu.png') }}"
+                                                                alt="" style="height: 100px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260" style="border-bottom: #000 2px dotted">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <span
+                                                                style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Assoc.
+                                                                    Prof. Dr. Ritu Pradhan </b><br />
+                                                                (Workshop Coordinator)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    @endif
+                                    @if ($participant->workshop->id == 4)
+                                        <td style="padding: 0px 0px 0px 100px; text-align: center">
+                                            <table border="0" width="340" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <img src="{{ asset('certificate/deafult/battu.png') }}"
+                                                                alt="" style="height: 100px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260" style="border-bottom: #000 2px dotted">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <span
+                                                                style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Assoc.
+                                                                    Dr Battu K Shrestha </b><br />
+                                                                (Workshop Coordinator)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    @endif
+                                    @if ($participant->workshop->id == 3)
+                                        <td style="padding: 0px 0px 0px 100px; text-align: center">
+                                            <table border="0" width="340" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <img src="{{ asset('certificate/deafult/nina.png') }}"
+                                                                alt="" style="height: 100px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260" style="border-bottom: #000 2px dotted">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <span
+                                                                style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Assoc.
+                                                                    Dr. Ninadini Shrestha </b><br />
+                                                                (Workshop Coordinator)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    @endif
+                                    @if ($participant->workshop->id == 2)
+                                        <td style="padding: 0px 0px 0px 100px; text-align: center">
+                                            <table border="0" width="340" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <img src="{{ asset('certificate/deafult/pradeep.png') }}"
+                                                                alt="" style="height: 100px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260" style="border-bottom: #000 2px dotted">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <span
+                                                                style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Assoc.
+                                                                    Dr. Pradip Tiwari</b><br />
+                                                                (Workshop Coordinator)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    @endif
+                                    @if ($participant->workshop->id == 1)
+                                        <td style="padding: 0px 0px 0px 100px; text-align: center">
+                                            <table border="0" width="340" cellspacing="0" cellpadding="0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <img src="{{ asset('certificate/deafult/tara.png') }}"
+                                                                alt="" style="height: 100px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260" style="border-bottom: #000 2px dotted">
+                                                            &nbsp;
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="260">
+                                                            <span
+                                                                style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Assoc.
+                                                                    Dr. Tara Gurung</b><br />
+                                                                (Workshop Coordinator)</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    @endif
 
-                                    <table width="310" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td width="260"><img
-                                                    src="{{ asset('certificate/geeta.png') }}"
-                                                    alt="" style="height:100px;" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260" style="border-bottom:#000 2px dotted;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260"><span
-                                                    style="text-align:center; line-height:35px; padding:12px 0px; font-size:26px;"><b>Dr.
-                                                        Geeta Gurung</b><br />
-                                                    (Organising Chairperson)</span>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <td style="padding: 0px 0px 0px 0px; text-align: center">
+                                        <table border="0" width="250" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr></tr>
+                                                <tr>
+                                                    <td width="250">
+                                                        <img src="{{ asset('certificate/deafult/basu.png') }}"
+                                                            alt="" style="height: 100px" />
+                                                    </td>
+                                                </tr>
 
-                                </td>
+                                                <tr>
+                                                    <td width="250" style="border-bottom: #000 2px dotted">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="250">
+                                                        <span
+                                                            style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Dr.
+                                                                Bashu Dev Parajuli </b><br />(Organizing
+                                                            Secretary)
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
 
+                                    <td style="padding: 0px 0px 0px 10px; text-align: center">
+                                        <table width="300" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="260">
+                                                        <img src="{{ asset('certificate/deafult/anil.png') }}"
+                                                            alt="" style="height: 100px" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="260" style="border-bottom: #000 2px dotted">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="260">
+                                                        <span
+                                                            style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Prof.
+                                                                Dr. Anil Shrestha </b><br />
+                                                            (Scientific Chairperson)</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
 
-                                <td style="padding:0px 25px 0px 25px; text-align:center;">
-                                    <table border="0" width="300" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td width="260"><img
-                                                    src="{{ asset('certificate/neebha.png') }}"
-                                                    alt="" style="height:100px;" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260" style="border-bottom:#000 2px dotted;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260"><span
-                                                    style="text-align:center; line-height:35px; padding:12px 0px; font-size:26px;"><b>Dr
-                                                        Neebha Ojha
-                                                    </b><br />
-                                                    (Scientific Chairperson)</span></td>
-                                        </tr>
-                                    </table>
-                                </td>
-
-
-                                <td style="padding:0px 150px 0px 25px; text-align:center;">
-                                    <table border="0" width="320" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td width="260" height="100"><img
-                                                    src="{{ asset('certificate/urogynaecology/sandesh.png') }}"
-                                                    alt="" style="height:100px;" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260" style="border-bottom:#000 2px dotted;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="260"><span
-                                                    style="text-align:center; line-height:35px; padding:12px 0px; font-size:26px;"><b>Dr. Sandesh poudel
-                                                    </b><br />
-                                                    (Workshop Chairperson)</span></td>
-                                        </tr>
-                                    </table>
-                                </td>
-
-                            </tr>
+                                    <td style="padding: 0px 15px 0px 0px; text-align: center">
+                                        <table width="310" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="260">
+                                                        <img src="{{ asset('certificate/deafult/amir.png') }}"
+                                                            alt="" style="height: 100px" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="260" style="border-bottom: #000 2px dotted">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="260">
+                                                        <span
+                                                            style="
+                                    text-align: center;
+                                    line-height: 35px;
+                                    padding: 12px 0px;
+                                    font-size: 22px;
+                                  "><b>Prof.
+                                                                Dr. Amir Babu Shrestha </b><br />(Organizing
+                                                            Chairperson)
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </td>
                 </tr>

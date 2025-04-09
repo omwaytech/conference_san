@@ -14,7 +14,7 @@
             </div>
             <hr>
         @endif
-        <div class="breadcrumb"> 
+        <div class="breadcrumb">
             <h4>Workshops</h4>
         </div>
         <div class="row">
@@ -118,7 +118,7 @@
                                     <th scope="col">Verified Status</th>
                                     <th scope="col">Meal Type</th>
                                     <th scope="col">Remarks</th>
-                                    {{-- <th scope="col">Action</th> --}}
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -184,6 +184,17 @@
                                                 <span class="badge bg-success">Verified</span>
                                             @endif
                                         </td> --}}
+                                        @if (\Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($registration->workshop->end_date)))
+                                            {{-- @if ($registration->workshop_id != 7) --}}
+                                                <td>
+                                                    <a
+                                                        href="{{ route('workshop-registration.generateCertificate', $registration->id) }}">
+                                                        <button type="submit" class="btn btn-primary">Generate
+                                                            Certificate</button>
+                                                    </a>
+                                                </td>
+                                            {{-- @endif --}}
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -1,32 +1,32 @@
 @extends('layouts.front')
 
 @section('content')
-    <div class="modal fade" id="popUpModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="popUpModalLabel">Workshops</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <img src="{{ asset('default-images/workshop-banners.jpg') }}" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="popUpConferenceModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="popUpModalLabel">Conference</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <img src="{{ asset('default-images/conference.jpeg') }}" alt="">
+    <!--   <div class="modal fade" id="popUpModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="popUpModalLabel">Workshops</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ asset('default-images/workshop-banners.jpg') }}" alt="">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="modal fade" id="popUpConferenceModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="popUpModalLabel">Conference</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="{{ asset('default-images/conference.jpeg') }}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div> -->
 
     <!-- rts banner two area start -->
     <div class="main-wrapper-banner-uner-over-flew">
@@ -50,16 +50,15 @@
                                     </p>
                                     <!--<h1 class="title skew-up-2">24<sup>th </sup> SANCON - ASPA 2025</h1>-->
                                     <h6 class="skew-up-2">
-                                        24<sup>th </sup> Annual Conference of the Society of Anesthesiologists of Nepal
                                     </h6>
-                                    and
-                                    <!--<h1 class="title skew-up-2">21<sup>st</sup> ASPA 2025</h1>-->
-                                    <h6 class="skew-up-2">
-                                        21<sup>st</sup> Meeting of the Asian Society of Paediatric Anesthesiologists
-                                    </h6>
-                                    <div class="venue-box">
-                                        <strong>4<sup>th</sup> - 5<sup>th</sup> April, 2025</strong><br />Hyatt Regency,
-                                        Kathmandu, Nepal.
+                                    <div class="venue-box"
+                                        style="margin: 30px 10px 120px; padding:20px; font-size:20px; border:#000 1px solid; background: rgba(255, 255, 255, 0.6);">
+                                        <b style="font-size:23px; padding:20px 0px;">Thank you for bing a part of SANCON -
+                                            ASPA 2025 </b><br />
+                                        Your Certificate will be uploaded on Conference Portal Soon<br />
+                                        Thank you Again !
+
+
                                     </div>
                         </div>
                     </div>

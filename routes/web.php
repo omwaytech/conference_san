@@ -111,6 +111,8 @@ Route::middleware('auth')->group(function () {
             Route::get('update-regisration-id', 'updatRegistrationId')->name('updatRegistrationId');
             Route::get('empty-registrationId-id', 'emptyRegistrationId')->name('emptyRegistrationId');
             Route::post('/verify-registrant', 'verifyForm')->name('verifyForm');
+            Route::post('/add-person', 'addPerson')->name('addPerson');
+            Route::post('/add-person-submit', 'addPersonSubmit')->name('addPersonSubmit');
             Route::post('/verify-registrant-submit', 'verifyRegistrant')->name('verifyRegistrant');
             Route::get('/registration-or-invitation', 'registrationByAdmin')->name('byAdmin');
             Route::post('/registration-or-invitation-submit', 'registrationByAdminSubmit')->name('byAdminSubmit');
@@ -157,7 +159,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/generate-pass/{type}', 'generatePass')->name('generatePass');
         Route::post('/take-attendance', 'takeAttendance')->name('takeAttendance');
         Route::post('/take-meal', 'takeMeal')->name('takeMeal');
-        Route::get('/generate-certificate/{id}', 'generateCertificate')->name('generateCertificate');
+        Route::get('/generate-certificate/{token}', 'generateCertificate')->name('generateCertificate');
         Route::get('/generate-individual-pass/{conferenceRegistration}/{type}', 'generateIndividualPass')->name('generateIndividualPass');
         Route::post('/choose-registrant-type', 'chooseRegistrantType')->name('chooseRegistrantType');
         Route::post('/online-payment', 'onlinePayment')->name('onlinePayment');
@@ -318,6 +320,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sponsor/generate-certificate/{id}', [SponsorController::class, 'generateCertificate'])->name('sponsor.generateCertificate');
 
     Route::get('/sponsor/bulkCertificate', [SponsorController::class, 'bulkCertificate'])->name('sponsor.bulkCertificate');
+    Route::get('/sponsor/exportExcel', [SponsorController::class, 'exportExcel'])->name('sponsor.exportExcel');
 
 
     Route::get('/sponsor/take-dinner/{id}/{day}/{type}', [SponsorController::class, 'takeDinner'])->name('sponsor.takeDinner');

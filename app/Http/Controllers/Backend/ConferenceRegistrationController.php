@@ -874,6 +874,62 @@ class ConferenceRegistrationController extends Controller
         return view('backend.conferences.registrations.registration', compact('countries', 'latestConference'));
     }
 
+    public function addPerson(Request $request)
+    {
+        $registration = ConferenceRegistration::whereId($request->id)->first();
+        return view('backend.conferences.registrations.add-person', compact('registration'));
+    }
+
+    public function addPersonSubmit(Request $request)
+    {
+        try {
+            $rules = [
+                'additional_guests' => 'required|numeric',
+            ];
+            if ($request->additional_guests >= 1) {
+                $rules['person_name.*'] = 'required';
+            }
+
+            $message = [
+                'person_name.*.required' => 'Each person name is required.',
+            ];
+
+            $validated = $request->validate($rules, $message);
+            $registration = ConferenceRegistration::where('id', $request->id)->first();
+
+            $validated['total_attendee'] = $validated['additional_guests'] + $registration->total_attendee;
+
+            $registration->update($validated);
+            DB::beginTransaction();
+            // insert table-1
+
+
+            // insert table-2
+            if ($request->additional_guests >= 1) {
+                $insertArray = [];
+                foreach ($validated['person_name'] as $key => $value) {
+                    $array['conference_registration_id'] = $registration->id;
+                    $array['person_name'] = $value;
+                    $array['created_at'] = now();
+                    $array['updated_at'] = now();
+                    $insertArray[] = $array;
+                }
+                AccompanyPerson::insert($insertArray);
+            }
+            $type = 'success';
+            $message = "Successfully Added";
+
+            DB::commit();
+
+            // return redirect()->back()->with('status', 'Successfully registered.');
+        } catch (Exception $e) {
+            $type = 'error';
+            $message = $e->getMessage();
+        }
+
+        return response()->json(['type' => $type, 'message' => $message]);
+    }
+
     public function registrationByAdminSubmit(Request $request)
     {
         try {
@@ -1156,7 +1212,7 @@ class ConferenceRegistrationController extends Controller
     }
 
     public function exportTypeExcel(Request $request)
-    {
+    { 
         $type = $request->input('type');
         if ($type == 1) {
             $participantUsers = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])
@@ -1543,10 +1599,10 @@ class ConferenceRegistrationController extends Controller
         }
     }
 
-    public function generateCertificate($id)
+    public function generateCertificate($token)
     {
         $filename = 'test.pdf';
-        $participant = ConferenceRegistration::where('id', $id)->first();
+        $participant = ConferenceRegistration::where('token', $token)->first();
         $latestConference = Conference::latestConference();
         // $html = view()->make('backend.conferences.registrations.certificate-test', compact('participant'))->render();
         // $pdf = new TCPDF;
