@@ -5,7 +5,7 @@
 </div>
 <div class="modal-body">
     <form id="verifyForm">
-        @csrf
+        @csrf 
         {{-- @dd($user->pass_desingation) --}}
         <div class="row">
             <input type="hidden" id="userId" name="user_id" value="{{ $user->user_id }}">

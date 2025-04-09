@@ -61,7 +61,7 @@
                             Faculty</h1>
                         <div
                             style="float:right; font-size:30px; font-weight:bold; padding:
-        10px 40px;	border-left:3px #fff solid; color:#fff; margin:10px; text-align:center;">
+        10px 40px;	border-left:3px #fff solid; color:#fff; margin:10px; text-align:center;"> 
                             {{ $participant->userDetail->country->country_name }}
                         </div>
                     </div>
@@ -313,7 +313,7 @@
                                     </div>
                                 @elseif (
                                     $participant->user->userDetail->country->country_name == 'Nepal' &&
-                                        $participant->registrant_type == 2 &&
+                                        $participant->registrant_type == 2 && 
                                         !$participant->committeMember->isNotEmpty() &&
                                         ($participant->user->userDetail->member_type_id == 2 || $participant->user->userDetail->member_type_id == 4))
                                     <div

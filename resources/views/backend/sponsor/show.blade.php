@@ -15,6 +15,9 @@
                             <a href="{{ route('sponsor.create') }}" class="btn btn-primary"> Add</a>
                             <a href="{{ route('sponsor.generatePass') }}" target="_blank" class="btn btn-primary ml-2"><i
                                     class="nav-icon i-File"></i> Generate Pass</a>
+                            <a href="{{ route('sponsor.exportExcel') }}" target="_blank" class="btn btn-primary ml-2"><i
+                                    class="nav-icon i-File"></i> Export Excel</a>
+                        
                             {{-- <a href="{{ route('sponsor.bulkCertificate') }}" target="_blank" class="btn btn-primary ml-2"><i
                                     class="nav-icon i-File"></i> Generate Certificate Bulk</a> --}}
                         </div>
@@ -26,6 +29,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Name</th>
+                                    <th scope="col">Registration Id</th>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Publish ?</th>
                                     <th scope="col">Need To Add Participants ?</th>
@@ -38,6 +42,7 @@
                                         <th scope="row">{{ $loop->iteration }}</th>
                                         <td>{{ $sponsor->category->category_name }}</td>
                                         <td>{{ $sponsor->name }}</td>
+                                        <td>{{$sponsor->registration_id}}</td>
                                         <td>{{ $sponsor->amount }}</td>
                                         <td>
                                             @if ($sponsor->visible_status == 1)
@@ -71,9 +76,9 @@
                                                     <button class="btn btn-primary btn-sm inviteForConference mt-1" data-id="{{$sponsor->id}}" data-toggle="modal" data-target="#openModal">Invite For Conference</button>
                                                 @endif --}}
                                             </form>
-                                            {{-- <a href="{{ route('sponsor.generateCertificate', $sponsor->id) }}">
+                                            <a href="{{ route('sponsor.generateCertificate', $sponsor->id) }}">
                                                 <button class="btn btn-sm btn-danger mt-2">Generate Certificate</button>
-                                            </a> --}}
+                                            </a>
                                         </td>
                                     </tr>
                                     <div class="modal fade" id="modal{{ $sponsor->id }}" tabindex="-1" role="dialog"

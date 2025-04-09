@@ -133,12 +133,13 @@
                                         </td>
                                         <td>{{ $registration->total_attendee }}</td>
                                         <td>
-                                            @if ($registration->attendances->where('status', 1)->count() == 2)
-                                                <a href="{{ route('conference-registration.generateCertificate', $registration->id) }}"
+                                            @if ($registration)
+                                            {{-- @if ($registration->attendances->where('status', 1)->count() == 2) --}}
+                                                <a href="{{ route('conference-registration.generateCertificate', $registration->token) }}"
                                                     target="_blank" class="btn btn-primary btn-sm mb-1"><i
                                                         class="nav-icon i-File"></i> Generate Certificate</a>
                                             @elseif ($registration->verified_status == 1)
-                                                <span class="badge bg-success">Verified</span>
+                                                <span class="badge bg-success">Verified</span> 
                                             @else
                                                 <form
                                                     action="{{ route('conference-registration.destroy', $registration->id) }}"

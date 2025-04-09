@@ -688,17 +688,19 @@ class WorkshopRegistrationController extends Controller
 
     public function generateCertificate($id)
     {
+        // dd($id);
         $participant = WorkshopRegistration::where('id', $id)->first();
 
-        if ($participant->workshop_id == 2) {
-            return view('backend.workshops.registrations.certificates.urogynaecology', compact('participant'));
-        } else {
-            if ($participant->workshop_id == 3) {
-                return view('backend.workshops.registrations.certificates.others', compact('participant'));
-            } else {
-                return redirect()->back()->with('delete', 'Certificate will be available soon.');
-            }
-        }
+        // if ($participant->workshop_id == 2) {
+        //     return view('backend.workshops.registrations.certificates.urogynaecology', compact('participant'));
+        // } else {
+        //     if ($participant->workshop_id == 3) {
+        //         return view('backend.workshops.registrations.certificates.others', compact('participant'));
+        //     } else {
+        //         return redirect()->back()->with('delete', 'Certificate will be available soon.');
+        //     }
+        // }
+        return view('backend.workshops.registrations.certificates.urogynaecology', compact('participant'));
     }
 
     public function generateIndividualPass(WorkshopRegistration $workshopRegistration)

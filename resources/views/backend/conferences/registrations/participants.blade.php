@@ -26,7 +26,7 @@
                             @elseif ($type == 'invited-attendees')
                                 Conference Invited Attendees
                             @elseif ($type == 'invited-speakers')
-                                Conference Invited Speakers 
+                                Conference Invited Speakers
                             @endif
                         </h4>
                         <div class="row mt-4">
@@ -148,7 +148,13 @@
                                             @endif
                                         </td>
                                         <td>{{ $registrant->transaction_id }}</td>
-                                        <td>{{ $registrant->total_attendee }}</td>
+                                        <td>{{ $registrant->total_attendee }}<br>
+                                            <button class="btn btn-sm btn-primary addPerson mt-1"
+                                                data-id="{{ $registrant->id }}" data-toggle="modal"
+                                                data-target="#openModal" type="submit">
+                                                Add Person
+                                            </button>
+                                        </td>
                                         <td>
                                             @if ($registrant->verified_status == 1)
                                                 <span class="badge bg-success">Verified</span>
@@ -177,12 +183,12 @@
                                             <button class="btn btn-sm btn-primary convertToSpeaker mt-1"
                                                 data-id="{{ $registrant->id }}" type="submit">
                                                 @if ($type == 'attendees' || $type == 'invited-attendees')
-                                                    Convert To Speaker
+                                                    Convert To Speaker 
                                                 @else
-                                                    Convert To Attendee
+                                                    Convert To Attendee 
                                                 @endif
                                             </button>
-                                            {{-- <a href="{{ route('conference-registration.generateCertificate', $registrant->id) }}" class="btn btn-primary btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate Certificate</a> --}}
+                                            <a href="{{ route('conference-registration.generateCertificate', $registrant->token) }}" class="btn btn-primary btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate Certificate</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -209,6 +215,20 @@
             $(document).on("click", ".viewData", function(e) {
                 e.preventDefault();
                 var url = '{{ route('conference-registration.show') }}';
+                var _token = '{{ csrf_token() }}';
+                var id = $(this).data('id');
+                var data = {
+                    _token: _token,
+                    id: id
+                };
+                $.post(url, data, function(response) {
+                    $('#modalContent').html(response);
+                });
+            });
+
+            $(document).on("click", ".addPerson", function(e) { 
+                e.preventDefault();
+                var url = '{{ route('conferenceRegistration.addPerson') }}';
                 var _token = '{{ csrf_token() }}';
                 var id = $(this).data('id');
                 var data = {

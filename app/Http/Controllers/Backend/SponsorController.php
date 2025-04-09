@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\SponsorExport;
 use App\Http\Controllers\Controller;
 use App\Models\{Sponsor, SponsorCategory, SponsorInvitation, Conference, SponsorAttendance, SponsorMeal};
 use Illuminate\Http\Request;
-use Exception, Storage, Image, Str;
+use Exception, Storage, Image, Str, Excel;
 
 class SponsorController extends Controller
 {
@@ -215,6 +216,11 @@ class SponsorController extends Controller
     {
         $sponsors = Sponsor::where('status', 1)->orderBy('name', 'ASC')->get();
         return view('backend.sponsor.pass', compact('sponsors'));
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new SponsorExport(), 'sponsor.xlsx');
     }
 
     public function sponsorProfile($token)
