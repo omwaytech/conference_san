@@ -69,7 +69,7 @@ header('Access-Control-Allow-Origin: *');
 
 
 
-    <script type="text/javascript">
+    {{-- <script type="text/javascript">
         $(document).ready(function($) {
 
             $(document).on('click', '.btn_print', function(event) {
@@ -115,9 +115,38 @@ header('Access-Control-Allow-Origin: *');
 
 
         });
+    </script> --}}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var element = document.getElementById('container_content');
+
+            var opt = {
+                margin: 0,
+                filename: 'san-workshop_' + new Date().getTime() + '.pdf', // Unique filename
+                image: {
+                    type: 'jpeg',
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2,
+                    width: 1700
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'landscape'
+                }
+            };
+
+            // Automatically generate and download the PDF when the page loads
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Optionally return back after download
+                // window.history.back(); // Takes the user back to the previous page
+                window.location.href = 'https://conference.san.org.np/';
+            });
+        });
     </script>
-
-
 
 </head>
 
@@ -296,7 +325,9 @@ header('Access-Control-Allow-Origin: *');
                                                 -
                                                 {{ \Carbon\Carbon::parse($participant->workshop->end_date)->format('jS F, Y') }},
                                             @endif Kathmandu,
-                                            Nepal</small><br /><!-- <i style="font-size:10px; margin:0px; padding:0px">NMC CPD Point Awarded</i>-->
+                                            Nepal</small><br /><i
+                                            style="font-size:20px; margin:0px; padding:0px">Accredited by NMC for CPD
+                                            Points</i>
                                     </h1>
                                 </td>
 
@@ -309,7 +340,7 @@ header('Access-Control-Allow-Origin: *');
                 <tr>
                     <td>
                         <table width="1600" border="0" cellspacing="0" cellpadding="0"
-                            style="margin-top: 10px; margin-bottom: 100px">
+                            style="margin-top: 10px; margin-bottom: 40px">
                             <tbody>
                                 <tr>
                                     @if ($participant->workshop->id == 7)
@@ -335,7 +366,8 @@ header('Access-Control-Allow-Origin: *');
                                 line-height: 35px;
                                 padding: 12px 0px;
                                 font-size: 22px;
-                              "><b> Dr Josephine TAN </b><br />
+                              "><b>
+                                                                    Dr Josephine TAN </b><br />
                                                                 (Workshop Coordinator)</span>
                                                         </td>
                                                     </tr>

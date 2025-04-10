@@ -99,7 +99,7 @@
                                                         class="nav-icon i-File"></i> Generate Pass</a>
                                             @endif
                                         </td>
-                                        <td><a href="{{ route('workshop-registration.generateCertificate', $registration->id) }}" class="btn btn-info btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate</a></td>
+                                        <td><a href="{{ route('workshop-registration.generateCertificate', $registration->token) }}" class="btn btn-info btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
