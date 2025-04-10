@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Exports\WorkshopRegistrationExport;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendWorkshopCertificateJob;
 use App\Jobs\SendWorkshopReceiptJob;
 use App\Mail\Workshop\Registration\{RegistrationMail, AcceptMail, RejectMail, UserRegistrationMail, RegistrationByAdminMail};
 use App\Models\{WorkshopRegistration, Workshop, UserDetail, User, WorkshopAttendance};
@@ -26,6 +27,37 @@ class WorkshopRegistrationController extends Controller
             $registrations = WorkshopRegistration::where(['user_id' => auth()->user()->id, 'status' => 1])->get();
             return view('backend.workshops.registrations.show', compact('registrations', 'workshops', 'checkPayment', 'userDetail'));
         }
+    }
+
+    public function sendCertificate()
+    {
+        // $participants = ConferenceRegistration::where([
+        //     'verified_status' => 1,
+        //     'conference_registrations.status' => 1,
+        // ])
+        //     ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+        //     ->join('user_details', 'conference_registrations.user_id', '=', 'user_details.user_id')
+        //     ->orderBy('registration_id', 'asc')
+        //     ->whereNotNull('users.email')
+        //     ->where(function ($query) {
+        //         $query->where('attend_type', 1)
+        //             ->whereExists(function ($subQuery) {
+        //                 $subQuery->select(DB::raw(1))
+        //                     ->from('attendances')
+        //                     ->whereRaw('attendances.conference_registration_id = conference_registrations.id');
+        //             });
+        //     })
+        //     ->get()
+        //     ->unique('user_id');
+
+        $participants = WorkshopRegistration::where('status', 1)->get();
+        // dd($participants);
+
+        foreach ($participants as $participant) {
+            SendWorkshopCertificateJob::dispatch($participant);
+        }
+        dd('Certificates are being sent.');
+        // return redirect()->back()->with('status', 'Certificates are being sent.');
     }
 
     public function dummyPass(Request $request)
@@ -686,11 +718,11 @@ class WorkshopRegistrationController extends Controller
         }
     }
 
-    public function generateCertificate($id)
+    public function generateCertificate($token)
     {
         // dd($id);
-        $participant = WorkshopRegistration::where('id', $id)->first();
-
+        $participant = WorkshopRegistration::where('token', $token)->first();
+        // dd($participant);
         // if ($participant->workshop_id == 2) {
         //     return view('backend.workshops.registrations.certificates.urogynaecology', compact('participant'));
         // } else {

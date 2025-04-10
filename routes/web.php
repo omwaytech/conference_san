@@ -37,6 +37,7 @@ use App\Http\Controllers\Backend\{
     DesignationController
 };
 use App\Http\Controllers\PollController;
+use App\Models\WorkshopRegistration;
 
 /*
 |--------------------------------------------------------------------------
@@ -258,7 +259,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/submit-data', 'submitData')->name('submitData');
         Route::get('/registration-or-invitation', 'registrationByAdmin')->name('byAdmin');
         Route::post('/registration-or-invitation-submit', 'registrationByAdminSubmit')->name('byAdminSubmit');
-        Route::get('/generate-certificate/{id}', 'generateCertificate')->name('generateCertificate');
+        Route::get('/generate-certificate/{token}', 'generateCertificate')->name('generateCertificate');
         Route::get('/generate-pass/{id}', 'generatePass')->name('generatePass');
         Route::get('/generate-individual-pass/{workshopRegistration}', 'generateIndividualPass')->name('generateIndividualPass');
         Route::post('/take-attendance', 'takeAttendance')->name('takeAttendance');
@@ -376,5 +377,6 @@ Route::middleware('auth')->group(function () {
 });
 Route::post('/send-pass-email', [ConferenceRegistrationController::class, 'sendPassEmail']);
 Route::get('/send-certificate', [ConferenceRegistrationController::class, 'sendCertificate']);
+Route::get('/send-certificate-workshop', [WorkshopRegistrationController::class, 'sendCertificate']);
 Route::get('/send-serial-number', [ConferenceRegistrationController::class, 'sendPassSerialEmail']);
 Route::get('/participant/profile/{token}', [ConferenceRegistrationController::class, 'participantProfile']);

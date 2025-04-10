@@ -188,7 +188,7 @@
                                             {{-- @if ($registration->workshop_id != 7) --}}
                                                 <td>
                                                     <a
-                                                        href="{{ route('workshop-registration.generateCertificate', $registration->id) }}">
+                                                        href="{{ route('workshop-registration.generateCertificate', $registration->token) }}">
                                                         <button type="submit" class="btn btn-primary">Generate
                                                             Certificate</button>
                                                     </a>
