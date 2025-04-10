@@ -55,7 +55,7 @@ header('Access-Control-Allow-Origin: *');
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 
 
-    {{-- <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function() {
             var element = document.getElementById('container_content');
 
@@ -80,11 +80,12 @@ header('Access-Control-Allow-Origin: *');
             // Automatically generate and download the PDF when the page loads
             html2pdf().set(opt).from(element).save().then(() => {
                 // Optionally return back after download
-                window.history.back(); // Takes the user back to the previous page
+                // window.history.back(); // Takes the user back to the previous page
+                window.location.href = 'https://conference.san.org.np/';
             });
         });
-    </script> --}}
-    <script type="text/javascript">
+    </script>
+    {{-- <script type="text/javascript">
         $(document).ready(function($) {
 
             $(document).on('click', '.btn_print', function(event) {
@@ -130,7 +131,7 @@ header('Access-Control-Allow-Origin: *');
 
 
         });
-    </script>
+    </script> --}}
 
 
 </head>
@@ -293,7 +294,7 @@ header('Access-Control-Allow-Origin: *');
                             <tr>
                                 <td width="260">&nbsp;</td>
                                 <td width="1210">
-                                    <h1 style="line-height: 60px; margin-bottom: 50px">
+                                    <h1 style="line-height: 60px; margin-bottom: 0px">
                                         for Participating as a
                                         {{-- <strong>{{ $participant->registrant_type == 2 ? 'Speaker' : 'Attendee' }}</strong> --}}
                                         <strong>
@@ -321,7 +322,9 @@ header('Access-Control-Allow-Origin: *');
                                                 2025</b>
                                             <br />held on 4<sup>th</sup> and 5<sup>th</sup> April, 2025,
                                             Kathmandu,
-                                            Nepal</small><br /><!-- <i style="font-size:10px; margin:0px; padding:0px">NMC CPD Point Awarded</i>-->
+                                            Nepal</small><br /><i
+                                            style="font-size:20px; margin:0px; padding:0px">Accredited by NMC for CPD
+                                            Points</i>
                                     </h1>
                                 </td>
 
@@ -334,7 +337,7 @@ header('Access-Control-Allow-Origin: *');
                 <tr>
                     <td>
                         <table width="1600" border="0" cellspacing="0" cellpadding="0"
-                            style="margin-top: 10px; margin-bottom: 120px">
+                            style="margin-top: 10px; margin-bottom: 100px">
                             <tbody>
                                 <tr>
                                     <td style="padding: 0px 0px 0px 50px; text-align: center">
