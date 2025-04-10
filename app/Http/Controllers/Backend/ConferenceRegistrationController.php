@@ -6,6 +6,7 @@ use App\Exports\ConferenceRegisrationIndian;
 use App\Exports\ConferenceRegistrationExport;
 use App\Exports\ConferenceRegistrationTypeExport;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendCertificateJob;
 use App\Jobs\SendPassEmailJob;
 use App\Jobs\SendReceiptJob;
 use App\Jobs\SendSerialNumber;
@@ -37,6 +38,36 @@ class ConferenceRegistrationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
+    public function sendCertificate()
+    {
+        $participants = ConferenceRegistration::where([
+            'verified_status' => 1,
+            'conference_registrations.status' => 1,
+        ])
+            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+            ->join('user_details', 'conference_registrations.user_id', '=', 'user_details.user_id')
+            ->orderBy('registration_id', 'asc')
+            ->whereNotNull('users.email')
+            ->where(function ($query) {
+                $query->where('attend_type', 1)
+                    ->whereExists(function ($subQuery) {
+                        $subQuery->select(DB::raw(1))
+                            ->from('attendances')
+                            ->whereRaw('attendances.conference_registration_id = conference_registrations.id');
+                    });
+            })
+            ->get()
+            ->unique('user_id');
+
+        // dd($participants);
+
+        foreach ($participants as $participant) {
+            SendCertificateJob::dispatch($participant);
+        }
+        dd('Certificates are being sent.');
+        // return redirect()->back()->with('status', 'Certificates are being sent.');
+    }
 
     public function exportIndian()
     {
@@ -1212,7 +1243,7 @@ class ConferenceRegistrationController extends Controller
     }
 
     public function exportTypeExcel(Request $request)
-    { 
+    {
         $type = $request->input('type');
         if ($type == 1) {
             $participantUsers = ConferenceRegistration::where(['verified_status' => 1, 'conference_registrations.status' => 1])

@@ -188,7 +188,7 @@
                                                     Convert To Attendee 
                                                 @endif
                                             </button>
-                                            <a href="{{ route('conference-registration.generateCertificate', $registrant->token) }}" class="btn btn-primary btn-sm mt-1" target="_blank"><i class="nav-icon i-File"></i> Generate Certificate</a>
+                                            <a href="{{ route('conference-registration.generateCertificate', $registrant->token) }}" class="btn btn-primary btn-sm mt-1"><i class="nav-icon i-File"></i> Generate Certificate</a>
                                         </td>
                                     </tr>
                                 @endforeach
