@@ -318,7 +318,7 @@ header('Access-Control-Allow-Origin: *');
                               margin: 20px 0px;
                               color: red;
                             ">{{ $participant->workshop->title }}</b>
-                                            <br />held @if ($participant->workshop->start_date == $participant->workshop->end_date)
+                                            <br />held on @if ($participant->workshop->start_date == $participant->workshop->end_date)
                                                 {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS F, Y') }},
                                             @else
                                                 {{ \Carbon\Carbon::parse($participant->workshop->start_date)->format('jS') }}
