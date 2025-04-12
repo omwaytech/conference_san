@@ -6,7 +6,7 @@ use App\Exports\WorkshopTrainerExport;
 use App\Http\Controllers\Controller;
 use App\Models\{Workshop, WorkshopTrainer};
 use Illuminate\Http\Request;
-use Exception, Storage,Excel;
+use Exception, Storage, Excel;
 
 class WorkshopTrainerController extends Controller
 {
@@ -16,6 +16,23 @@ class WorkshopTrainerController extends Controller
         $trainers = WorkshopTrainer::where(['workshop_id' => $workshop->id, 'status' => 1])->latest()->get();
         $authUser = auth()->user();
         return view('backend.workshops.trainers.show', compact('trainers', 'workshop', 'authUser'));
+    }
+
+    public function generateCertificate($id)
+    {
+        // dd($id);
+        $participant = WorkshopTrainer::where('id', $id)->first();
+        // dd($participant);
+        // if ($participant->workshop_id == 2) {
+        //     return view('backend.workshops.registrations.certificates.urogynaecology', compact('participant'));
+        // } else {
+        //     if ($participant->workshop_id == 3) {
+        //         return view('backend.workshops.registrations.certificates.others', compact('participant'));
+        //     } else {
+        //         return redirect()->back()->with('delete', 'Certificate will be available soon.');
+        //     }
+        // }
+        return view('backend.workshops.trainers.certificate', compact('participant'));
     }
 
     public function dummyPass(Request $request)

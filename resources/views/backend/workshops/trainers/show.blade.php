@@ -46,6 +46,7 @@
                                     <th scope="col">Affiliation</th>
                                     <th scope="col">Image</th>
                                     <th scope="col">CV</th>
+                                    <th scope="col">Certificate</th>
                                     @if ($workshop->user_id == $authUser->id)
                                         <th scope="col">Action</th>
                                     @endif
@@ -69,6 +70,12 @@
                                             @else
                                                 -
                                             @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('workshop-trainer.generateCertificate', $trainer->id) }}">
+                                                <button type="submit" class="btn btn-primary">Generate
+                                                    Certificate</button>
+                                            </a>
                                         </td>
                                         @if ($workshop->user_id == $authUser->id)
                                             <td>
