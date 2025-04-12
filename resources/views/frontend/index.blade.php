@@ -1,32 +1,21 @@
 @extends('layouts.front')
 
 @section('content')
-    <!--   <div class="modal fade" id="popUpModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="popUpModalLabel">Workshops</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <img src="{{ asset('default-images/workshop-banners.jpg') }}" alt="">
-                    </div>
+    <div class="modal fade" id="popUpModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="popUpModalLabel">Certificate</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    {{-- <img src="{{ asset('default-images/workshop-banners.jpg') }}" alt=""> --}}
+                    Download certificate from dashboard
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="popUpConferenceModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="popUpModalLabel">Conference</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <img src="{{ asset('default-images/conference.jpeg') }}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div> -->
+    </div>
+
 
     <!-- rts banner two area start -->
     <div class="main-wrapper-banner-uner-over-flew">
@@ -1371,16 +1360,11 @@
 
     @section('scripts')
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener('DOMContentLoaded', function() {
                 var workshopModal = new bootstrap.Modal(document.getElementById('popUpModal'));
-                var conferenceModal = new bootstrap.Modal(document.getElementById('popUpConferenceModal'));
-
                 workshopModal.show();
-
-                document.getElementById('popUpModal').addEventListener('hidden.bs.modal', function() {
-                    conferenceModal.show();
-                });
             });
+
 
             $(document).ready(function() {
                 $('#viewPassword').click(function(e) {
