@@ -243,6 +243,7 @@ Route::middleware('auth')->group(function () {
         Route::get('generate-pass/{id}', 'generatePass')->name('generatePass');
         Route::post('generate-dummy-passs', 'dummyPass')->name('dummyPass');
         Route::get('/excel-export/{id}', 'excelExport')->name('excelExport');
+        Route::get('/generate-certificate/{token}', 'generateCertificate')->name('generateCertificate');
     });
 
     // workshop registration routes

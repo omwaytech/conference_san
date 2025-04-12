@@ -123,7 +123,7 @@ header('Access-Control-Allow-Origin: *');
 
             var opt = {
                 margin: 0,
-                filename: 'san-workshop_' + new Date().getTime() + '.pdf', // Unique filename
+                filename: '{{ $participant->name }}' + '.pdf', // Unique filename
                 image: {
                     type: 'jpeg',
                     quality: 1
@@ -142,8 +142,8 @@ header('Access-Control-Allow-Origin: *');
             // Automatically generate and download the PDF when the page loads
             html2pdf().set(opt).from(element).save().then(() => {
                 // Optionally return back after download
-                // window.history.back(); // Takes the user back to the previous page
-                window.location.href = 'https://conference.san.org.np/';
+                window.history.back(); // Takes the user back to the previous page
+                // window.location.href = 'https://conference.san.org.np/';
             });
         });
     </script>
@@ -293,8 +293,8 @@ header('Access-Control-Allow-Origin: *');
                           margin-bottom: 15px;
                           color: red;
                         ">
-                                        {{ $participant->user->namePrefix->prefix }}
-                                        {{ $participant->user->fullname($participant, 'user') }}
+                                        {{ $participant->name }}
+
                                     </h3>
                                 </td>
                                 <td width="315">&nbsp;</td>
@@ -309,8 +309,8 @@ header('Access-Control-Allow-Origin: *');
                             <tr>
                                 <td width="160">&nbsp;</td>
                                 <td width="1410">
-                                    <h1 style="line-height: 60px; margin-bottom: 50px">
-                                        for the participating in <br />
+                                    <h1 style="line-height: 60px; margin-bottom: 20px">
+                                        for presenting in <br />
                                         <small><b
                                                 style="
                               font-size: 60px;
@@ -340,7 +340,7 @@ header('Access-Control-Allow-Origin: *');
                 <tr>
                     <td>
                         <table width="1600" border="0" cellspacing="0" cellpadding="0"
-                            style="margin-top: 10px; margin-bottom: 40px">
+                            style="margin-top: 10px; margin-bottom: 70px">
                             <tbody>
                                 <tr>
                                     @if ($participant->workshop->id == 7)

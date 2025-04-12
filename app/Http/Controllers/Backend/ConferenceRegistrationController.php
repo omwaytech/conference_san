@@ -60,7 +60,6 @@ class ConferenceRegistrationController extends Controller
             ->get()
             ->unique('user_id');
 
-        // dd($participants);
 
         foreach ($participants as $participant) {
             SendCertificateJob::dispatch($participant);
