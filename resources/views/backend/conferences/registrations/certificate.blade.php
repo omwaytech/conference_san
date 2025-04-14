@@ -295,19 +295,21 @@ header('Access-Control-Allow-Origin: *');
                                 <td width="260">&nbsp;</td>
                                 <td width="1210">
                                     <h1 style="line-height: 60px; margin-bottom: 0px">
-                                        for Participating as a
-                                        {{-- <strong>{{ $participant->registrant_type == 2 ? 'Speaker' : 'Attendee' }}</strong> --}}
+                                        for participating as
+                                        {{-- <strong>{{ $participant->registrant_type == 2 ? ' a Speaker' : 'an Attendee' }}</strong> --}}
                                         <strong>
                                             @if ($participant->registrant_type == 1)
-                                                Attendee
+                                                an Attendee
+                                            @elseif ($participant->registrant_type == 3)
+                                                a Session Chair
                                             @elseif (
                                                 ($participant->registrant_type == 2 && $participant->user->userDetail->country->country_name != 'Nepal') ||
                                                     $participant->user->userDetail->member_type_id == 1)
-                                                Faculty
+                                                a Faculty
                                             @elseif(
                                                 $participant->registrant_type == 2 &&
                                                     ($participant->user->userDetail->member_type_id == 2 || $participant->user->userDetail->member_type_id == 4))
-                                                Speaker
+                                                a Speaker
                                             @endif
 
                                         </strong>

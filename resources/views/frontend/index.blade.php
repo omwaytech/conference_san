@@ -1,16 +1,24 @@
 @extends('layouts.front')
 
 @section('content')
-    <div class="modal fade" id="popUpModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+    <div class="modal fade" id="popUpModal" tabindex="-1" aria-labelledby="popUpModalLabel" aria-hidden="true"
+        style="border-radius:20px!important; text-align:justify;">
+        <div class="modal-dialog modal-xl" style="max-width:400px;">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="popUpModalLabel">Certificate</h5>
+                <div class="modal-header" style="text-align:justify;">
+                    <h5 class="modal-title" id="popUpModalLabel">Announcement ! </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center">
-                    {{-- <img src="{{ asset('default-images/workshop-banners.jpg') }}" alt=""> --}}
-                    Download certificate from dashboard
+                <div class="modal-body" style="padding:20px;">
+                    <h6>Thank you for being a part of <br />SANCON - ASPA 2025 </h6>
+                    <p>If you haven't received your certificate via email, Please log in to your dashboard. <br />Your
+                        certificate will be available there, along with the photo link below.<br />
+                    <ul>
+                        <li><a href="https://drive.google.com/drive/folders/13XhhkliN_Wn1xfladpwJNfvKW6cXD61z?usp=sharing"
+                                target="_blank">Day 1 Photographs</a></li>
+                        <li> <a href="https://drive.google.com/drive/folders/13al6ADpRgRJyxkzaKsN5c3_AvpXMY7KQ?usp=sharing"
+                                target="_blank">Day 2 Photographs</a> </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -42,7 +50,7 @@
                                     </h6>
                                     <div class="venue-box"
                                         style="margin: 30px 10px 120px; padding:20px; font-size:20px; border:#000 1px solid; background: rgba(255, 255, 255, 0.6);">
-                                        <b style="font-size:23px; padding:20px 0px;">Thank you for bing a part of SANCON -
+                                        <b style="font-size:23px; padding:20px 0px;">Thank you for being a part of SANCON -
                                             ASPA 2025 </b><br />
                                         Your Certificate will be uploaded on Conference Portal Soon<br />
                                         Thank you Again !

@@ -347,6 +347,9 @@
                             href="{{ route('conferenceRegistration.participants', 'invited-speakers') }}"><i
                                 class="nav-icon i-Mens"></i><span class="item-name">Invited Speakers</span></a></li>
                     <li class="nav-item {{ empty($latestConference) ? 'disabled' : '' }}"><a
+                            href="{{ route('conferenceRegistration.participants', 'chairperson') }}"><i
+                                class="nav-icon i-Mens"></i><span class="item-name">Chairperson</span></a></li>
+                    <li class="nav-item {{ empty($latestConference) ? 'disabled' : '' }}"><a
                             href="{{ route('conferenceRegistration.registerExceptionalCase') }}"><i
                                 class="nav-icon i-Receipt"></i><span class="item-name">Register in Exceptional
                                 Case</span></a></li>
