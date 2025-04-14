@@ -41,26 +41,42 @@ class ConferenceRegistrationController extends Controller
 
     public function sendCertificate()
     {
+        // $participants = ConferenceRegistration::where([
+        //     'verified_status' => 1,
+        //     'conference_registrations.status' => 1,
+        //     'conference_registrations.registrant_type' => 3
+        // ])
+        //     ->join('users', 'conference_registrations.user_id', '=', 'users.id')
+        //     ->join('user_details', 'conference_registrations.user_id', '=', 'user_details.user_id')
+        //     ->orderBy('registration_id', 'asc')
+        //     ->whereNotNull('users.email')
+        //     ->where(function ($query) {
+        //         $query->where('attend_type', 1)
+        //             ->whereExists(function ($subQuery) {
+        //                 $subQuery->select(DB::raw(1))
+        //                     ->from('attendances')
+        //                     ->whereRaw('attendances.conference_registration_id = conference_registrations.id');
+        //             });
+        //     })
+        //     ->get()
+        //     ->unique('user_id');
         $participants = ConferenceRegistration::where([
             'verified_status' => 1,
-            'conference_registrations.status' => 1,
+            'status' => 1,
+            'registrant_type' => 3
         ])
-            ->join('users', 'conference_registrations.user_id', '=', 'users.id')
-            ->join('user_details', 'conference_registrations.user_id', '=', 'user_details.user_id')
-            ->orderBy('registration_id', 'asc')
-            ->whereNotNull('users.email')
-            ->where(function ($query) {
-                $query->where('attend_type', 1)
-                    ->whereExists(function ($subQuery) {
-                        $subQuery->select(DB::raw(1))
-                            ->from('attendances')
-                            ->whereRaw('attendances.conference_registration_id = conference_registrations.id');
-                    });
+            ->where('attend_type', 1)
+            ->whereExists(function ($subQuery) {
+                $subQuery->select(DB::raw(1))
+                    ->from('attendances')
+                    ->whereRaw('attendances.conference_registration_id = conference_registrations.id');
             })
-            ->get()
-            ->unique('user_id');
+            ->orderBy('registration_id', 'asc')
+            ->get();
 
 
+
+        // dd($participants);
         foreach ($participants as $participant) {
             SendCertificateJob::dispatch($participant);
         }
@@ -821,6 +837,7 @@ class ConferenceRegistrationController extends Controller
     public function participants($type)
     {
         $latestConference = Conference::latestConference();
+
         if ($type == 'attendees') {
             $registrants = ConferenceRegistration::where(['conference_id' => @$latestConference->id, 'registrant_type' => 1, 'is_invited' => 0, 'status' => 1])->latest()->get();
         } elseif ($type == 'speakers') {
@@ -829,6 +846,8 @@ class ConferenceRegistrationController extends Controller
             $registrants = ConferenceRegistration::where(['conference_id' => @$latestConference->id, 'registrant_type' => 1, 'is_invited' => 1, 'status' => 1])->latest()->get();
         } elseif ($type == 'invited-speakers') {
             $registrants = ConferenceRegistration::where(['conference_id' => @$latestConference->id, 'registrant_type' => 2, 'is_invited' => 1, 'status' => 1])->latest()->get();
+        } elseif ($type == 'chairperson') {
+            $registrants = ConferenceRegistration::where(['conference_id' => @$latestConference->id, 'registrant_type' => 3, 'status' => 1])->latest()->get();
         }
         $memberTypes = MemberType::where('status', 1)->get();
         return view('backend.conferences.registrations.participants', compact('registrants', 'type', 'memberTypes'));
@@ -1731,6 +1750,22 @@ class ConferenceRegistrationController extends Controller
                 $message = "Speaker Converted To Attendee Successfully.";
             }
 
+            $registrant->update(['registrant_type' => $newRegistrantTypeValue]);
+
+            $type = 'success';
+        } catch (Exception $e) {
+            $type = 'error';
+            $message = $e->getMessage();
+        }
+        return response()->json(['type' => $type, 'message' => $message]);
+    }
+
+    public function convertToChairperson(Request $request)
+    {
+        try {
+            $registrant =  ConferenceRegistration::whereId($request->id)->first();
+            $newRegistrantTypeValue = 3;
+            $message = "Participant Converted to chairperson";
             $registrant->update(['registrant_type' => $newRegistrantTypeValue]);
 
             $type = 'success';

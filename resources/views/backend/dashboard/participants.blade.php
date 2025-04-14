@@ -39,7 +39,7 @@
                             @endif
                             Participants
                         </h4>
-                        <div class=""> 
+                        <div class="">
 
                             <form id='exportForm' target="blank"
                                 action="{{ route('conference-registration.exportTypeExcel') }}" method="POST">
@@ -174,7 +174,7 @@
                                                     data-id="{{ $registrant->id }}" data-toggle="modal"
                                                     data-target="#openModal">Add Voucher</button>
                                             @endif
-                                        
+
                                             {{-- @if ($status == 'accepted' || $status == 'total-registrants')
                                                 <button class="btn btn-sm btn-primary mt-1 addRole" data-id="{{$registrant->id}}" data-toggle="modal" data-target="#openModal">Add Role</button>
                                             @endif
@@ -182,6 +182,13 @@
                                             {{-- @if ($status == 'accepted')
                                                 <button class="btn btn-sm btn-primary takeAttendance mt-1" data-id="{{$registrant->id}}" data-toggle="modal" data-target="#openModal">Take Attendance</button></td>
                                             @endif --}}
+                                            {{-- @dd($registrant->registrant_type == 1) --}}
+                                            @if ($registrant->registrant_type == 1 || $registrant->registrant_type == 2)
+                                                <button class="btn btn-sm btn-primary convertToSpeaker mt-1"
+                                                    data-id="{{ $registrant->id }}" type="submit">
+                                                    Convert To ChairPerson
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -217,6 +224,36 @@
                 $.post(url, data, function(response) {
                     $('#modalContent').html(response);
                 });
+            });
+            $(document).on("click", ".convertToSpeaker", function(e) {
+                e.preventDefault();
+                var title = 'Are you sure to convert an participant to chairperson?';
+                Swal.fire({
+                    title: title,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Convert!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = '{{ route('conferenceRegistration.convertToChairperson') }}';
+                        var _token = '{{ csrf_token() }}';
+                        var id = $(this).data('id');
+                        var data = {
+                            _token: _token,
+                            id: id
+                        };
+                        $.post(url, data, function(response) {
+                            if (response.type == 'success') {
+                                toastr.success(response.message);
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        });
+                    }
+                })
             });
 
             $(document).on("click", ".sendCorrectionMail", function(e) {
@@ -296,7 +333,7 @@
                 var id = $(this).data('id');
                 var data = {
                     _token: _token,
-                    id: id 
+                    id: id
                 };
                 $.post(url, data, function(response) {
                     $('#modalContent').html(response);

@@ -89,7 +89,7 @@
                                                 @else
                                                     <span class="badge bg-warning">Unverified</span>
                                                 @endif
-                                            @endif
+                                            @endif 
                                         </td>
                                         <td>{{ !empty($registration->remarks) ? $registration->remarks : '-' }}</td>
                                         <td>
