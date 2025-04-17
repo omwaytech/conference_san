@@ -144,7 +144,7 @@
                                                 <form
                                                     action="{{ route('conference-registration.destroy', $registration->id) }}"
                                                     method="POST">
-                                                    @method('delete')
+                                                    @method('delete') 
                                                     @csrf
                                                     @if (!empty($registration->payment_voucher))
                                                         @if ($registration->payment_voucher != 'Fone-Pay')

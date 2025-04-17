@@ -7,6 +7,7 @@
 </head>
 
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <p>Dear {{ $data['name'] }}</p>
     <p>Greetings!</p>
 
     <p>
@@ -31,7 +32,7 @@
     </p>
 
     <p>
-       Please feel free to contact us if you have any questions or need further assistance. 
+        Please feel free to contact us if you have any questions or need further assistance.
     </p>
 
     <p>Thank you once again for being an important part of this memorable gathering.</p>
