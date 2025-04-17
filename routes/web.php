@@ -129,6 +129,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/registration-in-exceptional-case-submit', 'registerExceptionalCaseSubmit')->name('registerExceptionalCaseSubmit');
             Route::post('/convert-to-speaker-by-admin', 'convertToSpeakerbyAdmin')->name('convertToSpeakerbyAdmin');
             Route::post('/convert-to-chairperson-by-admin', 'convertToChairperson')->name('convertToChairperson');
+            Route::post('/send-individual-certificate', 'sendIndividualCertificate')->name('sendIndividualCertificate');
             Route::post('/add-payment-voucher', 'addPaymentVoucher')->name('addPaymentVoucher');
             Route::post('/add-payment-voucher-submit', 'addPaymentVoucherSubmit')->name('addPaymentVoucherSubmit');
             Route::get('/get-member-type', 'getDelegateType')->name('getDelegateType');

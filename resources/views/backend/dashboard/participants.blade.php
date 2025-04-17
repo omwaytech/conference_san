@@ -189,6 +189,14 @@
                                                     Convert To ChairPerson
                                                 </button>
                                             @endif
+                                            <a href="{{ route('conference-registration.generateCertificate', $registrant->token) }}"
+                                                class="btn btn-primary btn-sm mt-1"><i class="nav-icon i-File"></i> Generate
+                                                Certificate</a>
+                                            {{-- <a href="{{ route('conference-registration.sendIndividualCertificate', $registrant->token) }}" class="btn btn-primary btn-sm mt-1"><i class="nav-icon i-File"></i> Generate Certificate</a> --}}
+                                            <button class="btn btn-sm btn-primary sendCertificate mt-1"
+                                                data-id="{{ $registrant->id }}" type="submit">
+                                                Send Certificate
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -232,10 +240,40 @@
                     title: title,
                     icon: 'question',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Convert!'
+                    confirmButtonText: 'Yes, Send it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var url = '{{ route('conferenceRegistration.convertToChairperson') }}';
+                        var _token = '{{ csrf_token() }}';
+                        var id = $(this).data('id');
+                        var data = {
+                            _token: _token,
+                            id: id
+                        };
+                        $.post(url, data, function(response) {
+                            if (response.type == 'success') {
+                                toastr.success(response.message);
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000);
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        });
+                    }
+                })
+            });
+            $(document).on("click", ".sendCertificate", function(e) {
+                e.preventDefault();
+                var title = 'Are you sure to send certificate?';
+                Swal.fire({
+                    title: title,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Convert!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var url = '{{ route('conferenceRegistration.sendIndividualCertificate') }}';
                         var _token = '{{ csrf_token() }}';
                         var id = $(this).data('id');
                         var data = {

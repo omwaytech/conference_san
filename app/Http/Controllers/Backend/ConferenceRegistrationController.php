@@ -84,6 +84,38 @@ class ConferenceRegistrationController extends Controller
         // return redirect()->back()->with('status', 'Certificates are being sent.');
     }
 
+    public function sendIndividualCertificate(Request $request)
+    {
+
+      
+        try {
+            $participant = ConferenceRegistration::whereId($request->id)->first();
+            // dd($participant);
+
+
+            $mailData = [
+                'name' => $participant->user->fullname($participant, 'user'),
+                'registrationId' => $participant->registration_id,
+                'namePrefix' => $participant->user->namePrefix->prefix,
+                'token' => $participant->token,
+                'memberType' => $participant->user->userDetail->member_type_id,
+                'country' => $participant->user->userDetail->country->country_name,
+                'registrant_type' => $participant->registrant_type
+            ];
+
+            Mail::send('emails.conference.send-certificate', ['data' => $mailData], function ($message) use ($participant) {
+                $message->to($participant->user->email)
+                    ->subject('Certificate');
+            });
+            $message = "Send Certificate Successfully";
+            $type = 'success';
+        } catch (Exception $e) {
+            $type = 'error';
+            $message = $e->getMessage();
+        }
+        return response()->json(['type' => $type, 'message' => $message]);
+    }
+
     public function exportIndian()
     {
         return Excel::download(new ConferenceRegisrationIndian(), 'conference_registration_indian.xlsx');

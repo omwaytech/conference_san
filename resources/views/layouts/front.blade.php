@@ -17,10 +17,10 @@
     <link rel="stylesheet preload" href="{{ asset('frontend') }}/assets/css/plugins/fontawesome.min.css" as="style">
     <link rel="stylesheet preload" href="{{ asset('frontend') }}/assets/css/style.css" as="style">
     <!-- jQuery (required for Bootstrap) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
@@ -66,6 +66,11 @@
                                         <li class="nav-item"><a class="nav-link"
                                                 href="{{ route('front.accommodation') }}">Travel and Accommodation</a>
                                         </li>
+                                        @foreach ($downloadsAll->where('id',3) as $downloadAll)
+                                            <li class="nav-item"><a class="nav-link" href="{{ asset('storage/downloads/' . $downloadAll->file) }}"
+                                                    target="_blank">{{ $downloadAll->title }}</a></li>
+                                        @endforeach
+                            
                                     </ul>
                                 </li>
                                 <li class="menu-item"><a class="main-element fluxi-dropdown-main-element"
@@ -131,6 +136,7 @@
                             <li><a href="{{ route('front.message') }}">Message</a></li>
                             <li><a href="{{ route('front.speakers') }}">Speakers</a></li>
                             <li><a href="#">Scientific Program</a></li>
+
 
                         </ul>
                     </div>
