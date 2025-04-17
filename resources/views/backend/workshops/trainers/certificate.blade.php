@@ -310,7 +310,7 @@ header('Access-Control-Allow-Origin: *');
                                 <td width="160">&nbsp;</td>
                                 <td width="1410">
                                     <h1 style="line-height: 60px; margin-bottom: 20px">
-                                        for presenting in <br />
+                                        for participating as a faculty in <br />
                                         <small><b
                                                 style="
                               font-size: 60px;
