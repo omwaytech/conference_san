@@ -227,7 +227,7 @@
                 var id = $(this).data('id');
                 var data = {
                     _token: _token,
-                    id: id
+                    id: id 
                 };
                 $.post(url, data, function(response) {
                     $('#modalContent').html(response);

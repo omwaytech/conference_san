@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\AttendanceListExport;
 use App\Exports\ConferenceRegisrationIndian;
 use App\Exports\ConferenceRegistrationExport;
 use App\Exports\ConferenceRegistrationTypeExport;
@@ -119,6 +120,10 @@ class ConferenceRegistrationController extends Controller
     public function exportIndian()
     {
         return Excel::download(new ConferenceRegisrationIndian(), 'conference_registration_indian.xlsx');
+    }
+
+    public function exportAttendanceList(){
+        return Excel::download(new AttendanceListExport(), 'attendance_list.xlsx');
     }
 
     public function dummyPass(Request $request)

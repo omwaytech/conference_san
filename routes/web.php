@@ -156,6 +156,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/export/{type}', 'exportExcel')->name('exportExcel');
         Route::get('/excel/indias', 'exportIndian')->name('exportIndian');
+        Route::get('/excel/exportAttendanceList', 'exportAttendanceList')->name('exportAttendanceList');
         Route::post('/submit-data', 'submitData')->name('submitData');
         Route::get('/convert-to-speaker', 'convertToSpeaker')->name('convertToSpeaker');
         Route::post('/convert-to-speaker-submit', 'convertToSpeakerSubmit')->name('convertToSpeakerSubmit');
