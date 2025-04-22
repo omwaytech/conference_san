@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Exports;
-
+ 
 use App\Models\Conference;
 use App\Models\ConferenceRegistration;
 use Maatwebsite\Excel\Concerns\FromCollection;
